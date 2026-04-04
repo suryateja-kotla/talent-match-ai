@@ -18,11 +18,11 @@ from api.resume_routes import router as resume_router
 
 
 # Ensure backend root is on the path
-sys.path.insert(0, os.path.dirname(__file__))
+
 
 from dotenv import load_dotenv
 load_dotenv()
-
+sys.path.insert(0, os.path.dirname(__file__))
 
 # ─── Logging ─────────────────────────────────────────────────────────────────
 logging.basicConfig(

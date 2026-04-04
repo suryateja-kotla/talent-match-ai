@@ -101,7 +101,7 @@ async def run_resume_parsing(file_path: str) -> dict:
                 session_id=session.id,
                 new_message=message,
             ):
-                if event.is_final_response() and event.content:
+                if event.is_final_response() and event.content and getattr(event.content, "parts", None):
                     for part in event.content.parts:
                         if hasattr(part, "text") and part.text:
                             final_text += part.text

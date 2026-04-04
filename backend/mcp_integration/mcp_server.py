@@ -28,16 +28,20 @@ import sys
 # ── make backend root importable when spawned as a child process ──────────────
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from mcp_integration.server.fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP
 
 from schema.db_schema import get_connection
 from schema.pydantic_models import CandidateSchema
-
+from dotenv import load_dotenv
+load_dotenv()
 # Logs go to stderr so stdout stays clean for the stdio MCP wire protocol
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [MCP-SERVER] %(levelname)s: %(message)s",
-    stream=sys.stderr,
+    handlers=[
+        logging.FileHandler("mcp_debug.log"), # <--- This will save errors to a file!
+        logging.StreamHandler(sys.stderr)
+    ]
 )
 logger = logging.getLogger(__name__)
 
@@ -164,27 +168,22 @@ def _db_list_candidates() -> list[dict]:
 # ═════════════════════════════════════════════════════════════════════════════
 
 @mcp.tool()
-def save_candidate(candidate_json: str) -> str:
-    """
-    Validate and upsert a candidate extracted from a resume into PostgreSQL.
-
-    Args:
-        candidate_json: JSON string that matches CandidateSchema.
-            Required  : first_name, last_name, email
-            Optional  : phone, linkedin_url, current_company, current_job_title,
-                        total_experience_years, skills, skill_experience,
-                        education, raw_text, source_file
-
-    Returns:
-        JSON string: { "success": bool, "candidate_id": int|null, "message": str }
-    """
-    # ── 1. Parse raw JSON ─────────────────────────────────────────────────────
+def save_candidate(candidate_json: str | dict) -> str: # Notice the updated type hint
+    """Validate and upsert a candidate extracted from a resume into PostgreSQL."""
+    
+    # ── 1. Parse raw JSON safely ──────────────────────────────────────────────
     try:
-        raw: dict = json.loads(candidate_json)
-    except json.JSONDecodeError as exc:
-        logger.error("save_candidate: invalid JSON — %s", exc)
+        if isinstance(candidate_json, str):
+            raw: dict = json.loads(candidate_json)
+        elif isinstance(candidate_json, dict):
+            raw = candidate_json # The LLM passed a dict, use it directly!
+        else:
+            raise ValueError(f"Expected string or dict, got {type(candidate_json)}")
+            
+    except Exception as exc: # Catching ALL exceptions, not just JSONDecodeError
+        logger.error("save_candidate: parsing failed — %s", exc)
         return json.dumps({"success": False, "candidate_id": None,
-                           "message": f"Invalid JSON: {exc}"})
+                           "message": f"Invalid format: {exc}"})
 
     # ── 2. Validate with Pydantic ─────────────────────────────────────────────
     try:

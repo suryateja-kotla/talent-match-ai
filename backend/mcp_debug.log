@@ -1,0 +1,6 @@
+2026-04-04 16:40:42,989 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 16:40:43,013 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-04 16:40:46,674 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-04 16:41:25,457 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 16:41:25,576 [MCP-SERVER] INFO: Upserted candidate id=1  email=Sumithapjoseph@gmail.com
+2026-04-04 16:41:25,585 [MCP-SERVER] INFO: Processing request of type ListToolsRequest

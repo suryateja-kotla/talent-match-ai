@@ -1,105 +1,89 @@
 """
 api/resume_routes.py
-FastAPI routes for resume upload, parsing, and candidate listing.
+--------------------
+Resume API — FastAPI router.
+
+WHY ONLY ONE ENDPOINT?
+  Right now the system's job is to parse resumes and store candidates.
+  The only interaction needed from the UI (or curl) is:
+    POST /resume/upload-and-parse → send file, get back candidate_id
+
+  Listing / fetching candidates can be done directly via PostgreSQL
+  during development. A GET /resume/candidates endpoint will be added
+  here once the Angular UI integration begins.
+
+Endpoint:
+  POST /resume/upload-and-parse
+    • Validates file type (.pdf / .docx only)
+    • Saves the file to sample_files/uploads/
+    • Calls runner.run_resume_parsing(file_path)
+    • Returns the candidate_id and success status
 """
 
+import logging
 import os
 import shutil
-import logging
-from fastapi import APIRouter, UploadFile, File, HTTPException
+
+from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
 
-from agents.resume_parser_agent import run_resume_parser
+from runner import run_resume_parsing
 
 logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix="/resume", tags=["Resume"])
 
-UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "..", "sample_files", "uploads")
+# Uploaded files land here; directory is created automatically if missing
+UPLOAD_DIR = os.path.join(
+    os.path.dirname(__file__), "..", "sample_files", "uploads"
+)
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+ALLOWED_EXTENSIONS = {".pdf", ".docx", ".doc"}
 
 
 @router.post("/upload-and-parse")
-async def upload_and_parse_resume(file: UploadFile = File(...)):
+async def upload_and_parse(file: UploadFile = File(...)):
     """
-    Upload a resume file (PDF or DOCX) and trigger the AI parsing pipeline.
-    The extracted candidate data is automatically saved to PostgreSQL.
-    """
-    allowed_extensions = {".pdf", ".docx", ".doc"}
-    ext = os.path.splitext(file.filename)[1].lower()
+    Upload a resume file and run the AI parsing pipeline.
 
-    if ext not in allowed_extensions:
+    The pipeline:
+      file upload → save to disk → ADK agent →
+      extract text → LLM parse → MCP save_candidate → PostgreSQL
+
+    Returns:
+        200: { "success": true, "candidate_id": 1, "message": "...", "raw_response": "..." }
+        400: unsupported file type
+        500: agent or DB error
+    """
+    # ── validate extension ────────────────────────────────────────────────────
+    filename = file.filename or ""
+    ext = os.path.splitext(filename)[1].lower()
+
+    if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(
             status_code=400,
-            detail=f"Unsupported file type '{ext}'. Allowed: {allowed_extensions}",
+            detail=(
+                f"File type '{ext}' is not supported. "
+                f"Please upload one of: {sorted(ALLOWED_EXTENSIONS)}"
+            ),
         )
 
-    # Save uploaded file locally
-    dest_path = os.path.join(UPLOAD_DIR, file.filename)
-    with open(dest_path, "wb") as f:
-        shutil.copyfileobj(file.file, f)
+    # ── save to uploads directory ─────────────────────────────────────────────
+    dest_path = os.path.join(UPLOAD_DIR, filename)
+    try:
+        with open(dest_path, "wb") as out:
+            shutil.copyfileobj(file.file, out)
+    except OSError as exc:
+        logger.exception("Failed to save uploaded file")
+        raise HTTPException(status_code=500, detail=f"Could not save file: {exc}")
 
-    logger.info("Resume uploaded: %s", dest_path)
+    logger.info("Resume saved to %s — starting pipeline", dest_path)
 
-    # Run agent
-    result = await run_resume_parser(dest_path)
+    # ── run agent pipeline ────────────────────────────────────────────────────
+    result = await run_resume_parsing(dest_path)
 
     if not result["success"]:
         raise HTTPException(status_code=500, detail=result["message"])
 
     return JSONResponse(content=result)
-
-
-@router.get("/candidates")
-async def list_candidates():
-    """List all parsed candidates from the database."""
-    from schema.db_schema import get_connection
-    import json
-
-    conn = get_connection()
-    try:
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT id, first_name, last_name, email,
-                       current_job_title, total_experience_years,
-                       skills, source_file, created_at
-                FROM candidates
-                ORDER BY created_at DESC
-            """)
-            rows = cur.fetchall()
-            cols = [desc[0] for desc in cur.description]
-            candidates = []
-            for row in rows:
-                rec = dict(zip(cols, row))
-                rec["created_at"] = str(rec["created_at"])
-                candidates.append(rec)
-        return JSONResponse(content={"count": len(candidates), "data": candidates})
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
-    finally:
-        conn.close()
-
-
-@router.get("/candidates/{candidate_id}")
-async def get_candidate(candidate_id: int):
-    """Retrieve full candidate details by ID."""
-    from schema.db_schema import get_connection
-
-    conn = get_connection()
-    try:
-        with conn.cursor() as cur:
-            cur.execute("SELECT * FROM candidates WHERE id = %s", (candidate_id,))
-            row = cur.fetchone()
-            if not row:
-                raise HTTPException(status_code=404, detail="Candidate not found.")
-            cols = [desc[0] for desc in cur.description]
-            rec = dict(zip(cols, row))
-            for key in ("created_at", "updated_at"):
-                if rec.get(key):
-                    rec[key] = str(rec[key])
-        return JSONResponse(content=rec)
-    except HTTPException:
-        raise
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
-    finally:
-        conn.close()
