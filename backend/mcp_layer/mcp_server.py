@@ -89,7 +89,33 @@ def list_all_jobs() -> str:
         logger.exception("list_all_jobs: DB error")
         return json.dumps({"success": False, "count": 0, "data": [], "message": str(exc)})
 
+@mcp.tool()
+def get_jobs_by_location(location: str) -> str:
+    """
+    Fetch jobs (location ignored for now).
+    """
 
+    try:
+        rows = db_schema.list_jobs()
+
+        jobs = []
+
+        for job in rows:
+            jobs.append({
+                "job_id": job.get("id"),
+                "title": job.get("job_title"),
+                "job_type": job.get("job_type"),
+                "required_skills": job.get("required_skills") or [],
+                "min_experience_years": job.get("min_experience_years", 0),
+                "max_experience_years": job.get("max_experience_years", 0),
+                "description": job.get("job_description"),
+            })
+
+        return json.dumps(jobs)
+
+    except Exception as exc:
+        logger.exception("get_jobs_by_location failed")
+        return json.dumps([])
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":

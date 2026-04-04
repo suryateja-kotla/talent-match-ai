@@ -5,6 +5,7 @@ import json
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
+
 async def test_mcp_flow():
     # 1. Point to your MCP server script
     server_script = os.path.abspath(os.path.join(os.path.dirname(__file__), "mcp_server.py"))
