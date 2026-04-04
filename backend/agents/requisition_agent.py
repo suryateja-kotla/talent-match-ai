@@ -11,6 +11,11 @@ class RequisitionAgent:
         self.state = {}               # 🧠 accumulated data
         self.waiting_for_confirmation = False  # 🔑 track if JSON shown to HR
 
+    def _format_job_json(self, data: dict) -> str:
+        """Format state into clean JSON, remove empty optional fields."""
+        filtered_data = {k: v for k, v in data.items() if v not in [None, "", []]}
+        return json.dumps({"job_requisition": filtered_data}, indent=2)
+
     async def run(self, message: str):
 
         # 1. Add user message
@@ -69,10 +74,11 @@ class RequisitionAgent:
         # 8. If LLM says all fields collected, wait for confirmation
         if parsed.get("status") == "completed":
             self.waiting_for_confirmation = True
-            # Show JSON for HR approval
+            # Show JSON for HR approval (pretty + optional fields removed)
+            formatted_json = self._format_job_json(self.state)
             return (
                 f"Here is the job description I generated:\n\n"
-                f"{json.dumps(self.state, indent=2)}\n\n"
+                f"{formatted_json}\n\n"
                 f"Are you satisfied with this? (yes/no)"
             )
 
