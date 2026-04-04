@@ -1,114 +1,286 @@
+import asyncio
+
+import traceback
+
+import os
+
 import json
-import logging
+
 import re
 
-from google.adk.runners import Runner
-from google.adk.sessions import InMemorySessionService
-from google.genai import types
-from dotenv import load_dotenv
+import logging
 
-# --- Import your Multi-Agent Hierarchy ---
-from agents.root.root_agent import root_agent, APP_NAME
-from agents.candidate.resume_parser_agent import resume_parser_agent
-from mcp_integration.mcp_client import get_mcp_toolset 
+from dotenv import load_dotenv
+ 
+# ─────────────────────────────────────────────────────────────
+
+# ✅ Load environment variables
+
+# ─────────────────────────────────────────────────────────────
 
 load_dotenv()
+ 
+print("🔑 GOOGLE_API_KEY:", os.getenv("GOOGLE_API_KEY"))
+ 
+# ─────────────────────────────────────────────────────────────
 
-Content = types.Content
-Part = types.Part
+# ✅ Imports (ADK + Agents)
+
+# ─────────────────────────────────────────────────────────────
+
+from google.adk.sessions import InMemorySessionService
+
+from google.adk.runners import Runner
+
+from google.genai import types as genai_types
+ 
+from agents.root.root_agent import root_agent, APP_NAME
+
+from agents.candidate.resume_parser_agent import resume_parser_agent
+
+from mcp_layer.mcp_client import get_mcp_toolset
+ 
 logger = logging.getLogger(__name__)
+ 
+# ─────────────────────────────────────────────────────────────
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Public entry point — called by api/resume_routes.py
-# ─────────────────────────────────────────────────────────────────────────────
+# ✅ Shared Session + Runner (USED BY ALL FLOWS)
+
+# ─────────────────────────────────────────────────────────────
+
+session_service = InMemorySessionService()
+ 
+runner = Runner(
+
+    agent=root_agent,
+
+    app_name=APP_NAME,
+
+    session_service=session_service,
+
+)
+ 
+# ─────────────────────────────────────────────────────────────
+
+# 🤖 1. CHAT FLOW (Frontend → Root Agent)
+
+# ─────────────────────────────────────────────────────────────
+
+async def run_agent(message: str, session_id: str) -> str:
+
+    """
+
+    Generic chat entry point.
+
+    Used by: FastAPI chat endpoint
+
+    """
+
+    print("🚀 ENTERED run_agent")
+ 
+    try:
+
+        session = await session_service.create_session(
+
+            app_name=APP_NAME,
+
+            user_id=session_id,
+
+        )
+ 
+        user_message = genai_types.Content(
+
+            role="user",
+
+            parts=[genai_types.Part(text=message)],
+
+        )
+ 
+        print("📤 Sending to root_agent...")
+ 
+        reply_text = ""
+ 
+        async for event in runner.run_async(
+
+            user_id=session_id,
+
+            session_id=session.id,
+
+            new_message=user_message,
+
+        ):
+
+            print("📩 EVENT:", event)
+ 
+            if event.is_final_response():
+
+                if event.content and event.content.parts:
+
+                    reply_text = event.content.parts[0].text
+ 
+        print("🎯 FINAL RESPONSE:", reply_text)
+ 
+        return reply_text or "⚠️ Empty response"
+ 
+    except Exception as e:
+
+        print("❌ ERROR in run_agent:", str(e))
+
+        traceback.print_exc()
+
+        return f"❌ ERROR: {str(e)}"
+ 
+ 
+# ─────────────────────────────────────────────────────────────
+
+# 📄 2. RESUME PARSING FLOW (MCP + DB + Specialist Agent)
+
+# ─────────────────────────────────────────────────────────────
 
 async def run_resume_parsing(file_path: str) -> dict:
-    """
-    Orchestrates the Multi-Agent flow for resume parsing.
-    
-    Flow: 
-    1. Start MCP Server (DB Connection)
-    2. Inject DB tools into the Specialist (Resume Parser)
-    3. Send File Path to the Root Agent (Orchestrator)
-    4. Root Agent delegates to Resume Parser
-    5. Cleanup and return structured JSON
-    """
-    logger.info("Multi-agent pipeline starting for file: %s", file_path)
 
-    # 1. Open the MCP Stdio connection (spawns mcp_server.py)
+    """
+
+    Multi-agent resume parsing pipeline.
+ 
+    Flow:
+
+    MCP → root_agent → resume_parser_agent → DB
+
+    """
+
+    logger.info("📄 Resume parsing started: %s", file_path)
+ 
+    # 1. Start MCP (DB tools)
+
     async with get_mcp_toolset() as mcp_tools:
+ 
+        # 2. Inject tools into specialist agent
 
-        # 2. Inject DB tools into the Sub-Agent
-        # We do this here because the sub-agent is the one actually calling 'save_candidate'
         original_tools = list(resume_parser_agent.tools)
-        resume_parser_agent.tools = original_tools + [mcp_tools]
 
+        resume_parser_agent.tools = original_tools + [mcp_tools]
+ 
         try:
-            # 3. Initialize Session & Runner pointed at the ROOT
-            session_service = InMemorySessionService()
-            runner = Runner(
-                agent=root_agent,  # <--- Root decides who does the work
-                app_name=APP_NAME,
-                session_service=session_service,
-            )
+
+            # 3. Create session
 
             session = await session_service.create_session(
+
                 app_name=APP_NAME,
-                user_id="system_user",
-            )
 
-            # 4. Prepare the message for the Root Agent
-            # We provide the file path as context so the specialist can find it
+                user_id="system_user",
+
+            )
+ 
+            # 4. Send instruction to root agent
+
             instruction = f"Parse the resume located at: {file_path}"
-            
-            message = Content(
+ 
+            message = genai_types.Content(
+
                 role="user",
-                parts=[Part(text=instruction)],
+
+                parts=[genai_types.Part(text=instruction)],
+
             )
-
-            # 5. Stream events and capture final response
+ 
             final_text = ""
+ 
+            # 5. Run multi-agent flow
+
             async for event in runner.run_async(
+
                 user_id="system_user",
+
                 session_id=session.id,
+
                 new_message=message,
+
             ):
-                # Log events for debugging (Multi-agent delegation events show up here)
-                if event.is_final_response() and event.content and getattr(event.content, "parts", None):
-                    for part in event.content.parts:
-                        if hasattr(part, "text") and part.text:
-                            final_text += part.text
 
-            logger.info("Multi-agent task completed.")
+                if event.is_final_response():
+
+                    if event.content and event.content.parts:
+
+                        final_text += event.content.parts[0].text
+ 
+            logger.info("✅ Resume parsing completed")
+ 
             return _parse_final_response(final_text)
-
+ 
         finally:
-            # 6. CRITICAL: Always restore original tools to keep the agent 'pure'
+
+            # 6. Restore original tools (VERY IMPORTANT)
+
             resume_parser_agent.tools = original_tools
+ 
+ 
+# ─────────────────────────────────────────────────────────────
 
+# 🧠 3. RESPONSE PARSER (JSON extraction)
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Response Parser (Kept from your original logic)
-# ─────────────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────
 
 def _parse_final_response(text: str) -> dict:
-    """Extracts JSON from the agent's prose response."""
-    match = re.search(r'\{.*\}', text, re.DOTALL)
-    if match:
-        try:
-            data = json.loads(match.group())
-            return {
-                "success": data.get("success", True),
-                "candidate_id": data.get("candidate_id"),
-                "message": data.get("message", "Processed successfully."),
-                "raw_response": text,
-            }
-        except json.JSONDecodeError:
-            pass
 
+    """
+
+    Extract JSON from agent response.
+
+    """
+
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+ 
+    if match:
+
+        try:
+
+            data = json.loads(match.group())
+
+            return {
+
+                "success": data.get("success", True),
+
+                "candidate_id": data.get("candidate_id"),
+
+                "message": data.get("message", "Processed successfully."),
+
+                "raw_response": text,
+
+            }
+
+        except json.JSONDecodeError:
+
+            pass
+ 
     return {
+
         "success": True,
+
         "candidate_id": None,
-        "message": "Task complete. Please check the DB manually.",
+
+        "message": "Task complete. Check DB manually.",
+
         "raw_response": text,
+
     }
+ 
+ 
+# ─────────────────────────────────────────────────────────────
+
+# 🔧 OPTIONAL: Local testing
+
+# ─────────────────────────────────────────────────────────────
+
+async def run_chat(message: str):
+
+    response = await run_agent(message, "test_user")
+
+    print("\n✅ FINAL:", response)
+ 
+ 
+if __name__ == "__main__":
+
+    asyncio.run(run_chat("post a job"))
+ 
