@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* Optional only */
+.card {
+  border-radius: 16px;
+}
+
+.card-header {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
