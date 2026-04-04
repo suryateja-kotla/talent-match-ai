@@ -1,0 +1,48 @@
+<div class="card h-100 d-flex flex-column">
+
+  <!-- HEADER -->
+  <div class="card-header bg-primary text-white fw-bold">
+    🤖 Job Assistant
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="flex-grow-1 overflow-auto p-2 d-flex flex-column justify-content-end" #scrollContainer>
+
+    @for (msg of messages; track $index) {
+      <div 
+        class="p-2 mb-2 rounded"
+        [ngClass]="msg.sender === 'user' 
+          ? 'bg-primary text-white ms-auto' 
+          : 'bg-light text-dark'"
+        style="max-width: 75%;">
+        {{ msg.text }}
+      </div>
+    }
+
+  </div>
+
+  <!-- FILE UPLOAD -->
+  @if (step === 'WAITING_FOR_RESUME') {
+    <div class="border-top p-2 text-center">
+      <input 
+        type="file" 
+        (change)="onFileSelected($event)" 
+        class="form-control form-control-sm"
+      />
+    </div>
+  }
+
+  <!-- INPUT -->
+  <div class="input-group border-top">
+    <input
+      [(ngModel)]="userInput"
+      [placeholder]="getPlaceholder()"
+      (keydown)="handleKeyDown($event)"
+      class="form-control"
+    />
+    <button class="btn btn-primary" (click)="sendMessage()">
+      Send
+    </button>
+  </div>
+
+</div>
