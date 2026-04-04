@@ -20,7 +20,7 @@ WHY PYDANTIC HERE?
 from __future__ import annotations
 
 from typing import Any
-from pydantic import BaseModel, EmailStr, field_validator, model_validator
+from pydantic import BaseModel, field_validator
 
 
 # ─────────────────────────────────────────────────────────────────────────────
