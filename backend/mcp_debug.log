@@ -1,0 +1,26 @@
+2026-04-04 18:41:46,769 [MCP-SERVER] INFO: Database 'resume_test' created.
+2026-04-04 18:41:47,100 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 18:41:47,114 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 18:42:21,931 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 18:42:21,944 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 18:42:21,981 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 18:42:22,231 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-04 18:42:22,239 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 18:42:22,420 [MCP-SERVER] ERROR: get_candidate_by_email: DB error
+Traceback (most recent call last):
+  File "E:\agentic\talent-match-ai\backend\mcp_layer\mcp_server.py", line 67, in get_candidate_by_email
+    return json.dumps({"success": True, "data": record, "message": "Found."})
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 235, in dumps
+    return _default_encoder.encode(obj)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 202, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 263, in iterencode
+    return _iterencode(o, 0)
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 182, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type Decimal is not JSON serializable
+2026-04-04 18:42:22,479 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 18:42:22,685 [MCP-SERVER] INFO: Processing request of type CallToolRequest
