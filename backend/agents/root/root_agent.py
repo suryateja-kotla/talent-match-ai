@@ -1,12 +1,11 @@
-from google.adk import Agent
+from google.adk.agents import Agent # Agent is the preferred alias
 from agents.candidate.candidate_flow_agent import candidate_flow_agent
 from agents.hr.requisition_agent import requisition_agent
  
-# ✅ App name used by runner
 APP_NAME = "multi_agent_app"
  
-# ✅ Root orchestrator agent
 root_agent = Agent(
+    model="gemini-2.5-flash",
     name="root_agent",
     description="Strict role-based orchestrator that routes and ensures final response",
 
