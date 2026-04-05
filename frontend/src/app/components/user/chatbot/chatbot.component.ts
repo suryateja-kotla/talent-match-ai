@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ChatService } from '../../../services/chat.sevice';
 
 type ChatStep =
   | 'WAITING_FOR_RESUME'
@@ -11,7 +12,7 @@ type ChatStep =
 @Component({
   selector: 'app-chatbot',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.scss']
 })
@@ -20,9 +21,14 @@ export class ChatbotComponent {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   step: ChatStep = 'WAITING_FOR_RESUME';
+  constructor(private chatService: ChatService) {}
 
+  sessionId = crypto.randomUUID();
+  isLoading = false;
   userInput = '';
-  messages: { text: string; sender: 'user' | 'bot' }[] = [
+
+  // ✅ Added optional "agent" (non-breaking change)
+  messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [
     { text: 'Hi 👋 Please upload your resume to get started.', sender: 'bot' }
   ];
 
@@ -44,7 +50,7 @@ export class ChatbotComponent {
   }
 
   sendMessage() {
-    if (!this.userInput.trim()) return;
+    if (!this.userInput.trim() || this.isLoading) return;
 
     const input = this.userInput;
 
@@ -70,16 +76,39 @@ export class ChatbotComponent {
     });
 
     this.step = 'PROCESSING';
+    this.isLoading = true;
 
-    setTimeout(() => {
-      this.messages.push({
-        text: 'Applied to 5 matching jobs 🎉',
-        sender: 'bot'
-      });
+    // ✅ Improved prompt (better routing)
+    const prompt = `Find jobs in ${location}`;
 
-      this.step = 'DONE';
-      this.scrollToBottom();
-    }, 2000);
+    this.chatService.send(prompt, 'candidate', this.sessionId).subscribe({
+      next: (res) => {
+
+        // ✅ Store agent separately (clean + future-proof)
+        this.messages.push({
+          text: res.reply,
+          sender: 'bot',
+        });
+
+        // ✅ (Optional fallback display – keeps your old behavior safe)
+        // this.messages.push({
+        //   text: `🤖 (${res.agent})\n${res.reply}`,
+        //   sender: 'bot'
+        // });
+
+        this.step = 'DONE';
+        this.isLoading = false;
+        this.scrollToBottom();
+      },
+      error: () => {
+        this.messages.push({
+          text: '⚠️ Error connecting to assistant.',
+          sender: 'bot'
+        });
+
+        this.isLoading = false;
+      }
+    });
   }
 
   getPlaceholder(): string {
@@ -95,10 +124,11 @@ export class ChatbotComponent {
         this.scrollContainer.nativeElement.scrollHeight;
     }, 100);
   }
+
   handleKeyDown(event: KeyboardEvent) {
-  if (event.key === 'Enter') {
-    event.preventDefault(); // 🔥 stops newline
-    this.sendMessage();
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.sendMessage();
+    }
   }
-}
 }
