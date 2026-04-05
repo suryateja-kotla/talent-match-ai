@@ -3,7 +3,7 @@
 # =============================================================================
 
 from google.adk.agents import Agent
-from tools.job_matching import filter_jobs_by_location, score_jobs_with_llm
+from tools.job_matching import fetch_candidate, filter_jobs_by_location, score_jobs_with_llm
 
 APP_NAME = "job_matching_agent"
 MODEL_ID = "gemini-2.5-flash"
@@ -20,19 +20,21 @@ You are a Job Matching Agent.
 
 Input JSON:
 {
-  "candidate": {...},
+  "candidate_id": int,
   "location": "string"
 }
 
 Follow EXACTLY:
 
+STEP 0 — Call fetch_candidate with "candidate_id"
+
 STEP 1 — Call filter_jobs_by_location with "location"
 
 STEP 2 — Call score_jobs_with_llm with:
-  - candidate_json
+  - candidate_id
   - filtered_jobs_json
 
 STEP 3 — Return ONLY the JSON from Step 2
 """,
-    tools=[filter_jobs_by_location, score_jobs_with_llm],
+    tools=[filter_jobs_by_location, score_jobs_with_llm, fetch_candidate],
 )

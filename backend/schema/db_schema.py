@@ -128,9 +128,19 @@ def init_db():
         conn.close()
 
 # ── DB Operations (DML) ──────────────────────────────────────────────────────
+from decimal import Decimal
+
 def serialize(record: dict) -> dict:
+    # ✅ Fix Decimal → float
+    for key, value in record.items():
+        if isinstance(value, Decimal):
+            record[key] = float(value)
+
+    # ✅ Convert timestamps
     for key in ("created_at", "updated_at", "applied_at", "status_updated_at"):
-        if record.get(key): record[key] = str(record[key])
+        if record.get(key):
+            record[key] = str(record[key])
+
     return record
 
 def upsert_candidate(data: CandidateSchema) -> int:
@@ -240,7 +250,43 @@ def insert_job(job_data: dict) -> int:
         return job_id
     finally:
         conn.close()
+        
+def list_jobs_by_location(location: str) -> list[dict]:
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, job_title,
+                       experience_years,
+                       required_skills,
+                       job_description,
+                       location
+                FROM job_descriptions
+                WHERE is_active = TRUE
+                AND LOWER(location) LIKE LOWER(%s)
+                ORDER BY created_at DESC
+            """, (f"%{location}%",))
 
+            cols = [d[0] for d in cur.description]
+            return [serialize(dict(zip(cols, row))) for row in cur.fetchall()]
+    finally:
+        conn.close()
+    
+
+def get_candidate_by_id(candidate_id: int) -> dict | None:
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM candidates WHERE id = %s", (candidate_id,))
+            row = cur.fetchone()
+            if not row:
+                return None
+            cols = [d[0] for d in cur.description]
+            return serialize(dict(zip(cols, row)))
+    finally:
+        conn.close()
+        
+           
 def create_application(candidate_id: int, job_id: int, match_score: float):
     sql = """
         INSERT INTO applications (candidate_id, job_id, match_score)

@@ -45,7 +45,7 @@ Move to next step naturally.
 -------------------------------------
 
 STEP 2: LOCATION
-
+You MUST check if location is explicitly provided by the user in the current message
 If location is missing:
 Ask naturally:
 "Could you tell me your preferred job location?"
@@ -67,17 +67,34 @@ STEP 3: JOB MATCHING
 
 Call job_matching_agent with:
 {
-  "candidate": candidate profile,
+  "candidate_id": candidate_id from SESSION STATE,
   "location": user location
 }
+-use the returned result as matched_jobs
 
+IMPORTANT:
+
+- candidate_id MUST be taken from SESSION STATE
+- candidate_id is ALWAYS available after resume parsing
+- NEVER ask user for candidate_id
+- ALWAYS include candidate_id in the call
 -------------------------------------
-
 STEP 4: APPLICATION
 
-Call application_agent:
-- Apply to matched jobs
-- Confirm success
+- Immediately call application_agent using the EXACT output from job_matching_agent
+
+- Pass:
+{
+  "candidate_id": candidate_id,
+  "jobs": result returned from job_matching_agent
+}
+
+CRITICAL:
+
+- You MUST use the output of job_matching_agent directly
+- DO NOT try to store it in variables
+- DO NOT stop after STEP 3
+- ALWAYS execute STEP 4
 
 -------------------------------------
 

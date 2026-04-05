@@ -6,30 +6,54 @@ import json
 from google import genai
 
 from mcp_layer.mcp_server import get_jobs_by_location
+from mcp_layer.mcp_server import get_candidate_by_id
 #from mcp_layer.mcp_client import call_mcp_tool
 # ---------------------------------------------------------------------------
 # Tool 1 — DB-based location filter (STRICT match, NO remote)
 # ---------------------------------------------------------------------------
 
-def filter_jobs_by_location(location: str) -> str:
+def filter_jobs_by_location(location: str) -> list:
     """
     This will be resolved via MCP tool injection at runtime.
     DO NOT import the function manually.
     """
-    print("🔥 TOOL 1 CALLED (DB FILTER)")
-    return get_jobs_by_location(location)
+    #print("🔥 TOOL 1 CALLED (DB FILTER)")
+    
+    raw = get_jobs_by_location(location)
+    #print("📦 RAW DB RESPONSE:", raw)
+
+    parsed = json.loads(raw)
+    #print("📦 PARSED JOBS:", parsed)
+
+    return parsed
 
 # ---------------------------------------------------------------------------
 # Tool 2 — LLM scoring (optimized)
 # ---------------------------------------------------------------------------
 
-def score_jobs_with_llm(candidate_json: str, filtered_jobs_json: str) -> str:
-    print("🔥 TOOL 2 CALLED (LLM)")
+def score_jobs_with_llm(candidate_id: int, filtered_jobs_json: str) -> str:
+    #print("🔥 TOOL 2 CALLED (LLM)")
 
-    candidate = json.loads(candidate_json)
+    candidate = fetch_candidate(candidate_id)
+    if not candidate:
+        print("❌ Candidate not found — aborting scoring")
+        return json.dumps([])
+
+    # if isinstance(candidate_json, str):
+    #     try:
+    #         candidate = json.loads(candidate_json)
+    #         print(candidate)
+    #     except json.JSONDecodeError:
+    #         print("⚠️ Invalid JSON (likely due to file path), skipping parse")
+    #         candidate = candidate_json if isinstance(candidate_json, dict) else {}
+    # else:
+    #     candidate = candidate_json
 
     try:
-        jobs = json.loads(filtered_jobs_json)
+        if isinstance(filtered_jobs_json, str):
+            jobs = json.loads(filtered_jobs_json)
+        else:
+            jobs = filtered_jobs_json
     except Exception:
         print("❌ Invalid jobs JSON:", filtered_jobs_json)
         return json.dumps([])
@@ -40,8 +64,19 @@ def score_jobs_with_llm(candidate_json: str, filtered_jobs_json: str) -> str:
     client = genai.Client()
 
     scored_results = []
-
+    #print("👤 CANDIDATE USED:", candidate)  
+    #print("📋 JOBS USED:", jobs)
     for job in jobs:
+        if isinstance(job, str):
+            try:
+                job = json.loads(job)
+            except Exception:
+                print("❌ Invalid job item:", job)
+                continue
+
+        if not isinstance(job, dict):
+            print("❌ Skipping non-dict job:", job)
+            continue
         prompt = f"""
 You are an expert technical recruiter.
 
@@ -53,14 +88,15 @@ CANDIDATE:
 JOB:
 - Title: {job.get('title')}
 - Required Skills: {json.dumps(job.get('required_skills', []))}
-- Min Experience: {job.get('min_experience_years', 0)}
-- Max Experience: {job.get('max_experience_years', 0)}
+- Experience Required: {job.get('experience_years', 0)} years
 
 Score 0–100.
 
 Return JSON:
 {{
-  "match_score": int
+  "candidate_id": {candidate.get("id")},
+  "job_id": {job.get("job_id")},
+  "match_score": <score>
 }}
 """
 
@@ -91,5 +127,22 @@ Return JSON:
         })
 
     ranked = sorted(scored_results, key=lambda x: x["match_score"], reverse=True)
+    filtered_ranked = [job for job in ranked if job["match_score"] >= 70]
+    #return json.dumps(filtered_ranked)
+    return filtered_ranked
+    
+    
 
-    return json.dumps(ranked)
+
+def fetch_candidate(candidate_id: int) -> dict:
+    #print("🔥 TOOL 0 CALLED (FETCH CANDIDATE)")
+    #print("📥 candidate_id:", candidate_id)
+
+    raw = get_candidate_by_id(candidate_id)
+    #print("📦 RAW DB RESPONSE:", raw)
+
+    response = json.loads(raw)
+    #  print("📦 PARSED RESPONSE:", response)
+
+    return response.get("data", {})
+    #return response.get("data", {})

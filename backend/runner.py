@@ -68,19 +68,20 @@ async def run_agent(message: str, session_id: str, candidate_id: int | None) -> 
     root orchestrator agent to the appropriate sub-agent.
     """
     #logger.info(f"🚀 Entering run_agent for session: {session_id}")
-
+    
     try:
         session = await _get_or_create_session(session_id)
-
+        if candidate_id:
+            session.state["candidate_id"] = candidate_id
         enhanced_message = f"""
-        [USER] {message}
+[USER] {message}
+SESSION STATE:
+resume_uploaded: {session.state.get("resume_uploaded")}
+candidate_id: {session.state.get("candidate_id")}
 
-        SESSION STATE:
-        resume_uploaded: {session.state.get("resume_uploaded")}
-        candidate_id: {session.state.get("candidate_id")}
-
-        IMPORTANT:
-        If resume_uploaded is true → DO NOT ask for resume again.
+CRITICAL:
+Use candidate_id={session.state.get("candidate_id")} for ALL job matching.
+DO NOT ask user for it.
 """
 
         user_message = genai_types.Content(

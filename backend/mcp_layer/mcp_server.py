@@ -92,11 +92,11 @@ def list_all_jobs() -> str:
 @mcp.tool()
 def get_jobs_by_location(location: str) -> str:
     """
-    Fetch jobs (location ignored for now).
+    Fetch jobs filtered by location.
     """
 
     try:
-        rows = db_schema.list_jobs()
+        rows = db_schema.list_jobs_by_location(location)
 
         jobs = []
 
@@ -104,19 +104,43 @@ def get_jobs_by_location(location: str) -> str:
             jobs.append({
                 "job_id": job.get("id"),
                 "title": job.get("job_title"),
-                "job_type": job.get("job_type"),
                 "required_skills": job.get("required_skills") or [],
-                "min_experience_years": job.get("min_experience_years", 0),
-                "max_experience_years": job.get("max_experience_years", 0),
+                "experience_years": job.get("experience_years", 0),
                 "description": job.get("job_description"),
+                "location": job.get("location"),
             })
 
         return json.dumps(jobs)
 
-    except Exception as exc:
+    except Exception:
         logger.exception("get_jobs_by_location failed")
         return json.dumps([])
     
+@mcp.tool()
+def get_candidate_by_id(candidate_id: int) -> str:
+    try:
+        record = db_schema.get_candidate_by_id(candidate_id)
+        if record is None:
+            return json.dumps({
+                "success": False,
+                "data": None,
+                "message": "Candidate not found"
+            })
+
+        return json.dumps({
+            "success": True,
+            "data": record
+        })
+
+    except Exception as exc:
+        logger.exception("get_candidate_by_id failed")
+        return json.dumps({
+            "success": False,
+            "data": None,
+            "message": str(exc)
+        })
+        
+        
 @mcp.tool()
 def save_job(job_json: str | dict) -> str:
     """Save a job description into the database."""
