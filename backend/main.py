@@ -73,6 +73,8 @@ class ChatResponse(BaseModel):
 @app.post("/api/route/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
     try:
+        logger.info(f"📥 Role Received: {req.user_role}")
+        logger.info(f"📥 Request : {req.dict()}")
         message = req.message.strip()
  
         if not message:
