@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../services/chat.sevice';
@@ -14,22 +14,50 @@ type ChatStep =
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './chatbot.component.html',
-  styleUrls: ['./chatbot.component.scss']
+  styleUrls: ['./chatbot.component.scss'],
 })
-export class ChatbotComponent {
-
+export class ChatbotComponent implements OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   step: ChatStep = 'WAITING_FOR_RESUME';
   constructor(private chatService: ChatService) {}
-
+  candidateId: number | null = null;
   sessionId = crypto.randomUUID();
   isLoading = false;
   userInput = '';
 
+  ngOnInit() {
+    this.isLoading = true;
+
+    const initialMessage = 'hello';
+
+    this.chatService.send(initialMessage, 'user', this.sessionId).subscribe({
+      next: (res) => {
+        this.messages = [
+          {
+            text: res.reply,
+            sender: 'bot',
+          },
+        ];
+
+        this.isLoading = false;
+        this.scrollToBottom();
+      },
+      error: () => {
+        this.messages = [
+          {
+            text: '⚠️ Failed to connect to assistant.',
+            sender: 'bot',
+          },
+        ];
+
+        this.isLoading = false;
+      },
+    });
+  }
   // ✅ Added optional "agent" (non-breaking change)
   messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [
-    { text: 'Hi 👋 Please upload your resume to get started.', sender: 'bot' }
+    { text: 'Hi 👋 Please upload your resume to get started.', sender: 'bot' },
   ];
 
   onFileSelected(event: any) {
@@ -37,18 +65,37 @@ export class ChatbotComponent {
     if (!file) return;
 
     this.messages.push({ text: file.name, sender: 'user' });
-    this.messages.push({ text: 'Resume received ✅', sender: 'bot' });
+    this.isLoading = true;
 
-    this.step = 'WAITING_FOR_LOCATION';
+    // 🔥 CALL BACKEND
+    this.chatService.uploadResume(file).subscribe({
+      next: (res) => {
+        this.candidateId = res.candidate_id; // ✅ STORE
 
-    this.messages.push({
-      text: 'What is your preferred location?',
-      sender: 'bot'
+        this.messages.push({
+          text: 'Resume uploaded & processed ✅',
+          sender: 'bot',
+        });
+
+        this.step = 'WAITING_FOR_LOCATION';
+
+        this.messages.push({
+          text: '📍 What is your preferred location? (max 3)',
+          sender: 'bot',
+        });
+
+        this.isLoading = false;
+        this.scrollToBottom();
+      },
+      error: () => {
+        this.messages.push({
+          text: '⚠️ Failed to upload resume.',
+          sender: 'bot',
+        });
+        this.isLoading = false;
+      },
     });
-
-    this.scrollToBottom();
   }
-
   sendMessage() {
     if (!this.userInput.trim() || this.isLoading) return;
 
@@ -56,14 +103,28 @@ export class ChatbotComponent {
 
     this.messages.push({ text: input, sender: 'user' });
 
-    if (this.step === 'WAITING_FOR_LOCATION') {
-      this.handleLocation(input);
-    } else if (this.step === 'WAITING_FOR_RESUME') {
-      this.messages.push({
-        text: 'Please upload your resume first 📄',
-        sender: 'bot'
-      });
-    }
+    this.isLoading = true;
+
+    // 🔥 DIRECT API CALL (no step restriction)
+    this.chatService.send(input, 'candidate', this.sessionId).subscribe({
+      next: (res) => {
+        this.messages.push({
+          text: res.reply,
+          sender: 'bot',
+        });
+
+        this.isLoading = false;
+        this.scrollToBottom();
+      },
+      error: () => {
+        this.messages.push({
+          text: '⚠️ Error connecting to assistant.',
+          sender: 'bot',
+        });
+
+        this.isLoading = false;
+      },
+    });
 
     this.userInput = '';
     this.scrollToBottom();
@@ -72,7 +133,7 @@ export class ChatbotComponent {
   handleLocation(location: string) {
     this.messages.push({
       text: `Searching jobs in ${location}...`,
-      sender: 'bot'
+      sender: 'bot',
     });
 
     this.step = 'PROCESSING';
@@ -83,7 +144,6 @@ export class ChatbotComponent {
 
     this.chatService.send(prompt, 'candidate', this.sessionId).subscribe({
       next: (res) => {
-
         // ✅ Store agent separately (clean + future-proof)
         this.messages.push({
           text: res.reply,
@@ -103,11 +163,11 @@ export class ChatbotComponent {
       error: () => {
         this.messages.push({
           text: '⚠️ Error connecting to assistant.',
-          sender: 'bot'
+          sender: 'bot',
         });
 
         this.isLoading = false;
-      }
+      },
     });
   }
 

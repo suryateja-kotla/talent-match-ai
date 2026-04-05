@@ -27,4 +27,14 @@ export class ChatService {
       session_id: sessionId,
     });
   }
+
+  uploadResume(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<any>(
+      'http://127.0.0.1:8000/resume/upload-and-parse',
+      formData,
+    );
+  }
 }
