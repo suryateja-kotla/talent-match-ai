@@ -377,3 +377,15 @@ JSONRPCError.id
 JSONRPCError.error
   Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
     For further information visit https://errors.pydantic.dev/2.11/v/missing
+2026-04-05 09:36:38,281 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:48:55,685 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:48:55,700 [MCP-SERVER] ERROR: save_candidate failed: 1 validation error for CandidateSchema
+education.0.year
+  Input should be a valid string [type=string_type, input_value=2020, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+2026-04-05 09:50:20,974 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:50:20,988 [MCP-SERVER] ERROR: save_candidate failed: 'dict' object has no attribute 'model_dump'
+2026-04-05 09:52:15,603 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:52:15,620 [MCP-SERVER] ERROR: save_candidate failed: 'dict' object has no attribute 'model_dump'
+2026-04-05 09:56:58,931 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:59:37,302 [MCP-SERVER] INFO: Database and schema initialized.

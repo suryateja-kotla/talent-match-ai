@@ -116,6 +116,63 @@ def get_jobs_by_location(location: str) -> str:
     except Exception as exc:
         logger.exception("get_jobs_by_location failed")
         return json.dumps([])
+    
+@mcp.tool()
+def save_job(job_json: str | dict) -> str:
+    """Save a job description into the database."""
+    try:
+        raw = json.loads(job_json) if isinstance(job_json, str) else job_json
+
+        job_id = db_schema.insert_job(raw)
+
+        return json.dumps({
+            "success": True,
+            "job_id": job_id,
+            "message": "Job saved successfully."
+        })
+
+    except Exception as exc:
+        logger.error("save_job failed: %s", exc)
+        return json.dumps({
+            "success": False,
+            "job_id": None,
+            "message": str(exc)
+        })
+
+@mcp.tool()
+def map_candidate_to_job(candidate_id: int, job_id: int) -> str:
+    """Map a candidate to a job with a calculated match score."""
+    try:
+        # get candidate
+        candidate = db_schema.get_candidate_by_email  # you may need get by id
+        # you might need to create get_candidate_by_id()
+
+        # get job
+        jobs = db_schema.list_jobs()
+        job = next((j for j in jobs if j["id"] == job_id), None)
+
+        if not job:
+            return json.dumps({"success": False, "message": "Job not found"})
+
+        # TEMP LOGIC (simple match)
+        candidate_skills = []  # fetch from candidate
+        job_skills = job.get("required_skills", [])
+
+        match_score = len(set(candidate_skills) & set(job_skills))
+
+        db_schema.create_application(candidate_id, job_id, match_score)
+
+        return json.dumps({
+            "success": True,
+            "match_score": match_score
+        })
+
+    except Exception as exc:
+        logger.error("mapping failed: %s", exc)
+        return json.dumps({
+            "success": False,
+            "message": str(exc)
+        })
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
