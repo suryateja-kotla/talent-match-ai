@@ -28,19 +28,16 @@
       type="file"
       (change)="onFileSelected($event)"
       class="form-control form-control-sm"
-      [disabled]="step !== 'WAITING_FOR_RESUME'"
     />
 
-    @if (step !== "WAITING_FOR_RESUME") {
       <small class="text-success">✅ Resume uploaded</small>
-    }
   </div>
 
   <!-- INPUT -->
   <div class="input-group border-top">
     <input
       [(ngModel)]="userInput"
-      [placeholder]="getPlaceholder()"
+      placeholder="Type your message..."
       (keydown)="handleKeyDown($event)"
       class="form-control"
     />

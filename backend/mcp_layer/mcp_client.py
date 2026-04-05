@@ -22,16 +22,13 @@ async def get_mcp_toolset():
     )
 
     print("🚀 Spawning MCP Server over stdio...")
-    
-    # 3. Connect to the server
-    async with stdio_client(server_params) as session:
-        print("✅ MCP Client connected to server.")
-        toolset = MCPToolset(session)
-        try:
-            yield toolset
-        finally:
+    toolset = MCPToolset(connection_params=server_params)
+    try:
+        yield toolset
+    finally:
+        if hasattr(toolset, "close"):
             await toolset.close()
-            logger.info("MCP server process closed.")
+        logger.info("MCP server process closed.")
 
 if __name__ == "__main__":
     # Ensure dependencies are installed before running

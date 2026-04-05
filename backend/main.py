@@ -61,6 +61,7 @@ class ChatRequest(BaseModel):
     message: str
     user_role: str = "hr"
     session_id: str = "default_user"
+    candidate_id: int | None = None 
  
  
 class ChatResponse(BaseModel):
@@ -73,35 +74,29 @@ class ChatResponse(BaseModel):
 @app.post("/api/route/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
     try:
-        logger.info(f"📥 Role Received: {req.user_role}")
-        logger.info(f"📥 Request : {req.dict()}")
+        logger.info(f"Role Received: {req.user_role}")
         message = req.message.strip()
  
         if not message:
-            return ChatResponse(reply="⚠️ Please enter a message.")
- 
-        # ✅ Quick greeting shortcut
-        if message.lower() in ["hi", "hello", "hey"]:
-            return ChatResponse(
-                reply="👋 Hi! I'm your hiring assistant. Describe the role you want to post."
-            )
+            return ChatResponse(reply="Please enter a message.")
  
         role = req.user_role or "hr"
         prompt = f"[{role.upper()}] {message}"
  
-        logger.info(f"🚀 Sending to agent: {prompt}")
+        logger.info(f" Sending to agent: {prompt}")
  
-        reply = await run_agent(prompt, req.session_id)
- 
+        reply = await run_agent(prompt, req.session_id, candidate_id=req.candidate_id)
         if not reply:
-            reply = "⚠️ I couldn't generate a response. Please try again."
+            reply = " I couldn't generate a response. Please try again."
  
-        logger.info(f"✅ Agent response: {reply}")
+        #return {"reply": reply}
  
+       
+        logger.info(f" Agent response: {reply}")
         return ChatResponse(reply=reply)
  
     except Exception as e:
-        logger.exception("❌ Error in chat endpoint")
+        logger.exception("Error in chat endpoint")
         raise HTTPException(
             status_code=500,
             detail="Internal server error in chat endpoint"

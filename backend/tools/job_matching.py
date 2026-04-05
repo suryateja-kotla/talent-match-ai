@@ -6,7 +6,7 @@ import json
 from google import genai
 
 from mcp_layer.mcp_server import get_jobs_by_location
-from mcp_layer.mcp_client import call_mcp_tool
+#from mcp_layer.mcp_client import call_mcp_tool
 # ---------------------------------------------------------------------------
 # Tool 1 — DB-based location filter (STRICT match, NO remote)
 # ---------------------------------------------------------------------------
@@ -16,7 +16,8 @@ def filter_jobs_by_location(location: str) -> str:
     This will be resolved via MCP tool injection at runtime.
     DO NOT import the function manually.
     """
-    return call_mcp_tool("get_jobs_by_location", {"location": location})
+    print("🔥 TOOL 1 CALLED (DB FILTER)")
+    return get_jobs_by_location(location)
 
 # ---------------------------------------------------------------------------
 # Tool 2 — LLM scoring (optimized)

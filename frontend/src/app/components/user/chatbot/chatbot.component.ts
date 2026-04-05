@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../services/chat.sevice';
+import { switchMap } from 'rxjs';
 
 type ChatStep =
   | 'WAITING_FOR_RESUME'
@@ -19,7 +20,7 @@ type ChatStep =
 export class ChatbotComponent implements OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
-  step: ChatStep = 'WAITING_FOR_RESUME';
+  //step: ChatStep = 'WAITING_FOR_RESUME';
   constructor(private chatService: ChatService) {}
   candidateId: number | null = null;
   sessionId = crypto.randomUUID();
@@ -27,9 +28,14 @@ export class ChatbotComponent implements OnInit {
   userInput = '';
 
   ngOnInit() {
+    this.messages.push({
+      text: 'Connecting to assistant...',
+      sender: 'bot',
+    });
+
     this.isLoading = true;
 
-    const initialMessage = 'hello';
+    const initialMessage = 'start';
 
     this.chatService.send(initialMessage, 'user', this.sessionId).subscribe({
       next: (res) => {
@@ -55,10 +61,11 @@ export class ChatbotComponent implements OnInit {
       },
     });
   }
-  // ✅ Added optional "agent" (non-breaking change)
-  messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [
-    { text: 'Hi 👋 Please upload your resume to get started.', sender: 'bot' },
-  ];
+  // // ✅ Added optional "agent" (non-breaking change)
+  // messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [
+  //   { text: 'Hi 👋 Please upload your resume to get started.', sender: 'bot' },
+  // ];
+  messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [];
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -67,34 +74,45 @@ export class ChatbotComponent implements OnInit {
     this.messages.push({ text: file.name, sender: 'user' });
     this.isLoading = true;
 
-    // 🔥 CALL BACKEND
-    this.chatService.uploadResume(file).subscribe({
-      next: (res) => {
-        this.candidateId = res.candidate_id; // ✅ STORE
+    this.chatService
+      .uploadResume(file,this.sessionId)
+      .pipe(
+        switchMap((res) => {
+          this.candidateId = res.candidate_id;
 
-        this.messages.push({
-          text: 'Resume uploaded & processed ✅',
-          sender: 'bot',
-        });
+          this.messages.push({
+            text: 'Resume uploaded & processed ✅',
+            sender: 'bot',
+          });
 
-        this.step = 'WAITING_FOR_LOCATION';
+          // 🔥 trigger agent
+          return this.chatService.send(
+            'resume uploaded',
+            'user',
+            this.sessionId,
+            this.candidateId,
+          );
+        }),
+      )
+      .subscribe({
+        next: (res) => {
+          this.messages.push({
+            text: res.reply,
+            sender: 'bot',
+          });
 
-        this.messages.push({
-          text: '📍 What is your preferred location? (max 3)',
-          sender: 'bot',
-        });
+          this.isLoading = false;
+          this.scrollToBottom();
+        },
+        error: () => {
+          this.messages.push({
+            text: '⚠️ Resume upload or processing failed.',
+            sender: 'bot',
+          });
 
-        this.isLoading = false;
-        this.scrollToBottom();
-      },
-      error: () => {
-        this.messages.push({
-          text: '⚠️ Failed to upload resume.',
-          sender: 'bot',
-        });
-        this.isLoading = false;
-      },
-    });
+          this.isLoading = false;
+        },
+      });
   }
   sendMessage() {
     if (!this.userInput.trim() || this.isLoading) return;
@@ -106,77 +124,73 @@ export class ChatbotComponent implements OnInit {
     this.isLoading = true;
 
     // 🔥 DIRECT API CALL (no step restriction)
-    this.chatService.send(input, 'candidate', this.sessionId).subscribe({
-      next: (res) => {
-        this.messages.push({
-          text: res.reply,
-          sender: 'bot',
-        });
+    this.chatService
+      .send(input, 'user', this.sessionId, this.candidateId)
+      .subscribe({
+        next: (res) => {
+          this.messages.push({
+            text: res.reply,
+            sender: 'bot',
+          });
 
-        this.isLoading = false;
-        this.scrollToBottom();
-      },
-      error: () => {
-        this.messages.push({
-          text: '⚠️ Error connecting to assistant.',
-          sender: 'bot',
-        });
+          this.isLoading = false;
+          this.scrollToBottom();
+        },
+        error: () => {
+          this.messages.push({
+            text: '⚠️ Error connecting to assistant.',
+            sender: 'bot',
+          });
 
-        this.isLoading = false;
-      },
-    });
+          this.isLoading = false;
+        },
+      });
 
     this.userInput = '';
     this.scrollToBottom();
   }
 
-  handleLocation(location: string) {
-    this.messages.push({
-      text: `Searching jobs in ${location}...`,
-      sender: 'bot',
-    });
+  // handleLocation(location: string) {
+  //   this.messages.push({
+  //     text: `Searching jobs in ${location}...`,
+  //     sender: 'bot',
+  //   });
 
-    this.step = 'PROCESSING';
-    this.isLoading = true;
+  //   this.step = 'PROCESSING';
+  //   this.isLoading = true;
 
-    // ✅ Improved prompt (better routing)
-    const prompt = `Find jobs in ${location}`;
+  //   // ✅ Improved prompt (better routing)
+  //   const prompt = `Find jobs in ${location}`;
 
-    this.chatService.send(prompt, 'candidate', this.sessionId).subscribe({
-      next: (res) => {
-        // ✅ Store agent separately (clean + future-proof)
-        this.messages.push({
-          text: res.reply,
-          sender: 'bot',
-        });
+  //   this.chatService.send(prompt, 'user', this.sessionId,this.candidateId).subscribe({
+  //     next: (res) => {
+  //       // ✅ Store agent separately (clean + future-proof)
+  //       this.messages.push({
+  //         text: res.reply,
+  //         sender: 'bot',
+  //       });
 
-        // ✅ (Optional fallback display – keeps your old behavior safe)
-        // this.messages.push({
-        //   text: `🤖 (${res.agent})\n${res.reply}`,
-        //   sender: 'bot'
-        // });
+  //       this.step = 'DONE';
+  //       this.isLoading = false;
+  //       this.scrollToBottom();
+  //     },
+  //     error: () => {
+  //       this.messages.push({
+  //         text: '⚠️ Error connecting to assistant.',
+  //         sender: 'bot',
+  //       });
 
-        this.step = 'DONE';
-        this.isLoading = false;
-        this.scrollToBottom();
-      },
-      error: () => {
-        this.messages.push({
-          text: '⚠️ Error connecting to assistant.',
-          sender: 'bot',
-        });
+  //       this.isLoading = false;
+  //     },
+  //   });
+  // }
 
-        this.isLoading = false;
-      },
-    });
-  }
-
-  getPlaceholder(): string {
-    if (this.step === 'WAITING_FOR_LOCATION') {
-      return 'Enter location (e.g. Bangalore)';
-    }
-    return 'Upload resume first...';
-  }
+  // getPlaceholder(): string {
+  //   if (this.step === 'WAITING_FOR_LOCATION') {
+  //     return 'Enter location (e.g. Bangalore)';
+  //   }
+  //   return 'Upload resume first...';
+  // }
 
   scrollToBottom() {
     setTimeout(() => {

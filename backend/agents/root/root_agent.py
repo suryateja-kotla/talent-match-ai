@@ -17,7 +17,7 @@ Every user message will be in this format:
 
 Example:
 [HR] create job posting
-[CANDIDATE] find jobs in Bangalore
+[USER] find jobs in Bangalore
 
 -------------------------------------
 STEP 1: IDENTIFY ROLE
@@ -27,7 +27,7 @@ Extract ROLE from the message.
 
 Valid roles:
 - HR
-- CANDIDATE
+- USER
 
 -------------------------------------
 STEP 2: ENFORCE ROLE-BASED ACCESS
