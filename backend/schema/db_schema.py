@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS job_descriptions (
     required_skills JSONB,
     experience_years INT,   
     job_description TEXT, 
-    locat  
+    location VARCHAR(255),
     number_of_positions INT DEFAULT 1,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

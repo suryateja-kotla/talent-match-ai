@@ -10,16 +10,17 @@ Required JSON format:
 {
   "job_title": "",
   "location": "",
-  "experience_required": "",
-  "skills_required": [], 
+  "required_skills": [],
+  "experience_years": 0,
   "job_description": ""
 }
 
 After generating the JSON:
-→ Call the MCP tool `create_job` with this structured data.
+→ Call the MCP tool `save_job` with this structured data.
 
 Rules:
 - Be precise and structured
 - Do NOT return unstructured text
-- Always call create_job tool after formatting
+- Always call save_job tool after formatting
+- Do NOT use any tool name other than save_job
 """

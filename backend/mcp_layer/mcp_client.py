@@ -33,7 +33,7 @@ async def get_mcp_toolset():
             await toolset.close()
             logger.info("MCP server process closed.")
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     # Ensure dependencies are installed before running
     # pip install mcp
-    asyncio.run(get_mcp_toolset())
+  #  asyncio.run(get_mcp_toolset())

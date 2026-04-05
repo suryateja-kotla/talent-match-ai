@@ -1,8 +1,9 @@
 from google.adk.agents import Agent
 
 from instructions.requisition_instruction import REQUISITION_INSTRUCTION
+from mcp_layer.mcp_client import get_mcp_toolset
 
-
+# ✅ Proper MCP tool injection (supported in your setup)
 requisition_agent = Agent(
     model="gemini-2.5-flash",
     name="requisition_agent",
@@ -17,8 +18,13 @@ requisition_agent = Agent(
         "1. Extract: Role, Skills, Location, and Experience.\n"
         "2. Validate: If any field is missing, ask the HR user specifically for that info.\n"
         "3. Preview: Once all data is gathered, display a structured summary to the user.\n"
-        "4. Confirm: Wait for the user to say 'OK' or 'Proceed' before calling the database storage tool."
+        "4. Confirm: Wait for the user to say 'OK' or 'Proceed' before calling the database storage tool.\n\n"
+
+        "IMPORTANT:\n"
+        "- Use ONLY the tool `save_job`\n"
+        "- Do NOT use create_job\n"
     ),
     tools=[
+        get_mcp_toolset  # 🔥 IMPORTANT: pass function, NOT call it
     ],
 )
