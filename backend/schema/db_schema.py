@@ -65,13 +65,11 @@ END $$;
 _JOB_DESCRIPTIONS_TABLE = """
 CREATE TABLE IF NOT EXISTS job_descriptions (
     id SERIAL PRIMARY KEY,
-    job_title VARCHAR(255) NOT NULL,
-    job_type VARCHAR(20) DEFAULT 'full-time' CHECK (job_type IN ('full-time','part-time','contract','internship')),
+    job_title VARCHAR(255) NOT NULL, 
     required_skills JSONB,
-    min_experience_years INT,
-    max_experience_years INT,
-    job_description TEXT,
-    qualifications TEXT,
+    experience_years INT,   
+    job_description TEXT, 
+    locat  
     number_of_positions INT DEFAULT 1,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
