@@ -1,0 +1,49 @@
+.object-fit-cover {
+  object-fit: cover;
+}
+
+/* Layout tweaks for login page */
+.min-vh-100 {
+  min-height: 100vh !important;
+}
+
+.bg-primary {
+  background: linear-gradient(135deg, #7aa9ea 0%, #3a8dff 100%);
+}
+
+.card {
+  border-radius: 14px;
+}
+
+.input-group .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+
+.input-group-text {
+  background: transparent;
+  border-right: 0;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.15rem rgba(13,110,253,0.15);
+}
+
+.card .small {
+  color: #6c757d;
+}
+
+.bi-people-fill {
+  opacity: 0.95;
+}
+
+.card .spinner-border {
+  width: 1rem;
+  height: 1rem;
+}
+
+.card a.small {
+  color: #0d6efd;
+  text-decoration: none;
+}

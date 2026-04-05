@@ -1,0 +1,391 @@
+2026-04-04 18:41:46,769 [MCP-SERVER] INFO: Database 'resume_test' created.
+2026-04-04 18:41:47,100 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 18:41:47,114 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 18:42:21,931 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 18:42:21,944 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 18:42:21,981 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 18:42:22,231 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-04 18:42:22,239 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 18:42:22,420 [MCP-SERVER] ERROR: get_candidate_by_email: DB error
+Traceback (most recent call last):
+  File "E:\agentic\talent-match-ai\backend\mcp_layer\mcp_server.py", line 67, in get_candidate_by_email
+    return json.dumps({"success": True, "data": record, "message": "Found."})
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 235, in dumps
+    return _default_encoder.encode(obj)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 202, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 263, in iterencode
+    return _iterencode(o, 0)
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py", line 182, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type Decimal is not JSON serializable
+2026-04-04 18:42:22,479 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 18:42:22,685 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 20:09:45,948 [MCP-SERVER] INFO: Database 'TalenMatch' created.
+2026-04-04 20:09:46,073 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:09:46,080 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 20:14:58,740 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:14:58,748 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 20:16:01,040 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:16:01,056 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 20:16:01,073 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 20:16:01,143 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-04 20:16:01,147 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 20:19:20,874 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:19:20,876 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 20:19:20,898 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 20:19:20,965 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-04 20:19:20,969 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-04 20:22:45,095 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:23:13,952 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:25:24,260 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:25:24,273 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:25:24,274 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:25:40,565 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:25:40,571 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:25:40,571 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:27:35,537 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:27:35,542 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:27:35,542 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:29:07,752 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:29:07,755 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:29:07,763 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:30:17,938 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:30:17,941 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:30:17,941 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:30:53,502 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:30:53,510 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:30:53,510 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:33:51,321 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:33:51,331 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:33:51,331 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:34:08,999 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:34:09,004 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:34:09,004 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:35:04,756 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:35:04,760 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:35:04,767 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:36:32,075 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:36:32,081 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:36:32,081 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:37:01,502 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:37:01,511 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:37:01,511 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:37:17,517 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:37:17,525 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:37:17,525 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:37:31,965 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:37:31,971 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:37:31,971 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:38:48,928 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:38:48,939 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:38:48,939 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:39:34,759 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:39:34,764 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:39:34,764 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:40:55,864 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:40:55,874 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:40:55,876 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:44:07,592 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:44:07,603 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:44:07,603 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:46:55,341 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:47:28,508 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:47:28,510 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:47:28,510 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:50:10,514 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:50:10,523 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:50:10,523 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:52:50,978 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:52:50,986 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:52:50,987 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 20:54:54,066 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 20:54:54,093 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 20:54:54,097 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:02:45,167 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:02:45,177 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 21:02:45,177 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:03:44,218 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:03:44,223 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 21:03:44,223 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:04:09,413 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:04:09,423 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 21:04:09,424 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:04:27,996 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:04:28,001 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 21:04:28,001 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:05:21,010 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:05:21,017 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 21:05:21,017 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:07:28,077 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:07:47,479 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:09:27,027 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:09:27,032 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 21:09:27,032 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:10:40,108 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:10:40,118 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 21:10:40,119 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:11:19,982 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:13:00,234 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:13:00,236 [MCP-SERVER] INFO: Starting MCP server: D:\SamurAI\POC -bubble\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-04 21:13:00,236 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:14:15,520 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:14:47,004 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:19:55,957 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:19:55,974 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:20:27,411 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:20:27,416 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:22:19,138 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:22:19,148 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:25:15,062 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:25:15,071 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:25:49,814 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:25:49,824 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:26:24,625 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:26:24,636 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:28:52,312 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:28:52,315 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:29:27,923 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:29:27,935 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:29:54,662 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:29:54,672 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:30:48,155 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:30:48,170 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:32:02,096 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:32:02,108 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:33:23,519 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:33:23,534 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:34:27,528 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:34:27,534 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:35:47,918 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:35:47,929 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:36:51,180 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:36:51,190 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:37:45,963 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:37:45,967 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-04 21:40:25,115 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:40:47,695 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:41:41,593 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:42:25,698 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:42:38,910 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:44:26,194 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:47:00,628 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:49:40,277 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:49:40,286 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 21:51:44,758 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:51:44,766 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 21:52:19,313 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:53:01,075 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:53:21,334 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:53:38,909 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:56:13,160 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:56:47,975 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:58:23,291 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:59:07,436 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 21:59:55,703 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:01:49,849 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:02:47,852 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:03:08,627 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:03:51,891 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:06:02,572 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:06:24,424 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:12:46,899 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:12:49,082 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:12:49,088 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 22:12:49,105 [MCP-SERVER] ERROR: Received exception from stream: 11 validation errors for JSONRPCMessage
+JSONRPCRequest.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.result
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.error
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2026-04-04 22:17:57,771 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:17:59,834 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:17:59,840 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 22:17:59,857 [MCP-SERVER] ERROR: Received exception from stream: 11 validation errors for JSONRPCMessage
+JSONRPCRequest.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.result
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.error
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2026-04-04 22:18:23,697 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:18:25,780 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:18:25,789 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 22:18:25,807 [MCP-SERVER] ERROR: Received exception from stream: 11 validation errors for JSONRPCMessage
+JSONRPCRequest.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.result
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.error
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2026-04-04 22:29:44,418 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:29:46,627 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:29:46,636 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 22:29:46,653 [MCP-SERVER] ERROR: Received exception from stream: 11 validation errors for JSONRPCMessage
+JSONRPCRequest.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.result
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.error
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2026-04-04 22:30:26,010 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:30:28,145 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-04 22:30:28,150 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-04 22:30:28,167 [MCP-SERVER] ERROR: Received exception from stream: 11 validation errors for JSONRPCMessage
+JSONRPCRequest.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCRequest.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.method
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCNotification.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCResponse.result
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.jsonrpc
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.id
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+JSONRPCError.error
+  Field required [type=missing, input_value={'tool': 'get_jobs_by_loc...location': 'Bangalore'}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2026-04-05 09:36:38,281 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:48:55,685 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:48:55,700 [MCP-SERVER] ERROR: save_candidate failed: 1 validation error for CandidateSchema
+education.0.year
+  Input should be a valid string [type=string_type, input_value=2020, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+2026-04-05 09:50:20,974 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:50:20,988 [MCP-SERVER] ERROR: save_candidate failed: 'dict' object has no attribute 'model_dump'
+2026-04-05 09:52:15,603 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:52:15,620 [MCP-SERVER] ERROR: save_candidate failed: 'dict' object has no attribute 'model_dump'
+2026-04-05 09:56:58,931 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-05 09:59:37,302 [MCP-SERVER] INFO: Database and schema initialized.

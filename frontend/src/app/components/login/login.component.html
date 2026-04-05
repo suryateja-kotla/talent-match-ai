@@ -1,0 +1,85 @@
+<div class="container-fluid min-vh-100">
+  <div class="row min-vh-100">
+
+    <!-- LEFT SIDE (Welcome Section) -->
+    <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-center align-items-center text-white bg-primary text-center p-5">
+      
+      <h1 class="display-4 fw-bold mb-3">
+        Welcome to Talent Match
+      </h1>
+
+      <p class="lead">
+        Connecting the right people with the right opportunities.
+      </p>
+
+      <i class="bi bi-people-fill" style="font-size: 80px; margin-top: 20px;"></i>
+
+    </div>
+
+    <!-- RIGHT SIDE (Login Card) -->
+    <div class="col-lg-6 d-flex justify-content-center align-items-center bg-light">
+
+      <div class="card shadow p-4" style="width: 420px; border-radius: 14px;">
+        
+        <!-- Mobile Title -->
+        <div class="text-center mb-2 d-lg-none">
+          <h4 class="fw-bold">Talent Match</h4>
+        </div>
+
+        <h3 class="text-center mb-4">Log In</h3>
+
+        <!-- Username -->
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-person-fill"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="username" 
+              name="username"
+              placeholder="Enter username"
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-lock-fill"></i>
+            </span>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-control"
+              [(ngModel)]="password"
+              name="password"
+              placeholder="Enter password"
+            />
+            
+          </div>
+        </div>
+
+        <!-- Controls -->
+       
+
+        <button class="btn btn-primary w-100 d-flex justify-content-center align-items-center" (click)="login()" [disabled]="loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <i class="bi bi-box-arrow-in-right me-2"></i>
+          <span>{{ loading ? 'Signing in...' : 'Login' }}</span>
+        </button>
+
+        <!-- Message -->
+        <div class="text-center text-danger mt-3">
+          {{ message }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

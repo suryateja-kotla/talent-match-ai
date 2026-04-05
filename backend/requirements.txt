@@ -1,0 +1,27 @@
+
+# ── Core AI / Agents ──────────────────────────────────────────────────────────
+google-adk
+google-genai
+mcp
+pydantic
+fastapi
+google-cloud-aiplatform
+
+# ── Web server ────────────────────────────────────────────────────────────────
+uvicorn[standard]
+python-multipart
+
+# ── Database ──────────────────────────────────────────────────────────────────
+psycopg2-binary
+
+# ── Resume file parsing ───────────────────────────────────────────────────────
+pdfplumber
+python-docx
+# pytesseract 
+# pdf2image 
+# pillow
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+python-dotenv
+httpx
+ 

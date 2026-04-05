@@ -1,0 +1,11 @@
+/* Keep minimal styling only */
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* Optional: smooth scroll */
+.card {
+  border-radius: 12px;
+}
