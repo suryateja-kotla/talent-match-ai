@@ -5,6 +5,7 @@ google-genai
 mcp
 pydantic
 fastapi
+google-cloud-aiplatform
 
 # ── Web server ────────────────────────────────────────────────────────────────
 uvicorn[standard]
