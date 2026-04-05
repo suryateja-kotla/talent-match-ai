@@ -1,89 +1,125 @@
 <div class="container-fluid p-3 hr-page min-vh-100 d-flex flex-column">
-
   <!-- TOP BAR -->
   <div class="d-flex justify-content-between align-items-center mb-3 px-2">
-    <h4 class="fw-bold m-0">TalentMatch <span class="badge bg-primary ms-2">ATS</span></h4>
+    <h4 class="fw-bold m-0">
+      TalentMatch <span class="badge bg-primary ms-2">ATS</span>
+    </h4>
 
     <div>
       <button class="btn btn-light me-2 fw-bold">HR Dashboard</button>
-      
 
       <button class="btn btn-outline-danger" (click)="logout()">
-  <i class="bi bi-box-arrow-right me-1"></i> Logout
-</button>
-      
+        <i class="bi bi-box-arrow-right me-1"></i> Logout
+      </button>
     </div>
   </div>
 
   <div class="row g-3 flex-grow-1">
-
     <!-- LEFT CHAT PANEL -->
     <div class="col-lg-4">
       <div class="card h-100 p-3 shadow-sm">
-
         <h6 class="fw-bold">Hiring Assistant</h6>
         <small class="text-muted">Describe a role to post it</small>
 
-        <div class="chat-box mt-3 p-3">
-          <p>
-            👋 Hi! I'm your hiring assistant. Describe the role you want to post and I'll create a job card for you.
-          </p>
-          <small class="text-muted">
-            Example: "Post a Senior React Developer with 5 years experience"
-          </small>
-        </div>
+        <!-- ❌ REMOVE THIS OLD STATIC CHAT BOX (lines below deleted) -->
+        <!-- 
+<div class="chat-box mt-3 p-3">
+<p>👋 Hi! I'm your hiring assistant...</p>
+<small class="text-muted">Example: "Post a Senior React Developer..."</small>
+</div>
+        -->
 
+        <!-- ✅ NEW: Dynamic chat box — shows messages array from hr.component.ts -->
+        <div
+          class="chat-box mt-3 p-3"
+          style="overflow-y: auto; max-height: 280px"
+        >
+          <div
+            *ngFor="let msg of messages"
+            [class]="msg.from === 'user' ? 'text-end mb-2' : 'mb-2'"
+          >
+            <span
+              [class]="
+                msg.from === 'user'
+                  ? 'badge bg-primary p-2 text-wrap'
+                  : 'badge bg-light text-dark p-2 text-wrap'
+              "
+            >
+              {{ msg.text }}
+            </span>
+          </div>
+          <!-- ✅ NEW: Shows "Thinking..." while waiting for root_agent response -->
+          <div *ngIf="isLoading" class="text-muted mt-1">
+            <small>🤖 Thinking...</small>
+          </div>
+        </div>
+        <!-- ✅ END NEW CHAT BOX -->
+
+        <!-- ❌ REMOVE THIS OLD STATIC INPUT (lines below deleted) -->
+        <!--
+<div class="mt-auto d-flex mt-3">
+<input class="form-control me-2" placeholder="Describe the job..." />
+<button class="btn btn-primary">
+<i class="bi bi-send"></i>
+</button>
+</div>
+        -->
+
+        <!-- ✅ NEW: Input wired to sendMessage() → ChatService → FastAPI → root_agent -->
         <div class="mt-auto d-flex mt-3">
-          <input class="form-control me-2" placeholder="Describe the job..." />
-          <button class="btn btn-primary">
+          <input
+            class="form-control me-2"
+            placeholder="Describe the job..."
+            [(ngModel)]="userInput"
+            (keyup.enter)="sendMessage()"
+          />
+          <button
+            class="btn btn-primary"
+            (click)="sendMessage()"
+            [disabled]="isLoading"
+          >
             <i class="bi bi-send"></i>
           </button>
         </div>
-
+        <!-- ✅ END NEW INPUT -->
       </div>
     </div>
 
-    <!-- RIGHT JOB LIST -->
+    <!-- RIGHT JOB LIST — NO CHANGES HERE -->
     <div class="col-lg-8">
       <div class="card p-3 shadow-sm h-100">
-
         <h5 class="fw-bold">Job Postings</h5>
         <small class="text-muted mb-3">3 active listings</small>
 
         <div class="row g-3 mt-1">
-
           <!-- JOB CARD -->
           <div class="col-md-4" *ngFor="let job of jobs">
-  <div class="job-card p-3">
+            <div class="job-card p-3">
+              <!-- Header -->
+              <div class="d-flex justify-content-between align-items-start">
+                <h6 class="fw-bold mb-1">{{ job.title }}</h6>
+                <span class="badge bg-success-subtle text-success">active</span>
+              </div>
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-start">
-      <h6 class="fw-bold mb-1">{{ job.title }}</h6>
-      <span class="badge bg-success-subtle text-success">active</span>
-    </div>
+              <!-- Skills -->
+              <div class="mt-2">
+                <span class="skill-pill" *ngFor="let skill of job.skills">
+                  {{ skill }}
+                </span>
+              </div>
 
-    <!-- Skills -->
-    <div class="mt-2">
-      <span class="skill-pill" *ngFor="let skill of job.skills">
-        {{ skill }}
-      </span>
-    </div>
-
-    <!-- Info -->
-    <div class="mt-3 job-info">
-      <div><i class="bi bi-briefcase me-1"></i>{{ job.exp }}</div>
-      <div><i class="bi bi-geo-alt me-1"></i>{{ job.location }}</div>
-      <div><i class="bi bi-people me-1"></i>{{ job.positions }} positions</div>
-      
-    </div>
-
-  </div>
-</div>
-
+              <!-- Info -->
+              <div class="mt-3 job-info">
+                <div><i class="bi bi-briefcase me-1"></i>{{ job.exp }}</div>
+                <div><i class="bi bi-geo-alt me-1"></i>{{ job.location }}</div>
+                <div>
+                  <i class="bi bi-people me-1"></i>{{ job.positions }} positions
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
       </div>
     </div>
-
   </div>
 </div>
