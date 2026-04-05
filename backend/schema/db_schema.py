@@ -152,10 +152,20 @@ def upsert_candidate(data: CandidateSchema) -> int:
             updated_at = CURRENT_TIMESTAMP
         RETURNING id;
     """
-    params = data.model_dump()
-    params["skills"] = json.dumps(params["skills"])
-    params["skill_experience"] = json.dumps(params["skill_experience"])
-    params["education"] = json.dumps([e.model_dump() for e in params["education"]])
+    if isinstance(data, dict):
+       params = data
+    else:
+        params = data.model_dump()
+    params["skills"] = json.dumps(params.get("skills",[]))
+    params["skill_experience"] = json.dumps(params.get("skill_experience",{}))
+    education_list=params.get("education",[])
+    formatted_education = []
+    for e in education_list:
+        if isinstance(e, dict):
+            formatted_education.append(e)
+        else:
+            formatted_education.append(e.model_dump())
+    params["education"] = json.dumps(formatted_education)
     
     conn = get_connection()
     try:
@@ -203,5 +213,46 @@ def list_jobs() -> list[dict]:
             """)
             cols = [d[0] for d in cur.description]
             return [serialize(dict(zip(cols, row))) for row in cur.fetchall()]
+    finally:
+        conn.close()
+
+def insert_job(job_data: dict) -> int:
+    sql = """
+        INSERT INTO job_descriptions (
+            job_title, job_type, required_skills,
+            min_experience_years, max_experience_years,
+            job_description, qualifications
+        ) VALUES (
+            %(job_title)s, %(job_type)s, %(required_skills)s,
+            %(min_experience_years)s, %(max_experience_years)s,
+            %(job_description)s, %(qualifications)s
+        ) RETURNING id;
+    """
+
+    job_data["required_skills"] = json.dumps(job_data.get("required_skills", []))
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql, job_data)
+            job_id = cur.fetchone()[0]
+        conn.commit()
+        return job_id
+    finally:
+        conn.close()
+
+def create_application(candidate_id: int, job_id: int, match_score: float):
+    sql = """
+        INSERT INTO applications (candidate_id, job_id, match_score)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (candidate_id, job_id)
+        DO UPDATE SET match_score = EXCLUDED.match_score
+    """
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql, (candidate_id, job_id, match_score))
+        conn.commit()
     finally:
         conn.close()
