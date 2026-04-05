@@ -23,16 +23,14 @@
   </div>
 
   <!-- FILE UPLOAD -->
-  <div class="border-top p-2 text-center">
-    <input
-      type="file"
-      (change)="onFileSelected($event)"
-      class="form-control form-control-sm"
-    />
-
-      <small class="text-success">✅ Resume uploaded</small>
-  </div>
-
+<!-- FILE UPLOAD — hidden after upload -->
+<div class="border-top p-2 text-center" *ngIf="!resumeUploaded">
+  <input
+    type="file"
+    (change)="onFileSelected($event)"
+    class="form-control form-control-sm"
+  />
+</div>
   <!-- INPUT -->
   <div class="input-group border-top">
     <input

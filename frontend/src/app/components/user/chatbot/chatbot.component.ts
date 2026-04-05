@@ -26,6 +26,7 @@ export class ChatbotComponent implements OnInit {
   sessionId = crypto.randomUUID();
   isLoading = false;
   userInput = '';
+  resumeUploaded = false; 
 
   ngOnInit() {
     this.messages.push({
@@ -68,52 +69,56 @@ export class ChatbotComponent implements OnInit {
   messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [];
 
   onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (!file) return;
+  const file = event.target.files[0];
+  if (!file) return;
 
-    this.messages.push({ text: file.name, sender: 'user' });
-    this.isLoading = true;
+  // ✅ Step 1 — show filename
+  this.messages.push({ text: file.name, sender: 'user' });
+  
+  // ✅ Step 2 — show uploading
+  this.messages.push({ text: '📤 Uploading resume...', sender: 'bot' });
+  this.isLoading = true;
+  this.scrollToBottom();
 
-    this.chatService
-      .uploadResume(file,this.sessionId)
-      .pipe(
-        switchMap((res) => {
-          this.candidateId = res.candidate_id;
+  this.chatService
+    .uploadResume(file, this.sessionId)
+    .pipe(
+      switchMap((res) => {
+        this.candidateId = res.candidate_id;
 
-          this.messages.push({
-            text: 'Resume uploaded & processed ✅',
-            sender: 'bot',
-          });
+        // ✅ Step 3 — replace uploading with processing
+        this.messages.push({ text: '⚙️ Processing your resume...', sender: 'bot' });
+        this.scrollToBottom();
 
-          // 🔥 trigger agent
-          return this.chatService.send(
-            'resume uploaded',
-            'user',
-            this.sessionId,
-            this.candidateId,
-          );
-        }),
-      )
-      .subscribe({
-        next: (res) => {
-          this.messages.push({
-            text: res.reply,
-            sender: 'bot',
-          });
+        return this.chatService.send(
+          'resume uploaded',
+          'user',
+          this.sessionId,
+          this.candidateId,
+        );
+      }),
+    )
+    .subscribe({
+      next: (res) => {
+        // ✅ Step 4 — show processed
+        this.messages.push({ text: '✅ Resume processed successfully!', sender: 'bot' });
+        
+        // ✅ Step 5 — show agent reply
+        this.messages.push({ text: res.reply, sender: 'bot' });
 
-          this.isLoading = false;
-          this.scrollToBottom();
-        },
-        error: () => {
-          this.messages.push({
-            text: '⚠️ Resume upload or processing failed.',
-            sender: 'bot',
-          });
-
-          this.isLoading = false;
-        },
-      });
-  }
+        this.resumeUploaded = true;
+        this.isLoading = false;
+        this.scrollToBottom();
+      },
+      error: () => {
+        this.messages.push({
+          text: '⚠️ Resume upload or processing failed.',
+          sender: 'bot',
+        });
+        this.isLoading = false;
+      },
+    });
+}
   sendMessage() {
     if (!this.userInput.trim() || this.isLoading) return;
 
