@@ -1,18 +1,3 @@
-"""
-agents/requisition_agent/agent.py
---------------------------------
-
-Requisition Agent (Job Creator).
-
-Responsibilities:
-  1. Accept HR query (job requirements, role details, etc.)
-  2. Use LLM with REQUISITION_INSTRUCTION to structure job data
-  3. Call MCP tool (create_job) to save job into database
-
-Tools:
-  • MCP tools (create_job, etc.) — injected at runtime by runner.py
-"""
-
 from google.adk.agents import Agent
 
 from instructions.requisition_instruction import REQUISITION_INSTRUCTION
@@ -22,13 +7,18 @@ requisition_agent = Agent(
     model="gemini-2.5-flash",
     name="requisition_agent",
     description=(
-        "Creates structured job requisitions from HR input "
-        "and saves them to the database via MCP tools."
+        "An HR assistant that extracts skills, location, role, and experience from prompts. "
+        "It interactively clarifies missing data, presents a preview for HR approval, "
+        "and persists the final requisition to the database via MCP tools only after confirmation."
     ),
-    instruction=REQUISITION_INSTRUCTION,
+    instruction=(
+        f"{REQUISITION_INSTRUCTION}\n\n"
+        "OPERATIONAL PROTOCOL:\n"
+        "1. Extract: Role, Skills, Location, and Experience.\n"
+        "2. Validate: If any field is missing, ask the HR user specifically for that info.\n"
+        "3. Preview: Once all data is gathered, display a structured summary to the user.\n"
+        "4. Confirm: Wait for the user to say 'OK' or 'Proceed' before calling the database storage tool."
+    ),
     tools=[
-        # MCP tools (create_job etc.) will be injected at runtime
-        # Example:
-        # requisition_agent.tools += [mcp_tools]
     ],
 )
