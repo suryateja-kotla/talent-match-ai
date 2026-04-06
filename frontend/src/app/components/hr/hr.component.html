@@ -30,29 +30,36 @@
        
 
         <!-- ✅ NEW: Dynamic chat box — shows messages array from hr.component.ts -->
-        <div
-          class="chat-box mt-3 p-3"
-          style="overflow-y: auto; max-height: 600px"
-        >
-          <div
-            *ngFor="let msg of messages"
-            [class]="msg.from === 'user' ? 'text-end mb-2' : 'mb-2'"
-          >
-            <span
-              [class]="
-                msg.from === 'user'
-                  ? 'badge bg-primary p-2 text-wrap'
-                  : 'badge bg-light text-dark p-2 text-wrap'
-              "
-            >
-              {{ msg.text }}
-            </span>
-          </div>
-          <!-- ✅ NEW: Shows "Thinking..." while waiting for root_agent response -->
-          <div *ngIf="isLoading" class="text-muted mt-1">
-            <small>🤖 Thinking...</small>
-          </div>
-        </div>
+        <div class="chat-box mt-3 p-2"
+     style="overflow-y: auto; max-height: 600px; display: flex; flex-direction: column; gap: 10px;">
+
+  <div *ngFor="let msg of messages"
+       [style.align-self]="msg.from === 'user' ? 'flex-end' : 'flex-start'"
+       style="max-width: 85%;">
+
+    <!-- User message — right side, no background -->
+    <div *ngIf="msg.from === 'user'"
+         style="color: #212529; font-size: 14px; line-height: 1.5;
+                white-space: pre-wrap; text-align: right; padding: 4px 0;">
+      {{ msg.text }}
+    </div>
+
+    <!-- Bot message — left side, no background, subtle left border as indicator -->
+    <div *ngIf="msg.from === 'bot'"
+         style="color: #111010; font-size: 14px; line-height: 1.6;
+                white-space: pre-wrap; border-left: 3px solid #0d6efd;
+                padding: 4px 10px;">
+      {{ msg.text }}
+    </div>
+
+  </div>
+
+  <div *ngIf="isLoading"
+       style="align-self: flex-start; color: #67727b; font-size: 13px; padding: 4px 0;">
+    🤖 Thinking...
+  </div>
+
+</div>
         <!-- ✅ END NEW CHAT BOX -->
 
         <!-- ❌ REMOVE THIS OLD STATIC INPUT (lines below deleted) -->
