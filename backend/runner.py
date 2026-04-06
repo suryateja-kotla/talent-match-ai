@@ -30,7 +30,7 @@ APP_NAME = "talent-match-ai"
 session_service = InMemorySessionService()
 _session_registry: dict[str, str] = {}
 
-# ✅ Single shared runner — defined once
+# Single shared runner — defined once
 runner = Runner(
     agent=root_agent,
     app_name=APP_NAME,
@@ -62,10 +62,10 @@ async def run_agent(message: str, session_id: str,candidate_id: int | None) -> s
     Generic chat entry point. Routes general user queries through the
     root orchestrator agent to the appropriate sub-agent.
     """
-    logger.info(f"🚀 run_agent | session={session_id} | msg={message[:80]}")
+    #logger.info(f"run_agent | session={session_id} | msg={message[:80]}")
     original_tools = list(requisition_agent.tools)
     try:
-        # ✅ async with — get_mcp_toolset is @asynccontextmanager
+        # async with — get_mcp_toolset is @asynccontextmanager
         async with get_mcp_toolset() as mcp_tools:
             requisition_agent.tools = [mcp_tools]
             #session = await _get_or_create_session(session_id)
@@ -89,7 +89,7 @@ DO NOT ask user for it.
             parts=[genai_types.Part(text=enhanced_message)],
         )
 
-        logger.debug("📤 Dispatching message to root_agent...")
+        logger.debug("Dispatching message to root_agent...")
         reply_text = ""
 
         async for event in runner.run_async(
@@ -97,11 +97,11 @@ DO NOT ask user for it.
             session_id=session.id,
             new_message=user_message,
         ):
-            # 🔍 Try to extract useful info
+            # Try to extract useful info
             if hasattr(event, "author"):
                 print(f"AGENT: {event.author}")
 
-            # ✅ Capture final response
+            # Capture final response
             if event.content and getattr(event.content, "parts", None):
                 for part in event.content.parts:
                     if hasattr(part, "text") and part.text:
@@ -111,8 +111,6 @@ DO NOT ask user for it.
     except Exception as e:
         logger.exception("ERROR in run_agent pipeline.")
         return f"ERROR: {str(e)}"
-        logger.exception("❌ ERROR in run_agent pipeline.")
-        return f"❌ ERROR: {str(e)}"
     finally:
         requisition_agent.tools = original_tools
 
@@ -201,7 +199,7 @@ def _parse_final_response(text: str) -> dict:
 
 async def run_chat(message: str):
     response = await run_agent(message, "test_user")
-    print(f"\n✅ FINAL: {response}")
+    print(f"\nFINAL: {response}")
 
 if __name__ == "__main__":
     # Test the orchestrator routing

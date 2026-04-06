@@ -1,5 +1,6 @@
 import os
 import sys
+import asyncio
 import logging
 from contextlib import asynccontextmanager
 
@@ -14,11 +15,10 @@ async def get_mcp_toolset():
         os.path.join(os.path.dirname(__file__), "mcp_server.py")
     )
 
-    logger.info(f"🚀 Spawning MCP Server: {server_script}")
+    logger.info(f"Spawning MCP Server: {server_script}")
 
-    # ✅ MCPToolset takes StdioServerParameters directly
+    #  MCPToolset takes StdioServerParameters directly
     # It manages the subprocess + stdio_client internally
-    # Do NOT manually call stdio_client() and pass the session in
     toolset = MCPToolset(
         connection_params=StdioServerParameters(
             command=sys.executable,
@@ -27,7 +27,6 @@ async def get_mcp_toolset():
         )
     )
 
-    print("🚀 Spawning MCP Server over stdio...")
     try:
         yield toolset
     finally:
@@ -36,6 +35,4 @@ async def get_mcp_toolset():
         logger.info("MCP server process closed.")
 
 if __name__ == "__main__":
-    # Ensure dependencies are installed before running
-    # pip install mcp
     asyncio.run(get_mcp_toolset())

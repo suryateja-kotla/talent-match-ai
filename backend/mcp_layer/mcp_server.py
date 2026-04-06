@@ -149,8 +149,6 @@ def save_job(job_json: str | dict) -> str:
     try:
         raw = json.loads(job_json) if isinstance(job_json, str) else job_json
 
-        # ✅ Normalize field names — agent sends experience_required,
-        # DB schema expects experience_years
         normalized = {
             "job_title":          raw.get("job_title", ""),
             "location":           raw.get("location", ""),

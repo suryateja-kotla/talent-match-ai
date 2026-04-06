@@ -133,12 +133,11 @@ def init_db():
 from decimal import Decimal
 
 def serialize(record: dict) -> dict:
-    # ✅ Fix Decimal → float
+
     for key, value in record.items():
         if isinstance(value, Decimal):
             record[key] = float(value)
 
-    # ✅ Convert timestamps
     for key in ("created_at", "updated_at", "applied_at", "status_updated_at"):
         if record.get(key):
             record[key] = str(record[key])
@@ -228,7 +227,6 @@ def list_jobs() -> list[dict]:
     finally:
         conn.close()
 
-# schema/db_schema.py — replace insert_job entirely
 
 def insert_job(job_data: dict) -> int:
     sql = """
@@ -248,77 +246,18 @@ def insert_job(job_data: dict) -> int:
             %(number_of_positions)s
         ) RETURNING id;
     """
-    # ✅ Serialize skills list to JSON string for JSONB column
     job_data["required_skills"] = json.dumps(job_data.get("required_skills", []))
 
-    # ✅ Safe defaults
     job_data.setdefault("number_of_positions", 1)
     job_data.setdefault("job_description", "")
     job_data.setdefault("location", "")
 
-    # ✅ Convert "5 years" / "5 yrs" / 5 → integer
     raw_exp = job_data.get("experience_years", 0)
     if isinstance(raw_exp, str):
         digits = ''.join(filter(str.isdigit, raw_exp))
         job_data["experience_years"] = int(digits) if digits else 0
     else:
         job_data["experience_years"] = int(raw_exp or 0)
-
-    conn = get_connection()
-    try:
-        with conn.cursor() as cur:
-            cur.execute(sql, job_data)
-            job_id = cur.fetchone()[0]
-        conn.commit()
-        return job_id
-    finally:
-        conn.close()
-    # ❌ DELETE everything after this line — dead code that never runs
-    sql = """
-        INSERT INTO job_descriptions (
-            job_title,
-            required_skills,
-            experience_years,
-            job_description,
-            location,
-            number_of_positions
-        ) VALUES (
-            %(job_title)s,
-            %(required_skills)s,
-            %(experience_years)s,
-            %(job_description)s,
-            %(location)s,
-            %(number_of_positions)s
-        ) RETURNING id;
-    """
-    job_data["required_skills"] = json.dumps(job_data.get("required_skills", []))
-    job_data.setdefault("number_of_positions", 1)
-    job_data.setdefault("experience_years", 0)
-    job_data.setdefault("job_description", "")
-    job_data.setdefault("location", "")
-
-    conn = get_connection()
-    try:
-        with conn.cursor() as cur:
-            cur.execute(sql, job_data)
-            job_id = cur.fetchone()[0]
-        conn.commit()
-        return job_id
-    finally:
-        conn.close()
-    sql = """
-        INSERT INTO job_descriptions (
-            job_title, job_type, required_skills,
-            min_experience_years, max_experience_years,
-            job_description, qualifications
-        ) VALUES (
-            %(job_title)s, %(job_type)s, %(required_skills)s,
-            %(min_experience_years)s, %(max_experience_years)s,
-            %(job_description)s, %(qualifications)s
-        ) RETURNING id;
-    """
-
-    job_data["required_skills"] = json.dumps(job_data.get("required_skills", []))
 
     conn = get_connection()
     try:

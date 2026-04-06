@@ -17,13 +17,10 @@ def filter_jobs_by_location(location: str) -> list:
     This will be resolved via MCP tool injection at runtime.
     DO NOT import the function manually.
     """
-    #print("🔥 TOOL 1 CALLED (DB FILTER)")
     
     raw = get_jobs_by_location(location)
-    #print("📦 RAW DB RESPONSE:", raw)
 
     parsed = json.loads(raw)
-    #print("📦 PARSED JOBS:", parsed)
 
     return parsed
 
@@ -32,22 +29,11 @@ def filter_jobs_by_location(location: str) -> list:
 # ---------------------------------------------------------------------------
 
 def score_jobs_with_llm(candidate_id: int, filtered_jobs_json: str) -> str:
-    #print("🔥 TOOL 2 CALLED (LLM)")
 
     candidate = fetch_candidate(candidate_id)
     if not candidate:
-        print("❌ Candidate not found — aborting scoring")
+        print(" Candidate not found — aborting scoring")
         return json.dumps([])
-
-    # if isinstance(candidate_json, str):
-    #     try:
-    #         candidate = json.loads(candidate_json)
-    #         print(candidate)
-    #     except json.JSONDecodeError:
-    #         print("⚠️ Invalid JSON (likely due to file path), skipping parse")
-    #         candidate = candidate_json if isinstance(candidate_json, dict) else {}
-    # else:
-    #     candidate = candidate_json
 
     try:
         if isinstance(filtered_jobs_json, str):
@@ -55,7 +41,7 @@ def score_jobs_with_llm(candidate_id: int, filtered_jobs_json: str) -> str:
         else:
             jobs = filtered_jobs_json
     except Exception:
-        print("❌ Invalid jobs JSON:", filtered_jobs_json)
+        print(" Invalid jobs JSON:", filtered_jobs_json)
         return json.dumps([])
 
     if not jobs:
@@ -64,18 +50,16 @@ def score_jobs_with_llm(candidate_id: int, filtered_jobs_json: str) -> str:
     client = genai.Client()
 
     scored_results = []
-    #print("👤 CANDIDATE USED:", candidate)  
-    #print("📋 JOBS USED:", jobs)
     for job in jobs:
         if isinstance(job, str):
             try:
                 job = json.loads(job)
             except Exception:
-                print("❌ Invalid job item:", job)
+                print("Invalid job item:", job)
                 continue
 
         if not isinstance(job, dict):
-            print("❌ Skipping non-dict job:", job)
+            print("Skipping non-dict job:", job)
             continue
         prompt = f"""
 You are an expert technical recruiter.
@@ -117,7 +101,7 @@ Return JSON:
             score_data = json.loads(raw)
 
         except Exception as e:
-            print("❌ LLM ERROR:", e)
+            print("LLM ERROR:", e)
             score_data = {"match_score": 0}
 
         scored_results.append({
@@ -135,14 +119,9 @@ Return JSON:
 
 
 def fetch_candidate(candidate_id: int) -> dict:
-    #print("🔥 TOOL 0 CALLED (FETCH CANDIDATE)")
-    #print("📥 candidate_id:", candidate_id)
 
     raw = get_candidate_by_id(candidate_id)
-    #print("📦 RAW DB RESPONSE:", raw)
 
     response = json.loads(raw)
-    #  print("📦 PARSED RESPONSE:", response)
 
     return response.get("data", {})
-    #return response.get("data", {})
