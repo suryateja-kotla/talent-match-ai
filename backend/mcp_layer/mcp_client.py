@@ -1,39 +1,35 @@
-import asyncio
 import os
 import sys
-from mcp import StdioServerParameters
-from mcp.client.stdio import stdio_client
-from contextlib import asynccontextmanager
 import logging
+from contextlib import asynccontextmanager
 
-from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
+from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
 
 logger = logging.getLogger(__name__)
+
+
 @asynccontextmanager
 async def get_mcp_toolset():
-    # 1. Point to your MCP server script
-    server_script = os.path.abspath(os.path.join(os.path.dirname(__file__), "mcp_server.py"))
-    
-    # 2. Setup the stdio parameters (passing down environment variables for DB access)
-    server_params = StdioServerParameters(
-        command=sys.executable,
-        args=[server_script],
-        env={**os.environ}
+    server_script = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "mcp_server.py")
     )
 
-    print("🚀 Spawning MCP Server over stdio...")
-    
-    # 3. Connect to the server
-    async with stdio_client(server_params) as session:
-        print("✅ MCP Client connected to server.")
-        toolset = MCPToolset(session)
-        try:
-            yield toolset
-        finally:
-            await toolset.close()
-            logger.info("MCP server process closed.")
+    logger.info(f"🚀 Spawning MCP Server: {server_script}")
 
-if __name__ == "__main__":
-    # Ensure dependencies are installed before running
-    # pip install mcp
-    asyncio.run(get_mcp_toolset())
+    # ✅ MCPToolset takes StdioServerParameters directly
+    # It manages the subprocess + stdio_client internally
+    # Do NOT manually call stdio_client() and pass the session in
+    toolset = MCPToolset(
+        connection_params=StdioServerParameters(
+            command=sys.executable,
+            args=[server_script],
+            env={**os.environ},
+        )
+    )
+
+    try:
+        logger.info("✅ MCPToolset ready.")
+        yield toolset
+    finally:
+        await toolset.close()
+        logger.info("🔒 MCPToolset closed.")

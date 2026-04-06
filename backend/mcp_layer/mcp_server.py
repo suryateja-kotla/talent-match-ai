@@ -117,18 +117,33 @@ def get_jobs_by_location(location: str) -> str:
         logger.exception("get_jobs_by_location failed")
         return json.dumps([])
     
+# mcp_layer/mcp_server.py — replace save_job tool
+
 @mcp.tool()
 def save_job(job_json: str | dict) -> str:
     """Save a job description into the database."""
     try:
         raw = json.loads(job_json) if isinstance(job_json, str) else job_json
 
-        job_id = db_schema.insert_job(raw)
+        # ✅ Normalize field names — agent sends experience_required,
+        # DB schema expects experience_years
+        normalized = {
+            "job_title":          raw.get("job_title", ""),
+            "location":           raw.get("location", ""),
+            "experience_years":   raw.get("experience_years")
+                                  or raw.get("experience_required", 0),
+            "required_skills":    raw.get("required_skills")
+                                  or raw.get("skills_required", []),
+            "job_description":    raw.get("job_description", ""),
+            "number_of_positions": raw.get("number_of_positions", 1),
+        }
+
+        job_id = db_schema.insert_job(normalized)
 
         return json.dumps({
             "success": True,
             "job_id": job_id,
-            "message": "Job saved successfully."
+            "message": f"Job '{normalized['job_title']}' saved successfully with ID {job_id}.",
         })
 
     except Exception as exc:
@@ -136,9 +151,8 @@ def save_job(job_json: str | dict) -> str:
         return json.dumps({
             "success": False,
             "job_id": None,
-            "message": str(exc)
+            "message": str(exc),
         })
-
 @mcp.tool()
 def map_candidate_to_job(candidate_id: int, job_id: int) -> str:
     """Map a candidate to a job with a calculated match score."""
@@ -178,3 +192,38 @@ def map_candidate_to_job(candidate_id: int, job_id: int) -> str:
 if __name__ == "__main__":
     logger.info("ResumeIQ MCP Server starting (stdio transport)…")
     mcp.run(transport="stdio")
+import os
+import sys
+import logging
+from contextlib import asynccontextmanager
+
+from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
+
+logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def get_mcp_toolset():
+    server_script = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "mcp_server.py")
+    )
+
+    logger.info(f"🚀 Spawning MCP Server: {server_script}")
+
+    # ✅ MCPToolset takes StdioServerParameters directly
+    # It manages the subprocess + stdio_client internally
+    # Do NOT manually call stdio_client() and pass the session in
+    toolset = MCPToolset(
+        connection_params=StdioServerParameters(
+            command=sys.executable,
+            args=[server_script],
+            env={**os.environ},
+        )
+    )
+
+    try:
+        logger.info("✅ MCPToolset ready.")
+        yield toolset
+    finally:
+        await toolset.close()
+        logger.info("🔒 MCPToolset closed.")
