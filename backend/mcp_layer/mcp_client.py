@@ -1,28 +1,33 @@
-import asyncio
 import os
 import sys
-from mcp import StdioServerParameters
-from mcp.client.stdio import stdio_client
-from contextlib import asynccontextmanager
 import logging
+from contextlib import asynccontextmanager
 
-from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
+from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
 
 logger = logging.getLogger(__name__)
+
+
 @asynccontextmanager
 async def get_mcp_toolset():
-    # 1. Point to your MCP server script
-    server_script = os.path.abspath(os.path.join(os.path.dirname(__file__), "mcp_server.py"))
-    
-    # 2. Setup the stdio parameters (passing down environment variables for DB access)
-    server_params = StdioServerParameters(
-        command=sys.executable,
-        args=[server_script],
-        env={**os.environ}
+    server_script = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "mcp_server.py")
+    )
+
+    logger.info(f"🚀 Spawning MCP Server: {server_script}")
+
+    # ✅ MCPToolset takes StdioServerParameters directly
+    # It manages the subprocess + stdio_client internally
+    # Do NOT manually call stdio_client() and pass the session in
+    toolset = MCPToolset(
+        connection_params=StdioServerParameters(
+            command=sys.executable,
+            args=[server_script],
+            env={**os.environ},
+        )
     )
 
     print("🚀 Spawning MCP Server over stdio...")
-    toolset = MCPToolset(connection_params=server_params)
     try:
         yield toolset
     finally:

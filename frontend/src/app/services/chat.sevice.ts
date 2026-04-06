@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
-
 import { Observable } from 'rxjs';
 
 export interface ChatResponse {
   reply: string;
+}
+
+export interface JobsResponse {
+  jobs: any[];
 }
 export interface ResumeResponse {
   success: boolean;
@@ -15,7 +17,7 @@ export interface ResumeResponse {
 }
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-  private apiUrl = 'http://127.0.0.1:8000/api/route/chat';
+  private baseUrl = 'http://127.0.0.1:8000';
 
   constructor(private http: HttpClient) {}
   send(
@@ -24,14 +26,19 @@ export class ChatService {
     sessionId: string,
     candidateId?: number | null, // 🔥 ADD THIS
   ) {
-    return this.http.post<ChatResponse>(this.apiUrl, {
+    return this.http.post<ChatResponse>(this.baseUrl + '/api/route/chat', {
       message,
       user_role: userRole,
       session_id: sessionId,
       candidate_id: candidateId, // 🔥 SEND TO BACKEND
     });
   }
-  uploadResume(file: File, sessionId: string) {
+
+  getJobs(): Observable<JobsResponse> {
+    return this.http.get<JobsResponse>(`${this.baseUrl}/api/jobs`);
+  }
+
+   uploadResume(file: File, sessionId: string) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('session_id', sessionId); // 🔥 ADD THIS
