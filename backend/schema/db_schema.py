@@ -65,17 +65,19 @@ END $$;
 _JOB_DESCRIPTIONS_TABLE = """
 CREATE TABLE IF NOT EXISTS job_descriptions (
     id SERIAL PRIMARY KEY,
-    job_title VARCHAR(255) NOT NULL, 
+    job_title VARCHAR(255) NOT NULL,
     required_skills JSONB,
-    experience_years INT,   
-    job_description TEXT, 
-    locat  
-    number_of_positions INT DEFAULT 1,
+    experience_years INTEGER,
+    job_description TEXT,
+    location VARCHAR(255),
+    number_of_positions INTEGER DEFAULT 1,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 """
+ 
+
 
 _JOB_DESCRIPTIONS_TRIGGER = """
 DO $$ BEGIN
@@ -205,8 +207,8 @@ def list_jobs() -> list[dict]:
     try:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT id, job_title, job_type, min_experience_years, 
-                       max_experience_years, required_skills, number_of_positions, created_at
+                SELECT id, job_title, required_skills, experience_years,
+                       location, number_of_positions, is_active, created_at
                 FROM job_descriptions
                 WHERE is_active = TRUE
                 ORDER BY created_at DESC
@@ -216,7 +218,84 @@ def list_jobs() -> list[dict]:
     finally:
         conn.close()
 
+# schema/db_schema.py — replace insert_job entirely
+
 def insert_job(job_data: dict) -> int:
+    sql = """
+        INSERT INTO job_descriptions (
+            job_title,
+            required_skills,
+            experience_years,
+            job_description,
+            location,
+            number_of_positions
+        ) VALUES (
+            %(job_title)s,
+            %(required_skills)s,
+            %(experience_years)s,
+            %(job_description)s,
+            %(location)s,
+            %(number_of_positions)s
+        ) RETURNING id;
+    """
+    # ✅ Serialize skills list to JSON string for JSONB column
+    job_data["required_skills"] = json.dumps(job_data.get("required_skills", []))
+
+    # ✅ Safe defaults
+    job_data.setdefault("number_of_positions", 1)
+    job_data.setdefault("job_description", "")
+    job_data.setdefault("location", "")
+
+    # ✅ Convert "5 years" / "5 yrs" / 5 → integer
+    raw_exp = job_data.get("experience_years", 0)
+    if isinstance(raw_exp, str):
+        digits = ''.join(filter(str.isdigit, raw_exp))
+        job_data["experience_years"] = int(digits) if digits else 0
+    else:
+        job_data["experience_years"] = int(raw_exp or 0)
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql, job_data)
+            job_id = cur.fetchone()[0]
+        conn.commit()
+        return job_id
+    finally:
+        conn.close()
+    # ❌ DELETE everything after this line — dead code that never runs
+    sql = """
+        INSERT INTO job_descriptions (
+            job_title,
+            required_skills,
+            experience_years,
+            job_description,
+            location,
+            number_of_positions
+        ) VALUES (
+            %(job_title)s,
+            %(required_skills)s,
+            %(experience_years)s,
+            %(job_description)s,
+            %(location)s,
+            %(number_of_positions)s
+        ) RETURNING id;
+    """
+    job_data["required_skills"] = json.dumps(job_data.get("required_skills", []))
+    job_data.setdefault("number_of_positions", 1)
+    job_data.setdefault("experience_years", 0)
+    job_data.setdefault("job_description", "")
+    job_data.setdefault("location", "")
+
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql, job_data)
+            job_id = cur.fetchone()[0]
+        conn.commit()
+        return job_id
+    finally:
+        conn.close()
     sql = """
         INSERT INTO job_descriptions (
             job_title, job_type, required_skills,

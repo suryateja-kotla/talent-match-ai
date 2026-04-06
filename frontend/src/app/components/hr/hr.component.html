@@ -22,37 +22,44 @@
         <small class="text-muted">Describe a role to post it</small>
 
         <!-- ❌ REMOVE THIS OLD STATIC CHAT BOX (lines below deleted) -->
-        <!-- 
+        
 <div class="chat-box mt-3 p-3">
 <p>👋 Hi! I'm your hiring assistant...</p>
 <small class="text-muted">Example: "Post a Senior React Developer..."</small>
 </div>
-        -->
+       
 
         <!-- ✅ NEW: Dynamic chat box — shows messages array from hr.component.ts -->
-        <div
-          class="chat-box mt-3 p-3"
-          style="overflow-y: auto; max-height: 280px"
-        >
-          <div
-            *ngFor="let msg of messages"
-            [class]="msg.from === 'user' ? 'text-end mb-2' : 'mb-2'"
-          >
-            <span
-              [class]="
-                msg.from === 'user'
-                  ? 'badge bg-primary p-2 text-wrap'
-                  : 'badge bg-light text-dark p-2 text-wrap'
-              "
-            >
-              {{ msg.text }}
-            </span>
-          </div>
-          <!-- ✅ NEW: Shows "Thinking..." while waiting for root_agent response -->
-          <div *ngIf="isLoading" class="text-muted mt-1">
-            <small>🤖 Thinking...</small>
-          </div>
-        </div>
+        <div class="chat-box mt-3 p-2"
+     style="overflow-y: auto; max-height: 600px; display: flex; flex-direction: column; gap: 10px;">
+
+  <div *ngFor="let msg of messages"
+       [style.align-self]="msg.from === 'user' ? 'flex-end' : 'flex-start'"
+       style="max-width: 85%;">
+
+    <!-- User message — right side, no background -->
+    <div *ngIf="msg.from === 'user'"
+         style="color: #212529; font-size: 14px; line-height: 1.5;
+                white-space: pre-wrap; text-align: right; padding: 4px 0;">
+      {{ msg.text }}
+    </div>
+
+    <!-- Bot message — left side, no background, subtle left border as indicator -->
+    <div *ngIf="msg.from === 'bot'"
+         style="color: #111010; font-size: 14px; line-height: 1.6;
+                white-space: pre-wrap; border-left: 3px solid #0d6efd;
+                padding: 4px 10px;">
+      {{ msg.text }}
+    </div>
+
+  </div>
+
+  <div *ngIf="isLoading"
+       style="align-self: flex-start; color: #67727b; font-size: 13px; padding: 4px 0;">
+    🤖 Thinking...
+  </div>
+
+</div>
         <!-- ✅ END NEW CHAT BOX -->
 
         <!-- ❌ REMOVE THIS OLD STATIC INPUT (lines below deleted) -->
@@ -80,46 +87,49 @@
           >
             <i class="bi bi-send"></i>
           </button>
+          
         </div>
         <!-- ✅ END NEW INPUT -->
       </div>
     </div>
+    
 
     <!-- RIGHT JOB LIST — NO CHANGES HERE -->
-    <div class="col-lg-8">
-      <div class="card p-3 shadow-sm h-100">
-        <h5 class="fw-bold">Job Postings</h5>
-        <small class="text-muted mb-3">3 active listings</small>
+    <!-- RIGHT: JOB CARDS -->
+<div class="col-lg-8">
+  <div class="card p-3 shadow-sm h-100">
+    <h5 class="fw-bold">Job Postings</h5>
+    
+    <small class="text-muted mb-3">{{ jobs.length }} active listing{{ jobs.length !== 1 ? 's' : '' }}</small>
 
-        <div class="row g-3 mt-1">
-          <!-- JOB CARD -->
-          <div class="col-md-4" *ngFor="let job of jobs">
-            <div class="job-card p-3">
-              <!-- Header -->
-              <div class="d-flex justify-content-between align-items-start">
-                <h6 class="fw-bold mb-1">{{ job.title }}</h6>
-                <span class="badge bg-success-subtle text-success">active</span>
-              </div>
+    <!-- Empty state -->
+    <div *ngIf="jobs.length === 0" class="text-center text-muted mt-5 pt-5">
+      <i class="bi bi-briefcase fs-1 d-block mb-3 opacity-25"></i>
+      <p>No active job postings yet.<br>Use the chat to create one!</p>
+    </div>
 
-              <!-- Skills -->
-              <div class="mt-2">
-                <span class="skill-pill" *ngFor="let skill of job.skills">
-                  {{ skill }}
-                </span>
-              </div>
-
-              <!-- Info -->
-              <div class="mt-3 job-info">
-                <div><i class="bi bi-briefcase me-1"></i>{{ job.exp }}</div>
-                <div><i class="bi bi-geo-alt me-1"></i>{{ job.location }}</div>
-                <div>
-                  <i class="bi bi-people me-1"></i>{{ job.positions }} positions
-                </div>
-              </div>
-            </div>
+    <!-- Job cards from DB -->
+    <div class="row g-3 mt-1">
+      <div class="col-md-4" *ngFor="let job of jobs">
+        <div class="job-card p-3 border rounded-3 h-100">
+          <div class="d-flex justify-content-between align-items-start">
+            <h6 class="fw-bold mb-1">{{ job.title }}</h6>
+            <span class="badge bg-success-subtle text-success">active</span>
+          </div>
+          <div class="mt-2 d-flex flex-wrap gap-1">
+            <span class="badge bg-primary bg-opacity-10 text-primary"
+                  *ngFor="let skill of job.skills">{{ skill }}</span>
+            <span *ngIf="!job.skills?.length" class="text-muted small">No skills listed</span>
+          </div>
+          <div class="mt-3 job-info small text-muted">
+            <div><i class="bi bi-briefcase me-1"></i>{{ job.exp }}</div>
+            <div><i class="bi bi-geo-alt me-1"></i>{{ job.location }}</div>
+            <div><i class="bi bi-people me-1"></i>{{ job.positions }} position{{ job.positions !== 1 ? 's' : '' }}</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
   </div>
 </div>
