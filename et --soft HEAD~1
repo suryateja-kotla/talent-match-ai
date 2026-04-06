@@ -1,0 +1,35 @@
+[33m513f8cc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32magents-work-flow[m[33m)[m user-chatbot-changes
+[33mbc5d441[m[33m ([m[1;31morigin/agents-work-flow[m[33m)[m frontend to resume parser agent workflow
+[33md87e432[m[33m ([m[1;31morigin/hr-and-candidate-flow-testing[m[33m, [m[1;32mmain[m[33m, [m[1;32mhr-and-candidate-flow-testing[m[33m)[m Merge pull request #16 from suryateja-kotla/frontend-integration
+[33m13eb2f3[m[33m ([m[1;31morigin/frontend-integration[m[33m)[m Merge branch 'hr-and-candidate-flow-testing' of https://github.com/suryateja-kotla/talent-match-ai into frontend-integration
+[33m6b46cef[m Merge pull request #17 from suryateja-kotla/integrating-resume-agent
+[33mee25495[m Merge branch 'hr-and-candidate-flow-testing' of https://github.com/suryateja-kotla/talent-match-ai into frontend-integration
+[33mb98b598[m[33m ([m[1;31morigin/integrating-resume-agent[m[33m)[m migrated to vertexai
+[33m1159473[m updated root agent
+[33m4c63ab3[m Merge pull request #14 from suryateja-kotla/feature/mcptools
+[33m45d2fe8[m[33m ([m[1;31morigin/feature/mcptools[m[33m)[m Merge branch 'hr-and-candidate-flow-testing' of https://github.com/suryateja-kotla/talent-match-ai into feature/mcptools
+[33m73e4fc7[m Added MCP tools for job saving and candidate-job mapping with DB integration
+[33me5bb468[m Merge pull request #13 from suryateja-kotla/requisition_agent_setup
+[33m159b312[m[33m ([m[1;31morigin/requisition_agent_setup[m[33m)[m modified the descritpion and the instruction-set
+[33m52651d4[m Merge pull request #12 from suryateja-kotla/frontend-integration
+[33m6619edb[m added ap end points
+[33med1e822[m frontend integration done
+[33mc397253[m update hr_flow_agent
+[33m9dddfa5[m requisition_agent
+[33maa33a25[m[33m ([m[1;31morigin/job_matching_agent[m[33m)[m latest changes fetched from resume
+[33m37dd5c7[m added job_matching agent
+[33md160e90[m Merge pull request #11 from suryateja-kotla/integrating-resume-agent
+[33m2418817[m added resume agent
+[33mc0661c0[m Merge pull request #10 from suryateja-kotla/mcp-setup-for-final-flow
+[33m690ccf1[m[33m ([m[1;31morigin/mcp-setup-for-final-flow[m[33m)[m mcp-along with db setup.
+[33m3911c81[m Merge pull request #9 from suryateja-kotla/google-adk-base-setup
+[33m710c2c4[m[33m ([m[1;31morigin/google-adk-base-setup[m[33m)[m google-addk-base-setup
+[33m3d7770b[m Merge pull request #8 from suryateja-kotla/frontend-setup
+[33mab1dbd4[m[33m ([m[1;31morigin/frontend-setup[m[33m)[m added user dasboard and login itegration
+[33mb23a69e[m adding gitignore
+[33mfee476d[m Angular base setup with hr and login components
+[33mbfaafdc[m[33m ([m[1;31morigin/orchestrator-function[m[33m, [m[1;31morigin/final-testing-branch[m[33m, [m[1;31morigin/develop[m[33m)[m Merge pull request #4 from suryateja-kotla/base-setup
+[33ma6c3b72[m base-setup
+[33me0f7450[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #2 from suryateja-kotla/readme-and-gitignore
+[33m734a99e[m[33m ([m[1;31morigin/readme-and-gitignore[m[33m)[m readme and gitignore
+[33md047fba[m initial commit

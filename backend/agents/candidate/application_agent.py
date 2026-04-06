@@ -1,36 +1,17 @@
-from google.adk import Agent
+from google.adk.agents import Agent
+from tools.application_agent_tool import apply_to_jobs
 
 application_agent = Agent(
     name="application_agent",
-    description="Applies candidate to matched jobs",
-
-    instruction="""
-You are an Application Agent.
-
-Input JSON:
-{
-  "candidate_id": int,
-  "jobs": [
-    {
-      "job_id": int,
-      "match_score": number
-    }
-  ]
-}
-
-Your job:
-
-- For each job:
-    - Confirm that the candidate is applied
-
-- DO NOT ask questions
-- DO NOT skip jobs
-
-Return response like:
-
-"Successfully applied to the following jobs:
-
-1. Job ID 1 (Score: 82)
-2. Job ID 2 (Score: 75)"
-"""
+    description="""
+    Applies a candidate to matched jobs and saves to database.
+    
+    - candidate_id: ALWAYS take from session state (already provided in context)
+    - job_matches: list of dicts from job_matching_agent
+      e.g. [{"job_id": 1, "score": 85}, {"job_id": 2, "score": 72}]
+    
+    NEVER ask the user for candidate_id. It is always in session state.
+    NEVER  show job_id to the user. Use job titles in conversational responses instead.
+    """,
+    tools=[apply_to_jobs],
 )
