@@ -1,129 +1,136 @@
 import { CommonModule } from '@angular/common';
-
-import { Component } from '@angular/core';
-
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { AuthService } from '../../services/auth.service';
 import { ChatService } from '../../services/chat.sevice';
 
-interface Message {
-  text: string;
-
-  from: 'user' | 'bot';
-}
-
 @Component({
   selector: 'app-hr',
-
   standalone: true,
-
-  imports: [CommonModule, FormsModule], // ✅ added FormsModule for [(ngModel)]
-
+  imports: [CommonModule, FormsModule],
   templateUrl: './hr.component.html',
-
-  styleUrl: './hr.component.scss',
+  styleUrl: './hr.component.scss'
 })
-export class HrComponent {
-  // ✅ Chat state
+export class HrComponent implements OnInit {
 
   userInput = '';
-
+  messages: { from: string; text: string }[] = [];
   isLoading = false;
-
-  sessionId = crypto.randomUUID();
-
-  messages: Message[] = [
-    {
-      text: "👋 Hi! I'm your hiring assistant. Describe the role you want to post and I'll create a job card for you.",
-      from: 'bot',
-    },
-  ];
-
-  // ✅ Your existing jobs
-
-  jobs = [
-    {
-      title: 'Senior Frontend Developer',
-
-      skills: ['React', 'TypeScript', 'Next.js'],
-
-      exp: '5+ yrs',
-
-      location: 'San Francisco',
-
-      positions: 2,
-
-      applicants: 12,
-    },
-
-    {
-      title: 'Full Stack Engineer',
-
-      skills: ['Node.js', 'React', 'Docker'],
-
-      exp: '3+ yrs',
-
-      location: 'Remote',
-
-      positions: 3,
-
-      applicants: 24,
-    },
-
-    {
-      title: 'UX Designer',
-
-      skills: ['Figma', 'Research', 'Prototyping'],
-
-      exp: '4+ yrs',
-
-      location: 'New York',
-
-      positions: 1,
-
-      applicants: 8,
-    },
-  ];
+  jobs: any[] = [];
+  private sessionId!: string;
 
   constructor(
     private auth: AuthService,
+    private chatService: ChatService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.sessionId = this.getOrCreateSessionId();
+  }
 
-    private chatService: ChatService, // ✅ inject ChatService
-  ) {}
+  ngOnInit(): void {
+    this.loadJobs();
+  }
 
-  // ✅ Send message to root_agent via FastAPI
+  private getOrCreateSessionId(): string {
+    const key = 'chat_session_id';
+    let id = localStorage.getItem(key);
+    if (!id) {
+      const user = this.auth.getCurrentUser();
+      id = `hr-${user?.username ?? 'default'}-${Date.now()}`;
+      localStorage.setItem(key, id);
+    }
+    return id;
+  }
 
-  sendMessage() {
-    const text = this.userInput.trim();
+  // In hr.component.ts - update the loadJobs method
 
-    if (!text || this.isLoading) return;
+loadJobs(): void {
+  console.log('Loading jobs...'); // Add debug log
+  this.chatService.getJobs().subscribe({
+    next: (res: any) => {
+      console.log('Raw jobs response:', res); // Debug log
+      
+      // Handle different response formats
+      let jobsArray = [];
+      if (res.jobs && Array.isArray(res.jobs)) {
+        jobsArray = res.jobs;
+      } else if (Array.isArray(res)) {
+        jobsArray = res;
+      } else if (res.data && Array.isArray(res.data)) {
+        jobsArray = res.data;
+      } else {
+        console.warn('Unexpected jobs response format:', res);
+        jobsArray = [];
+      }
+      
+      this.jobs = jobsArray.map((j: any) => {
+        // Handle both camelCase and snake_case field names
+        let skills: string[] = [];
+        const rs = j.required_skills || j.requiredSkills;
+        
+        if (Array.isArray(rs)) {
+          skills = rs;
+        } else if (typeof rs === 'string') {
+          try { 
+            skills = JSON.parse(rs); 
+          } catch(e) { 
+            skills = []; 
+          }
+        }
+        
+        return {
+          id: j.id,
+          title: j.job_title || j.title || 'Untitled', // Handle both formats
+          location: j.location || 'N/A',
+          exp: j.experience_years || j.experienceYears ? `${j.experience_years || j.experienceYears} yrs` : 'N/A',
+          skills: skills,
+          positions: j.number_of_positions || j.numberOfPositions || 1,
+        };
+      });
+      
+      console.log('Processed jobs:', this.jobs); // Debug log
+      this.cdr.detectChanges();
+    },
+    error: (err: any) => {
+      console.error('Failed to load jobs:', err);
+      // Show error in UI
+      this.messages.push({ 
+        from: 'bot', 
+        text: '❌ Failed to load jobs. Please refresh the page.' 
+      });
+    },
+  });
+}
 
-    this.messages.push({ text, from: 'user' });
+  sendMessage(): void {
+    if (!this.userInput.trim()) return;
 
+    const input = this.userInput;
     this.userInput = '';
-
+    this.messages.push({ from: 'user', text: input });
     this.isLoading = true;
 
-    this.chatService.send(text, 'hr', this.sessionId).subscribe({
+    this.chatService.send(input, 'hr', this.sessionId).subscribe({
       next: (res) => {
-        this.messages.push({ text: res.reply, from: 'bot' });
-
         this.isLoading = false;
+        this.messages.push({ from: 'bot', text: res.reply || 'Done.' });
+        const replyLower = (res.reply || '').toLowerCase();
+        if (
+          replyLower.includes('created') ||
+          replyLower.includes('success') ||
+          replyLower.includes('job id')
+        ) {
+          this.loadJobs();
+        }
       },
-
       error: () => {
-        this.messages.push({
-          text: '⚠️ Error connecting to assistant.',
-          from: 'bot',
-        });
-
         this.isLoading = false;
+        this.messages.push({ from: 'bot', text: '❌ Something went wrong. Please try again.' });
       },
     });
   }
 
-  logout() {
+  logout(): void {
     this.auth.logout();
   }
 }
