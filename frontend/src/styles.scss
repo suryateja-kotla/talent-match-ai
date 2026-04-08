@@ -1,6 +1,134 @@
-/* You can add global styles to this file, and also import other style files */
+/* =========================
+   GLOBAL DARK THEME
+========================= */
+
 html, body {
   height: 100%;
   margin: 0;
-  overflow:hidden;
+  min-height: 0;
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(
+      circle at 20% 20%,
+      rgba(0, 200, 255, 0.15),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(0, 120, 255, 0.12),
+      transparent 40%
+    ),
+    #0b0f14;
+  color: #e6edf3;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+
+/* Smooth rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================
+   CARD (Glass Style)
+========================= */
+
+.card {
+  background: rgba(20, 25, 35, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color: #e6edf3;
+}
+
+/* =========================
+   TEXT + HEADINGS
+========================= */
+
+h1, h2, h3, h4, h5, h6 {
+  color: #f1f5f9;
+}
+
+.text-muted {
+  color: #94a3b8 !important;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn-primary {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  border: none;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-light {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e6edf3;
+  border: none;
+}
+
+.btn-outline-danger {
+  border-color: rgba(255, 0, 0, 0.4);
+  color: #ff6b6b;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input, .form-control {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #e6edf3 !important;
+}
+
+input::placeholder {
+  color: #64748b;
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge {
+  background: rgba(0, 150, 255, 0.15) !important;
+  color: #38bdf8 !important;
+}
+
+/* =========================
+   SCROLLBAR (clean)
+========================= */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+/* =========================
+   CHAT READY BASE
+========================= */
+
+.chat-wrapper {
+  background: transparent;
+}
+
+/* =========================
+   TRANSITIONS (smooth feel)
+========================= */
+
+* {
+  transition: background 0.2s ease, border 0.2s ease;
 }

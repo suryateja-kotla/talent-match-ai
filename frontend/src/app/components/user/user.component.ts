@@ -4,22 +4,46 @@ import { Router } from '@angular/router';
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { ApplicationsComponent } from './applications/applications.component';
 import { JobMatchesComponent } from './job-matches/job-matches.component';
+import { AuthService } from '../../services/auth.service';
+import { JobService } from '../../services/job.service';
+import { HrJobsComponent } from '../hr/hr-jobs/hr-jobs.component';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule,ChatbotComponent,ApplicationsComponent,JobMatchesComponent],
+  imports: [
+    CommonModule,
+    ChatbotComponent,
+    ApplicationsComponent,
+    JobMatchesComponent,
+    HrJobsComponent,
+  ],
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  styleUrls: ['./user.component.scss'],
 })
 export class UserComponent {
-   username: string = 'User1';
-
+  username: string = '';
+  showMobileChat: boolean = false;
   // 🔥 Mock data for now (will replace later with API)
   jobs: any[] = [];
   applications: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private jobService: JobService,
+  ) {}
+  ngOnInit() {
+    // Fetch the real user data from storage via the service
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.username = user.username;
+    } else {
+      // Security: If no user is found in storage, kick them back to login
+      this.router.navigate(['/']);
+    }
+    // this.loadUser();
+  }
 
   // 🔐 Logout
   logout() {
@@ -27,5 +51,7 @@ export class UserComponent {
     sessionStorage.removeItem('currentUser');
     this.router.navigate(['/']);
   }
-
+  toggleChat() {
+    this.showMobileChat = !this.showMobileChat;
+  }
 }

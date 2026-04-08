@@ -1,11 +1,105 @@
-/* Keep minimal styling only */
-
 :host {
-  display: block;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-/* Optional: smooth scroll */
-.card {
-  border-radius: 12px;
+/* DESKTOP VS MOBILE LOCKS */
+@media (min-width: 992px) {
+  .vh-100-desktop {
+    height: 100vh;
+  }
+  .overflow-hidden-desktop {
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 991px) {
+  .vh-100-desktop {
+    height: auto;
+    min-height: 100vh;
+  }
+  .overflow-hidden-desktop {
+    overflow: visible;
+  }
+
+  .dashboard-row {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* CHAT COLUMN OVERLAY LOGIC */
+.chat-column {
+  /* On desktop, it follows the grid */
+  @media (min-width: 992px) {
+    height: calc(100vh - 100px);
+  }
+
+  /* On mobile, we turn it into a floating overlay */
+  @media (max-width: 991px) {
+    &.mobile-active {
+      display: flex !important; /* Override d-none */
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      left: 20px; /* Centered with padding */
+      width: auto;
+      height: 70vh !important;
+      z-index: 2000;
+      background: #0d1117 !important; /* Solid dark background */
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9); /* Heavier shadow for depth */
+
+      // Remove the backdrop-filter if you want it 100% solid
+      backdrop-filter: none !important;
+      animation: slideUp 0.3s ease-out forwards;
+    }
+    .chat-column.mobile-active .dark-card {
+      background: #0d1117 !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+}
+
+/* FLOATING BUTTON (FAB) */
+.chat-fab {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  z-index: 2001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  border: none;
+  box-shadow: 0 8px 25px rgba(0, 114, 255, 0.4);
+  color: white;
+  font-size: 24px;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.dark-card {
+  background: rgba(20, 25, 35, 0.85) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.text-highlight {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

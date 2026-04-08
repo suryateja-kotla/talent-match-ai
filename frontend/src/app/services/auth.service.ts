@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   getCurrentUser(): { username: string; role: string } | null {
-    const raw = localStorage.getItem('currentUser');
+    const raw = localStorage.getItem('currentUser')|| sessionStorage.getItem('currentUser');
     return raw ? JSON.parse(raw) : null;
   }
 
@@ -52,6 +52,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
     localStorage.removeItem('chat_session_id'); // ← clear session on logout too
     this.router.navigate(['/']);
   }
