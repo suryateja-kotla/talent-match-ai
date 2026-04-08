@@ -8948,3 +8948,450 @@ Job Description
 2026-04-08 10:28:44,927 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
 2026-04-08 10:28:57,257 [MCP-SERVER] INFO: Response received from the model.
 2026-04-08 10:28:57,260 [MCP-SERVER] INFO:  Agent response: I’ll need your resume first before we can look for jobs. Please upload it to continue.
+2026-04-08 11:12:58,703 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 11:12:58,738 [MCP-SERVER] INFO: GCP Project: pixel-487017
+2026-04-08 11:12:58,739 [MCP-SERVER] INFO: GCP Location: us-central1
+2026-04-08 11:13:07,535 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 11:13:07,606 [MCP-SERVER] INFO: GCP Project: pixel-487017
+2026-04-08 11:13:07,606 [MCP-SERVER] INFO: GCP Location: us-central1
+2026-04-08 11:13:07,843 [MCP-SERVER] INFO: Backend starting...
+2026-04-08 11:13:08,271 [MCP-SERVER] INFO:  Database ready.
+2026-04-08 11:13:24,024 [MCP-SERVER] INFO: Role: user | Session: ef7593ab-c19f-4482-91b2-a955f3a02b3a
+2026-04-08 11:13:24,026 [MCP-SERVER] INFO:  Sending to agent: [USER] start
+2026-04-08 11:13:24,027 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:13:24,028 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:13:24,029 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:13:24,033 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:13:25,818 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:13:43,657 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:13:43,657 [MCP-SERVER] WARNING: Warning: there are non-text parts in the response: ['function_call'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-04-08 11:13:43,663 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:13:45,355 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:14:00,057 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:14:00,059 [MCP-SERVER] INFO:  Agent response: I’ll need your resume first before we can look for jobs. Please upload it to continue.
+2026-04-08 11:15:30,322 [MCP-SERVER] INFO: Role: hr | Session: 0ed1cca7-d129-4cb4-8fb9-b880797fb917
+2026-04-08 11:15:30,323 [MCP-SERVER] INFO:  Sending to agent: [HR] Hi, I am HR. I want to create a job.
+2026-04-08 11:15:30,324 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:15:30,325 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:15:30,327 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:15:30,334 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:15:32,577 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:15:49,590 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:15:52,713 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 11:15:52,728 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 11:15:52,758 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:15:52,775 [MCP-SERVER] INFO: 
+Note: Conversion of fields that are not included in the JSONSchema class are ignored.
+Json Schema is now supported natively by both Vertex AI and Gemini API. Users
+are recommended to pass/receive Json Schema directly to/from the API. For example:
+1. the counter part of GenerateContentConfig.response_schema is
+   GenerateContentConfig.response_json_schema, which accepts [JSON
+  Schema](https://json-schema.org/)
+2. the counter part of FunctionDeclaration.parameters is
+   FunctionDeclaration.parameters_json_schema, which accepts [JSON
+   Schema](https://json-schema.org/)
+3. the counter part of FunctionDeclaration.response is
+   FunctionDeclaration.response_json_schema, which accepts [JSON
+   Schema](https://json-schema.org/)
+
+2026-04-08 11:15:52,783 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:15:54,825 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:16:11,643 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:16:11,646 [MCP-SERVER] INFO:  Agent response: Please provide the following job details: job title, location, required experience, required skills, and job description.
+2026-04-08 11:17:54,958 [MCP-SERVER] INFO: Role: hr | Session: 0ed1cca7-d129-4cb4-8fb9-b880797fb917
+2026-04-08 11:17:54,959 [MCP-SERVER] INFO:  Sending to agent: [HR] job title: Senior systems engineer, i need in hyderabad with minimum 8 years of experience and should have knowledge on c#,ASp.NET,Web API,MVC,SQL , should be able to work on building scalabale applications
+2026-04-08 11:17:54,959 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:17:54,960 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:17:54,960 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:17:58,579 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 11:17:58,607 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 11:17:58,647 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:17:58,657 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:18:00,764 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:18:16,954 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:18:16,959 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:18:16,968 [MCP-SERVER] INFO:  Agent response: Job Title: Senior systems engineer
+Location: hyderabad
+Experience: 8 years
+Skills: c#, ASP.NET, Web API, MVC, SQL
+Description: able to work on building scalable applications
+
+Type OK or Proceed to create this requisition.
+2026-04-08 11:18:23,606 [MCP-SERVER] INFO: Role: hr | Session: 0ed1cca7-d129-4cb4-8fb9-b880797fb917
+2026-04-08 11:18:23,607 [MCP-SERVER] INFO:  Sending to agent: [HR] OK
+2026-04-08 11:18:23,607 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:18:23,608 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:18:23,608 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:18:26,939 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 11:18:26,967 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 11:18:27,011 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:18:27,026 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:18:29,163 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:18:46,538 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:18:46,543 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:18:46,556 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-08 11:18:46,721 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:18:46,741 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:18:49,021 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:19:09,412 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:19:17,823 [MCP-SERVER] INFO: Role: hr | Session: b2200da1-f65e-4c6c-95ea-87be9d5a8af5
+2026-04-08 11:19:17,824 [MCP-SERVER] INFO:  Sending to agent: [HR] Hi, I am HR. I want to create a job.
+2026-04-08 11:19:17,825 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:19:17,826 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:19:17,826 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:19:17,835 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:19:20,262 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:19:37,826 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:19:41,518 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 11:19:41,544 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 11:19:41,579 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:19:41,593 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:19:43,571 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:19:59,760 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:19:59,764 [MCP-SERVER] INFO:  Agent response: I can help with that. What is the job title, location, required experience, skills, and a brief description of the job?
+2026-04-08 11:20:03,584 [MCP-SERVER] INFO: Role: user | Session: 42e49741-6bb0-43e8-904c-0e53eacdfe6c
+2026-04-08 11:20:03,586 [MCP-SERVER] INFO:  Sending to agent: [USER] start
+2026-04-08 11:20:03,587 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:20:03,588 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:20:03,591 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:20:03,600 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:20:06,103 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:20:24,837 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:20:24,848 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:20:27,580 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:20:45,918 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:20:45,923 [MCP-SERVER] INFO:  Agent response: I’ll need your resume first before we can look for jobs. Please upload it to continue.
+2026-04-08 11:21:47,708 [MCP-SERVER] INFO: Resume saved to D:\SAmurAI\talent-match-ai\backend\api\..\sample_files\uploads\Resume_Sumitha_Joseph_P_2026.pdf — starting pipeline
+2026-04-08 11:21:47,748 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:21:47,750 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:21:47,763 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:21:50,338 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:22:06,457 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:22:10,132 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 11:22:10,154 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 11:22:10,192 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:22:10,203 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:22:11,799 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:22:26,636 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:22:27,618 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:22:27,630 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:22:29,273 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:23:21,606 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:23:21,612 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-08 11:23:21,789 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 11:23:21,799 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:23:23,405 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:23:38,004 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:23:38,008 [MCP-SERVER] WARNING: Malformed JSON in agent response.
+2026-04-08 11:23:38,218 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:23:38,256 [MCP-SERVER] INFO: Role: user | Session: 42e49741-6bb0-43e8-904c-0e53eacdfe6c
+2026-04-08 11:23:38,257 [MCP-SERVER] INFO:  Sending to agent: [USER] resume uploaded
+2026-04-08 11:23:38,258 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:23:38,259 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:23:38,260 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:23:38,280 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:23:39,964 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:23:57,410 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:23:57,420 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:23:59,047 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:24:14,947 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:24:14,950 [MCP-SERVER] INFO:  Agent response: Great! Your resume has been uploaded and processed.
+
+Now, could you tell me your preferred job location?
+2026-04-08 11:24:45,956 [MCP-SERVER] INFO: Role: user | Session: 42e49741-6bb0-43e8-904c-0e53eacdfe6c
+2026-04-08 11:24:45,956 [MCP-SERVER] INFO:  Sending to agent: [USER] hyderabad
+2026-04-08 11:24:45,957 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:24:45,958 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:24:45,958 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:24:45,972 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:24:47,684 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:25:05,556 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:25:05,566 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:25:07,265 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:25:25,778 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:25:25,931 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:25:27,585 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:25:44,831 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:25:44,983 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:25:46,719 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:26:05,301 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:26:05,557 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:26:07,190 [MCP-SERVER] INFO: AFC is enabled with max remote calls: 10.
+2026-04-08 11:26:29,740 [MCP-SERVER] INFO: HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/pixel-487017/locations/us-central1/publishers/google/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-04-08 11:26:29,743 [MCP-SERVER] INFO: AFC is enabled with max remote calls: 10.
+2026-04-08 11:26:44,597 [MCP-SERVER] INFO: HTTP Request: POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/pixel-487017/locations/us-central1/publishers/google/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-04-08 11:26:44,630 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:26:46,281 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:27:03,290 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:27:03,295 [MCP-SERVER] INFO:  Agent response: I found 1 job that matches your profile in hyderabad:
+
+1. Senior systems engineer — Match Score: 99%
+
+Would you like me to apply to these jobs for you?
+2026-04-08 11:27:21,059 [MCP-SERVER] INFO: Role: user | Session: 42e49741-6bb0-43e8-904c-0e53eacdfe6c
+2026-04-08 11:27:21,059 [MCP-SERVER] INFO:  Sending to agent: [USER] Yes
+2026-04-08 11:27:21,060 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:27:21,060 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:27:21,061 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:27:21,081 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:27:22,721 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:27:42,897 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:27:42,911 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:27:44,617 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:28:06,600 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:28:06,625 [MCP-SERVER] INFO: Applying: candidate=4, job=4, score=0.99
+2026-04-08 11:28:07,178 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:28:10,257 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 11:28:31,426 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 11:28:31,430 [MCP-SERVER] INFO:  Agent response: Great! Your application for the Senior systems engineer position has been submitted.
+2026-04-08 11:43:50,430 [MCP-SERVER] INFO: Role: hr | Session: adcbfb59-97eb-44e7-8eea-6a77b70d2fcd
+2026-04-08 11:43:50,431 [MCP-SERVER] INFO:  Sending to agent: [HR] Hi, I am HR. I want to create a job.
+2026-04-08 11:43:50,434 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 11:43:50,435 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 11:43:50,436 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 11:43:50,449 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 11:43:52,693 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:24:38,642 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:24:38,676 [MCP-SERVER] INFO: GCP Project: pixel-487017
+2026-04-08 12:24:38,677 [MCP-SERVER] INFO: GCP Location: us-central1
+2026-04-08 12:24:45,901 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:24:45,935 [MCP-SERVER] INFO: GCP Project: pixel-487017
+2026-04-08 12:24:45,936 [MCP-SERVER] INFO: GCP Location: us-central1
+2026-04-08 12:24:46,139 [MCP-SERVER] INFO: Backend starting...
+2026-04-08 12:24:46,600 [MCP-SERVER] INFO:  Database ready.
+2026-04-08 12:25:01,539 [MCP-SERVER] INFO: Role: hr | Session: 7fff2353-b975-44e3-a032-8adcb5383be5
+2026-04-08 12:25:01,539 [MCP-SERVER] INFO:  Sending to agent: [HR] i want to create a job
+2026-04-08 12:25:01,539 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 12:25:01,540 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 12:25:01,540 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 12:25:01,545 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:25:03,121 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:25:16,478 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 12:25:16,480 [MCP-SERVER] WARNING: Warning: there are non-text parts in the response: ['function_call'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-04-08 12:25:19,366 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:25:19,382 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 12:25:19,407 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:25:19,417 [MCP-SERVER] INFO: 
+Note: Conversion of fields that are not included in the JSONSchema class are ignored.
+Json Schema is now supported natively by both Vertex AI and Gemini API. Users
+are recommended to pass/receive Json Schema directly to/from the API. For example:
+1. the counter part of GenerateContentConfig.response_schema is
+   GenerateContentConfig.response_json_schema, which accepts [JSON
+  Schema](https://json-schema.org/)
+2. the counter part of FunctionDeclaration.parameters is
+   FunctionDeclaration.parameters_json_schema, which accepts [JSON
+   Schema](https://json-schema.org/)
+3. the counter part of FunctionDeclaration.response is
+   FunctionDeclaration.response_json_schema, which accepts [JSON
+   Schema](https://json-schema.org/)
+
+2026-04-08 12:25:19,423 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:25:20,949 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:25:33,413 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 12:25:33,416 [MCP-SERVER] INFO:  Agent response: Please provide the following details for the job:
+
+Job Title
+Location
+Experience Required
+Skills Required
+Job Description
+2026-04-08 12:35:50,233 [MCP-SERVER] INFO: Role: hr | Session: 52575d2a-37d9-4769-95b9-cde0d97e5757
+2026-04-08 12:35:50,233 [MCP-SERVER] INFO:  Sending to agent: [HR] hi i want to create a job
+2026-04-08 12:35:50,234 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 12:35:50,234 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 12:35:50,235 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 12:35:50,238 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:35:51,741 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:36:05,835 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 12:36:08,525 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:36:08,543 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 12:36:08,571 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:36:08,582 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:36:10,006 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:36:22,779 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 12:36:22,781 [MCP-SERVER] INFO:  Agent response: Please provide the job title, location, required experience, skills, and a brief description for the job you want to create.
+2026-04-08 12:37:21,975 [MCP-SERVER] INFO: Role: hr | Session: 52575d2a-37d9-4769-95b9-cde0d97e5757
+2026-04-08 12:37:21,976 [MCP-SERVER] INFO:  Sending to agent: [HR] title:s/w inter,location:vizag,experience:0-1 years,skills:AI,description:internship for 3 months
+2026-04-08 12:37:21,976 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 12:37:21,977 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 12:37:21,977 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 12:37:24,699 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:37:24,714 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 12:37:24,738 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:37:24,748 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:37:26,325 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:37:39,013 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 12:37:39,016 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:37:39,021 [MCP-SERVER] INFO:  Agent response: Job Title: s/w inter
+Location: vizag
+Experience: 0-1 years
+Skills: AI
+Description: internship for 3 months
+
+Type OK or Proceed to create this requisition.
+2026-04-08 12:37:43,379 [MCP-SERVER] INFO: Role: hr | Session: 52575d2a-37d9-4769-95b9-cde0d97e5757
+2026-04-08 12:37:43,379 [MCP-SERVER] INFO:  Sending to agent: [HR] OK
+2026-04-08 12:37:43,380 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 12:37:43,380 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 12:37:43,380 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 12:37:46,212 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:37:46,226 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 12:37:46,251 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:37:46,260 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:37:47,869 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:38:00,971 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 12:38:00,974 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:38:00,982 [MCP-SERVER] INFO: Processing request of type CallToolRequest
+2026-04-08 12:38:01,115 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:38:01,126 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:38:02,660 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:38:14,157 [MCP-SERVER] INFO: Response received from the model.
+2026-04-08 12:38:23,708 [MCP-SERVER] INFO: Role: hr | Session: 52575d2a-37d9-4769-95b9-cde0d97e5757
+2026-04-08 12:38:23,709 [MCP-SERVER] INFO:  Sending to agent: [HR] .
+2026-04-08 12:38:23,709 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 12:38:23,710 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 12:38:23,710 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 12:38:24,703 [MCP-SERVER] INFO: Role: hr | Session: 52575d2a-37d9-4769-95b9-cde0d97e5757
+2026-04-08 12:38:24,704 [MCP-SERVER] INFO:  Sending to agent: [HR] .
+2026-04-08 12:38:24,704 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 12:38:24,705 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 12:38:24,706 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 12:38:26,069 [MCP-SERVER] INFO: Role: hr | Session: 52575d2a-37d9-4769-95b9-cde0d97e5757
+2026-04-08 12:38:26,070 [MCP-SERVER] INFO:  Sending to agent: [HR] .
+2026-04-08 12:38:26,070 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 12:38:26,070 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 12:38:26,071 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 12:38:26,755 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:38:26,779 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 12:38:26,816 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:38:26,827 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:38:27,826 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:38:27,846 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 12:38:28,481 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:38:28,496 [MCP-SERVER] INFO: Role: hr | Session: 52575d2a-37d9-4769-95b9-cde0d97e5757
+2026-04-08 12:38:28,497 [MCP-SERVER] INFO:  Sending to agent: [HR] .
+2026-04-08 12:38:28,497 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 12:38:28,497 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 12:38:28,498 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 12:38:28,507 [MCP-SERVER] INFO: Role: hr | Session: 52575d2a-37d9-4769-95b9-cde0d97e5757
+2026-04-08 12:38:28,507 [MCP-SERVER] INFO:  Sending to agent: [HR] .
+2026-04-08 12:38:28,507 [MCP-SERVER] INFO: Spawning MCP Server: D:\SAmurAI\talent-match-ai\backend\mcp_layer\mcp_server.py
+2026-04-08 12:38:28,508 [MCP-SERVER] WARNING: StdioServerParameters is not recommended. Please use StdioConnectionParams.
+2026-04-08 12:38:28,508 [MCP-SERVER] INFO: MCP server process closed.
+2026-04-08 12:38:28,560 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:38:28,571 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:38:29,763 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:38:29,795 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 12:38:30,736 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:38:30,763 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:38:30,780 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:38:32,867 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:38:32,877 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:38:32,887 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 12:38:32,929 [MCP-SERVER] INFO: Processing request of type ListToolsRequest
+2026-04-08 12:38:32,942 [MCP-SERVER] INFO: The project/location from the environment variables will take precedence over the API key from the environment variables.
+2026-04-08 12:38:33,254 [MCP-SERVER] INFO: Database and schema initialized.
+2026-04-08 12:38:33,285 [MCP-SERVER] INFO: ResumeIQ MCP Server starting (stdio transport)…
+2026-04-08 12:38:34,875 [MCP-SERVER] INFO: Sending out request, model: gemini-2.5-flash, backend: GoogleLLMVariant.VERTEX_AI, stream: False
+2026-04-08 12:38:34,893 [MCP-SERVER] ERROR: ERROR in run_agent pipeline.
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py", line 507, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 668, in enter_async_context
+    result = await _enter(cm)
+             ^^^^^^^^^^^^^^^^
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\tools\mcp_tool\session_context.py", line 154, in __aenter__
+    return await self.start()
+           ^^^^^^^^^^^^^^^^^^
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\tools\mcp_tool\session_context.py", line 116, in start
+    await self._ready_event.wait()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\asyncio\locks.py", line 213, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\tools\mcp_tool\mcp_session_manager.py", line 482, in create_session
+    session = await asyncio.wait_for(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py", line 506, in wait_for
+    async with timeouts.timeout(timeout):
+               ~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\Lib\asyncio\timeouts.py", line 116, in __aexit__
+    raise TimeoutError from exc_val
+TimeoutError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\SAmurAI\talent-match-ai\backend\runner.py", line 95, in run_agent
+    async for event in runner.run_async(
+    ...<12 lines>...
+                    reply_text += part.text
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\runners.py", line 632, in run_async
+    async for event in agen:
+      yield event
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\runners.py", line 617, in _run_with_trace
+    async for event in agen:
+      yield event
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\runners.py", line 853, in _exec_with_plugin
+    async for event in agen:
+    ...<64 lines>...
+        yield event
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\runners.py", line 606, in execute
+    async for event in agen:
+      yield event
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\agents\base_agent.py", line 297, in run_async
+    async for event in agen:
+      yield event
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\agents\llm_agent.py", line 479, in _run_async_impl
+    async for event in agen:
+    ...<5 lines>...
+        should_pause = True
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\flows\llm_flows\base_llm_flow.py", line 754, in run_async
+    async for event in agen:
+      last_event = event
+      yield event
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\flows\llm_flows\base_llm_flow.py", line 773, in _run_one_step_async
+    async for event in agen:
+      yield event
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\flows\llm_flows\base_llm_flow.py", line 877, in _preprocess_async
+    await _process_agent_tools(invocation_context, llm_request)
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\flows\llm_flows\base_llm_flow.py", line 431, in _process_agent_tools
+    tools = await _convert_tool_union_to_tools(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\agents\llm_agent.py", line 184, in _convert_tool_union_to_tools
+    return await tool_union.get_tools_with_prefix(ctx)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\tools\base_toolset.py", line 115, in get_tools_with_prefix
+    tools = await self.get_tools(readonly_context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\tools\mcp_tool\mcp_session_manager.py", line 165, in wrapper
+    return await func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\tools\mcp_tool\mcp_toolset.py", line 316, in get_tools
+    tools_response: ListToolsResult = await self._execute_with_session(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\tools\mcp_tool\mcp_toolset.py", line 283, in _execute_with_session
+    session = await self._mcp_session_manager.create_session(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        headers=headers if headers else None
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\SAmurAI\talent-match-ai\.venv\Lib\site-packages\google\adk\tools\mcp_tool\mcp_session_manager.py", line 514, in create_session
+    raise ConnectionError(f'Failed to create MCP session: {e}') from e
+ConnectionError: Failed to create MCP session: 
+2026-04-08 12:38:34,990 [MCP-SERVER] INFO:  Agent response: ERROR: Failed to create MCP session: 
+2026-04-08 12:38:34,994 [MCP-SERVER] WARNING: Error on session runner task: unhandled errors in a TaskGroup (1 sub-exception)
