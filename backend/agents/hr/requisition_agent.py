@@ -1,5 +1,6 @@
 from google.adk.agents import Agent
 
+from mcp_layer.mcp_server import save_job
 from instructions.requisition_instruction import REQUISITION_INSTRUCTION
 
 
@@ -23,5 +24,5 @@ requisition_agent = Agent(
         "Greetings or small talk must be forwarded to hr_flow_agent. "
         "This agent handles requisition creation only."
     ),
-    tools=[],
+    tools=[save_job],
 )
