@@ -19,6 +19,7 @@ type ChatStep =
 })
 export class ChatbotComponent implements OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef;
   @Input() userRole: string = 'user';
 
   //step: ChatStep = 'WAITING_FOR_RESUME';
@@ -75,6 +76,9 @@ export class ChatbotComponent implements OnInit {
     const file = event.target.files[0];
     if (!file) return;
 
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
     // ✅ Step 1 — show filename
     this.messages.push({ text: file.name, sender: 'user' });
 
@@ -97,7 +101,7 @@ export class ChatbotComponent implements OnInit {
           this.scrollToBottom();
 
           return this.chatService.send(
-            'resume uploaded',
+            'resume uploaded.',
             'user',
             this.sessionId,
             this.candidateId,

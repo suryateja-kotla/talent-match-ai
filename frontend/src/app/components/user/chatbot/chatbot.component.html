@@ -1,8 +1,6 @@
 <div class="chat-wrapper">
-  <!-- HEADER -->
   <div class="chat-header">Job Assistant</div>
 
-  <!-- MESSAGES -->
   <div class="chat-messages" #scrollContainer>
     @for (msg of messages; track $index) {
       <div
@@ -15,7 +13,6 @@
       </div>
     }
 
-    <!-- Typing -->
     <div *ngIf="isLoading" class="chat-message bot-msg">
       <div class="message-bubble typing">
         <span>🤖Thinking</span>
@@ -26,25 +23,28 @@
     </div>
   </div>
 
-  <!-- FILE UPLOAD -->
-  <div class="chat-upload" *ngIf="!resumeUploaded">
-    <input
-      type="file"
-      (change)="onFileSelected($event)"
-      class="form-control form-control-sm"
-    />
-  </div>
-
-  <!-- INPUT -->
   <div class="chat-input-wrapper">
     <div class="chat-input-box">
+      
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        style="display: none;"
+        accept=".pdf,.doc,.docx"
+      />
+
+      <button class="attach-btn" (click)="fileInput.click()" title="Upload Resume">
+        <i class="bi bi-paperclip fs-5"></i>
+      </button>
+
       <input
         [(ngModel)]="userInput"
-        placeholder="Type your message..."
+        placeholder="Type a message or attach resume..."
         (keydown)="handleKeyDown($event)"
       />
 
-      <button (click)="sendMessage()">
+      <button class="send-btn" (click)="sendMessage()">
         <i class="bi bi-send"></i>
       </button>
     </div>
