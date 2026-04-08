@@ -1,7 +1,7 @@
 from google.adk.agents import Agent # Agent is the preferred alias
 from agents.candidate.candidate_flow_agent import candidate_flow_agent
 from agents.hr.requisition_agent import requisition_agent
- 
+from agents.hr.hr_flow_agent import hr_flow_agent
 APP_NAME = "multi_agent_app"
  
 root_agent = Agent(
@@ -34,7 +34,7 @@ STEP 2: ENFORCE ROLE-BASED ACCESS
 -------------------------------------
 
 IF ROLE = HR:
-- You MUST ONLY use: requisition_agent
+- You MUST ONLY use: hr_flow_agent
 - NEVER use candidate_flow_agent
 
 IF ROLE = USER:
@@ -82,10 +82,11 @@ CRITICAL RULES
 - ALWAYS produce a useful response
 - NEVER return empty response
 - NEVER ask unnecessary clarification questions
+
 """
 ,
     sub_agents=[
         candidate_flow_agent,
-        requisition_agent
+        hr_flow_agent,
     ]
 )
