@@ -1,63 +1,142 @@
+/* =========================
+   HR PAGE (MATCH USER)
+========================= */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Background */
 .hr-page {
-  background: #f6f8fb;
-  min-height: 100vh;
+  background: transparent;
 }
 
-/* Chat box */
-.chat-box {
-  background: #f1f3f7;
-  border-radius: 10px;
-  font-size: 14px;
+/* Layout */
+.row {
+  flex: 1;
+  min-height: 0;
 }
 
-/* Job card */
-.job-card {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #eaeaea;
-  transition: 0.3s;
+/* BOTH COLUMNS */
+.col-lg-4,
+.col-lg-8 {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.job-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+/* BOTH CARDS */
+.col-lg-4 .card,
+.col-lg-8 .card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-/* badges */
-.badge {
-  font-size: 12px;
-}
-/* Job Card */
-.job-card {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid #eaeaea;
-  transition: all 0.25s ease;
-  cursor: pointer;
+/* Container */
+.container-fluid {
+  height: 100vh;
 }
 
-.job-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+/* Header */
+.chat-header {
+  padding: 10px 14px;
+  font-weight: 600;
+  color: #e6edf3;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Skill Pills */
-.skill-pill {
-  display: inline-block;
-  background: #eef2ff;
-  color: #3b5bdb;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  margin: 2px;
+/* Generic card fix */
+.card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.chat-container {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
 }
 
-/* Job Info */
-.job-info {
-  font-size: 13px;
-  color: #6c757d;
+.chat-container app-hr-chat {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  height: 100%;
+}
+/* Responsive height management */
+@media (min-width: 992px) {
+  .vh-100-desktop {
+    height: 100vh;
+  }
+  .overflow-hidden-desktop {
+    overflow: hidden;
+  }
 }
 
-.job-info div {
-  margin-bottom: 4px;
+@media (max-width: 991px) {
+  .vh-100-desktop {
+    height: auto;
+    min-height: 100vh;
+  }
+  .overflow-hidden-desktop {
+    overflow: visible;
+  }
+
+  .dashboard-row {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* THE FLOATING CHAT LOGIC */
+.chat-column {
+  @media (max-width: 991px) {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: calc(100% - 40px);
+    max-width: 400px;
+    height: 70vh !important;
+    z-index: 1050;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(120%); /* Hide off-screen */
+    opacity: 0;
+    pointer-events: none;
+
+    &.mobile-visible {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+/* FLOATING BUTTON (FAB) */
+.chat-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 8px 25px rgba(0, 150, 255, 0.4);
+  z-index: 1060;
+}
+
+.dark-card {
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 0;
 }

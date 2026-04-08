@@ -1,0 +1,24 @@
+.job-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Text */
+.job-info {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* Badge fix */
+.badge {
+  background: rgba(0, 150, 255, 0.15) !important;
+  color: #38bdf8 !important;
+}
