@@ -94,9 +94,14 @@ export class HrChatComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private scrollToBottom(): void {
-    const element = this.scrollContainer.nativeElement;
-    window.requestAnimationFrame(() => {
-      element.scrollTop = element.scrollHeight;
-    });
+    // setTimeout allows Angular's change detection to update the HTML first
+    setTimeout(() => {
+      try {
+        this.scrollContainer.nativeElement.scrollTop =
+          this.scrollContainer.nativeElement.scrollHeight;
+      } catch (err) {
+        console.error('Scroll error:', err);
+      }
+    }, 50); // 50ms delay is usually perfect
   }
 }

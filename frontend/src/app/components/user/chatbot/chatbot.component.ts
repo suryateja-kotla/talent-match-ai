@@ -11,8 +11,9 @@ import { switchMap } from 'rxjs';
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.scss'],
 })
-export class ChatbotComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
+export class ChatbotComponent implements OnInit {
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef;
   @Input() userRole: string = 'user';
   @Output() applicationSubmitted = new EventEmitter<void>();
 
@@ -56,8 +57,14 @@ export class ChatbotComponent implements OnInit, AfterViewInit, OnDestroy {
     const file = event.target.files[0];
     if (!file) return;
 
-    this.messages.push({ text: `📄 ${file.name}`, sender: 'user' });
-    this.messages.push({ text: '📤 Uploading and processing resume...', sender: 'bot' });
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+    // ✅ Step 1 — show filename
+    this.messages.push({ text: file.name, sender: 'user' });
+
+    // ✅ Step 2 — show uploading
+    this.messages.push({ text: '📤 Uploading resume...', sender: 'bot' });
     this.isLoading = true;
 
     this.chatService
@@ -66,7 +73,7 @@ export class ChatbotComponent implements OnInit, AfterViewInit, OnDestroy {
         switchMap((res) => {
           this.candidateId = res.candidate_id;
           return this.chatService.send(
-            'resume uploaded',
+            'resume uploaded.',
             'user',
             this.sessionId,
             this.candidateId,

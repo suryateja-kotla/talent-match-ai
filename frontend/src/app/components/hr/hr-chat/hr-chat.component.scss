@@ -1,25 +1,23 @@
 :host {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  /* This is the magic line that prevents the component from 
-     growing infinitely and forces the child to scroll instead */
-  min-height: 0;
   height: 100%;
-  width: 100%;
+  min-height: 0; /* CRITICAL */
 }
 
 .chat-wrapper {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 0;
   height: 100%;
-  overflow: hidden;
+  min-height: 0; /* CRITICAL */
+  overflow: hidden; /* Stops the whole page from growing */
 }
 
 .chat-messages {
-  flex: 1;
+  /* MAGIC FIX: The '0' at the end forces it to respect parent boundaries */
+  flex: 1 1 0; 
+  
   overflow-y: auto; /* Triggers the scrollbar */
   display: flex;
   flex-direction: column;
@@ -27,15 +25,21 @@
   padding: 12px 6px;
   max-height: 100%;
   scroll-behavior: smooth;
-  
-  /* Fix for some browsers: ensures the container doesn't collapse */
-  min-height: 0;
+
+  /* Custom scrollbar styling for your dark theme */
   &::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: rgba(0, 198, 255, 0.3);
-    border-radius: 10px;}
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
 }
 
 .chat-message {
@@ -65,6 +69,7 @@
 }
 
 .chat-input-wrapper {
+  flex-shrink: 0; /* Prevents the input box from getting squished */
   margin-top: auto;
   padding: 12px 0 8px 0;
 }

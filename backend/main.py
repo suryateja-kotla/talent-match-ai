@@ -1,3 +1,4 @@
+from email.mime import message
 import logging
 import sys
 import os
@@ -47,7 +48,7 @@ app.include_router(resume_router)
 
 class ChatRequest(BaseModel):
     message: str
-    user_role: str = "hr"
+    user_role: str = "user"
     session_id: str = "default_user"
     candidate_id: int | None = None 
  
@@ -71,6 +72,7 @@ async def chat(req: ChatRequest):
         prompt = f"[{role.upper()}] {message}"
  
         logger.info(f" Sending to agent: {prompt}")
+        # 🔒 Prevent USER doing HR action
  
         reply = await run_agent(prompt, req.session_id, candidate_id=req.candidate_id)
         if not reply:

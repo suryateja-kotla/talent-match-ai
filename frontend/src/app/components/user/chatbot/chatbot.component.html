@@ -27,9 +27,22 @@
 
   <div class="chat-input-wrapper">
     <div class="chat-input-box">
+      
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        style="display: none;"
+        accept=".pdf,.doc,.docx"
+      />
+
+      <button class="attach-btn" (click)="fileInput.click()" title="Upload Resume">
+        <i class="bi bi-paperclip fs-5"></i>
+      </button>
+
       <input
         [(ngModel)]="userInput"
-        placeholder="Type your message..."
+        placeholder="Type a message or attach resume..."
         (keydown)="handleKeyDown($event)"
       />
       <button (click)="sendMessage()" [disabled]="isLoading">

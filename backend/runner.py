@@ -1,4 +1,5 @@
 import asyncio
+from email import message
 import json
 import logging
 import os
@@ -13,9 +14,8 @@ import config.settings
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types as genai_types
-
-from agents.root.root_agent import root_agent, APP_NAME
-from agents.hr.requisition_agent import requisition_agent
+from agents.hr.hr_flow_agent import hr_flow_agent
+from agents.candidate.candidate_flow_agent import candidate_flow_agent
 from agents.candidate.resume_parser_agent import resume_parser_agent
 from mcp_layer.mcp_client import get_mcp_toolset
 
@@ -30,12 +30,6 @@ APP_NAME = "talent-match-ai"
 session_service = InMemorySessionService()
 _session_registry: dict[str, str] = {}
 
-# Single shared runner — defined once
-runner = Runner(
-    agent=root_agent,
-    app_name=APP_NAME,
-    session_service=session_service,
-)
 
 
 async def _get_or_create_session(session_id: str):
@@ -62,13 +56,7 @@ async def run_agent(message: str, session_id: str,candidate_id: int | None) -> s
     Generic chat entry point. Routes general user queries through the
     root orchestrator agent to the appropriate sub-agent.
     """
-    #logger.info(f"run_agent | session={session_id} | msg={message[:80]}")
-    original_tools = list(requisition_agent.tools)
     try:
-        # async with — get_mcp_toolset is @asynccontextmanager
-        async with get_mcp_toolset() as mcp_tools:
-            requisition_agent.tools = [mcp_tools]
-            #session = await _get_or_create_session(session_id)
         session = await _get_or_create_session(session_id)
         if candidate_id:
             session.state["candidate_id"] = candidate_id
@@ -82,26 +70,42 @@ CRITICAL:
 Use candidate_id={session.state.get("candidate_id")} for ALL job matching.
 DO NOT ask user for it.
 """
-
+        system_note = f"\n\n[SYSTEM CONTEXT: candidate_id={session.state.get('candidate_id')}]"
 
         user_message = genai_types.Content(
             role="user",
-            parts=[genai_types.Part(text=enhanced_message)],
+            parts=[genai_types.Part(text=enhanced_message+system_note)],
         )
 
         logger.debug("Dispatching message to root_agent...")
+
+
+        role_match = re.match(r"\[(.*?)\]", message)
+        role = role_match.group(1).upper() if role_match else "USER"
+
+        if role == "USER":
+            selected_agent = candidate_flow_agent
+        elif role == "HR":
+            selected_agent = hr_flow_agent
+        else:
+            return " Invalid role. Only 'hr' or 'user' are allowed."
+
+        runner = Runner(
+            agent=selected_agent,
+            app_name=APP_NAME,
+            session_service=session_service,
+            )
         reply_text = ""
+
 
         async for event in runner.run_async(
             user_id=session_id,
             session_id=session.id,
             new_message=user_message,
-        ):
-            # Try to extract useful info
+            ):
             if hasattr(event, "author"):
                 print(f"AGENT: {event.author}")
 
-            # Capture final response
             if event.content and getattr(event.content, "parts", None):
                 for part in event.content.parts:
                     if hasattr(part, "text") and part.text:
@@ -111,8 +115,7 @@ DO NOT ask user for it.
     except Exception as e:
         logger.exception("ERROR in run_agent pipeline.")
         return f"ERROR: {str(e)}"
-    finally:
-        requisition_agent.tools = original_tools
+
 
 
 
@@ -143,9 +146,14 @@ async def run_resume_parsing(file_path: str, session_id: str) -> dict:
                 )],
             )
             final_text = ""
+            parsing_runner = Runner(
+                agent=resume_parser_agent,
+                app_name=APP_NAME,
+                session_service=session_service,
+            )
 
             # 5. Execute the runner
-            async for event in runner.run_async(
+            async for event in parsing_runner.run_async(
                 user_id=session_id,
                 session_id=session.id,
                 new_message=message,

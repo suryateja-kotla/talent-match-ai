@@ -1,5 +1,6 @@
 from google.adk.agents import Agent
 
+from mcp_layer.mcp_server import save_job
 from instructions.requisition_instruction import REQUISITION_INSTRUCTION
 
 
@@ -7,18 +8,21 @@ requisition_agent = Agent(
     model="gemini-2.5-flash",
     name="requisition_agent",
     description=(
-        "An HR assistant that extracts skills, location, role, and experience from prompts. "
-        "It interactively clarifies missing data, presents a preview for HR approval, "
-        "and persists the final requisition to the database via MCP tools only after confirmation."
+        "An HR assistant that collects job details, auto-generates or enhances the job description, "
+        "presents a full preview for HR approval, and saves the requisition only after confirmation."
     ),
     instruction=(
         f"{REQUISITION_INSTRUCTION}\n\n"
         "OPERATIONAL PROTOCOL:\n"
-        "1. Extract: Role, Skills, Location, and Experience.\n"
-        "2. Validate: If any field is missing, ask the HR user specifically for that info.\n"
-        "3. Preview: Once all data is gathered, display a structured summary to the user.\n"
-        "4. Confirm: Wait for the user to say 'OK' or 'Proceed' before calling the database storage tool."
+        "1. Extract: job_title, location, experience_required, skills_required, number_of_positions.\n"
+        "2. Validate: Ask for any missing required fields.\n"
+        "3. Generate JD: Auto-generate a professional JD. If HR gave a partial one, enhance it.\n"
+        "4. Preview: Show the full summary including generated JD. Invite HR to review or request changes.\n"
+        "5. Revise: If HR requests JD changes, apply them and show updated preview again.\n"
+        "6. Confirm: Call save_job only when HR says OK / Proceed / Yes / Sure.\n"
+        "7. Respond: Confirm success with Job ID or report failure.\n\n"
+        "Greetings or small talk must be forwarded to hr_flow_agent. "
+        "This agent handles requisition creation only."
     ),
-    tools=[
-    ],
+    tools=[save_job],
 )
