@@ -4,7 +4,6 @@ import json
 import logging
 import os
 import re
-from unittest import runner
 from dotenv import load_dotenv
 import config.settings
 
@@ -71,11 +70,11 @@ CRITICAL:
 Use candidate_id={session.state.get("candidate_id")} for ALL job matching.
 DO NOT ask user for it.
 """
-
+        system_note = f"\n\n[SYSTEM CONTEXT: candidate_id={session.state.get('candidate_id')}]"
 
         user_message = genai_types.Content(
             role="user",
-            parts=[genai_types.Part(text=enhanced_message)],
+            parts=[genai_types.Part(text=enhanced_message+system_note)],
         )
 
         logger.debug("Dispatching message to root_agent...")
@@ -89,7 +88,7 @@ DO NOT ask user for it.
         elif role == "HR":
             selected_agent = hr_flow_agent
         else:
-            return "❌ Invalid role. Only 'hr' or 'user' are allowed."
+            return " Invalid role. Only 'hr' or 'user' are allowed."
 
         runner = Runner(
             agent=selected_agent,
@@ -97,6 +96,7 @@ DO NOT ask user for it.
             session_service=session_service,
             )
         reply_text = ""
+
 
         async for event in runner.run_async(
             user_id=session_id,
@@ -146,9 +146,14 @@ async def run_resume_parsing(file_path: str, session_id: str) -> dict:
                 )],
             )
             final_text = ""
+            parsing_runner = Runner(
+                agent=resume_parser_agent,
+                app_name=APP_NAME,
+                session_service=session_service,
+            )
 
             # 5. Execute the runner
-            async for event in runner.run_async(
+            async for event in parsing_runner.run_async(
                 user_id=session_id,
                 session_id=session.id,
                 new_message=message,
