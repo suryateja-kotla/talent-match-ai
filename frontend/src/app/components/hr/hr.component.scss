@@ -1,152 +1,88 @@
-/* =========================
-   HR PAGE (MATCH USER)
-========================= */
-
 :host {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 0;
-}
-
-/* Background */
-.hr-page {
-  background: transparent;
-}
-
-/* Layout */
-.row {
-  flex: 1;
-  min-height: 0;
-}
-
-/* BOTH COLUMNS */
-.col-lg-4,
-.col-lg-8 {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-/* BOTH CARDS */
-.col-lg-4 .card,
-.col-lg-8 .card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-/* Container */
-.container-fluid {
   height: 100vh;
-}
-
-/* Header */
-.chat-header {
-  padding: 10px 14px;
-  font-weight: 600;
-  color: #e6edf3;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Generic card fix */
-.card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
+  width: 100vw;
   overflow: hidden;
 }
-.chat-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
 
-  app-hr-chat {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-    width: 100%;
-  }
-}
-
-.chat-container app-hr-chat {
-  flex: 1;
-  display: flex;
-  min-height: 0;
+.hr-page {
   height: 100%;
-}
-/* Responsive height management */
-@media (min-width: 992px) {
-  .vh-100-desktop {
-    height: 100vh;
-  }
-  .overflow-hidden-desktop {
-    overflow: hidden;
-  }
-}
-
-@media (max-width: 991px) {
-  .vh-100-desktop {
-    height: auto;
-    min-height: 100vh;
-  }
-  .overflow-hidden-desktop {
-    overflow: visible;
-  }
-
-  .dashboard-row {
-    display: flex;
-    // flex-direction: column;
-    height: calc(100vh - 100px);
-  }
-}
-
-/* THE FLOATING CHAT LOGIC */
-.chat-column {
-  @media (max-width: 991px) {
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    width: calc(100% - 40px);
-    max-width: 400px;
-    height: 70vh !important;
-    z-index: 1050;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateY(120%); /* Hide off-screen */
-    opacity: 0;
-    pointer-events: none;
-
-    &.mobile-visible {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-}
-
-/* FLOATING BUTTON (FAB) */
-.chat-fab {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 8px 25px rgba(0, 150, 255, 0.4);
-  z-index: 1060;
+  flex-direction: column;
+}
+
+.dashboard-row {
+  flex: 1;
+  min-height: 0;
 }
 
 .dark-card {
   background: #0d1117;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* DESKTOP COLUMN FLEX */
+.chat-column, .jobs-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* MOBILE FLOATING CHAT LOGIC */
+@media (max-width: 991px) {
+  .chat-column {
+    position: fixed !important;
+    bottom: 100px !important;
+    right: 20px !important;
+    left: 20px !important;
+    width: auto !important;
+    height: 70vh !important;
+    z-index: 2000 !important;
+    
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* Hidden State */
+    transform: translateY(150%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+
+    &.mobile-visible {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+  }
+
+  .jobs-column {
+    height: calc(100vh - 120px) !important;
+  }
+}
+
+/* FAB BUTTON */
+.chat-fab {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  z-index: 2001; /* Must be above the chat window */
+  box-shadow: 0 8px 25px rgba(0, 150, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.chat-header {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #e6edf3;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }

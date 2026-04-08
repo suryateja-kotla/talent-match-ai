@@ -23,38 +23,29 @@
   </div>
 
   <div class="row flex-grow-1 g-3 dashboard-row" style="min-height: 0">
-    <div
-      class="col-lg-4 d-none d-lg-flex flex-column chat-column"
-      [class.mobile-active]="showMobileChat"
-    >
-      <div class="card h-100 shadow-sm p-2 d-flex flex-column dark-card">
-        <div
-          class="d-lg-none d-flex justify-content-between align-items-center p-2 border-bottom mb-2"
-        >
-          <span class="fw-bold">Job Assistant</span>
-          <button
-            class="btn-close btn-close-white"
-            (click)="toggleChat()"
-          ></button>
-        </div>
-        <app-chatbot class="flex-grow-1"></app-chatbot>
-      </div>
-    </div>
-
-    <div class="col-12 col-lg-8 d-flex flex-column right-content-scroll">
-      <div class="card shadow-sm mb-3 flex-grow-1 dark-card">
-        <div class="p-3 h-100 overflow-auto">
-          <app-hr-jobs></app-hr-jobs>
-        </div>
-      </div>
-      <div class="card shadow-sm flex-grow-1 dark-card">
-        <div class="p-3 h-100 overflow-auto">
-          <app-applications></app-applications>
-        </div>
-      </div>
+  <div class="col-lg-4 d-none d-lg-flex flex-column chat-column" [class.mobile-active]="showMobileChat">
+    <div class="card h-100 shadow-sm p-2 d-flex flex-column dark-card">
+      <app-chatbot class="flex-grow-1"></app-chatbot>
     </div>
   </div>
 
+  <div class="col-12 col-lg-8 d-flex flex-column" style="height: calc(100vh - 100px); overflow: hidden;">
+    
+    <div class="card shadow-sm mb-3 dark-card flex-section-box">
+      <div class="p-3 h-100 scroll-area-internal">
+        <app-hr-jobs></app-hr-jobs>
+      </div>
+    </div>
+
+    <div class="card shadow-sm dark-card flex-section-box">
+      <div class="p-3 h-100 scroll-area-internal">
+        <app-applications #appsList [candidateId]="currentCandidateId"></app-applications>
+      </div>
+    </div>
+    
+
+  </div>
+</div>
   <button class="btn btn-primary chat-fab d-lg-none" (click)="toggleChat()">
     <i
       class="bi"
