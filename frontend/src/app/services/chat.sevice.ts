@@ -41,7 +41,6 @@ export class ChatService {
       user_role: userRole,
       session_id: sessionId,
       candidate_id: candidateId, 
-      candidate_id: candidateId, 
     });
   }
 

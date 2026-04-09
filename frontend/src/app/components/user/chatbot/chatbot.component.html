@@ -7,10 +7,6 @@
         class="chat-message"
         [ngClass]="msg.sender === 'user' ? 'user-msg' : 'bot-msg'"
       >
-      <div
-        class="chat-message"
-        [ngClass]="msg.sender === 'user' ? 'user-msg' : 'bot-msg'"
-      >
         <div class="message-bubble">
           {{ msg.text }}
         </div>
@@ -42,11 +38,6 @@
         (click)="fileInput.click()"
         title="Upload Resume"
       >
-      <button
-        class="attach-btn"
-        (click)="fileInput.click()"
-        title="Upload Resume"
-      >
         <i class="bi bi-paperclip fs-5"></i>
       </button>
 
@@ -60,4 +51,3 @@
       </button>
     </div>
   </div>
-</div>
