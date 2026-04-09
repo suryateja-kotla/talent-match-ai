@@ -1,11 +1,11 @@
 <div class="chat-wrapper d-flex flex-column h-100">
-  <div class="chat-messages flex-grow-1" #scrollContainer style="overflow-y: auto;min-height: 0;">
+  <div class="chat-messages flex-grow-1" #scrollContainer style="overflow-y: auto; min-height: 0;">
     <div
       *ngFor="let msg of messages"
       class="chat-message"
       [ngClass]="msg.from === 'user' ? 'user-msg' : 'bot-msg'"
     >
-      <div class="message-bubble">
+      <div class="message-bubble">  <!-- 👈 removed the extra [ngClass] -->
         {{ msg.text }}
       </div>
     </div>
