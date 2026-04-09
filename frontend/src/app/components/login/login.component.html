@@ -27,51 +27,52 @@
         </div>
 
         <h3 class="text-center mb-4 fw-semibold">Log In</h3>
-
-        <div class="mb-4">
-          <label class="form-label small text-muted">Username</label>
-          <div class="input-group custom-input-group">
-            <span class="input-group-text">
-              <i class="bi bi-person"></i>
-            </span>
-            <input
-              type="text"
-              class="form-control"
-              [(ngModel)]="username"
-              name="username"
-              placeholder="Enter username"
-            />
+        <form (ngSubmit)="login()">
+          <div class="mb-4">
+            <label class="form-label small text-muted">Username</label>
+            <div class="input-group custom-input-group">
+              <span class="input-group-text">
+                <i class="bi bi-person"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="username"
+                name="username"
+                placeholder="Enter username"
+              />
+            </div>
           </div>
-        </div>
 
-        <div class="mb-4">
-          <label class="form-label small text-muted">Password</label>
-          <div class="input-group custom-input-group">
-            <span class="input-group-text">
-              <i class="bi bi-lock"></i>
-            </span>
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              class="form-control"
-              [(ngModel)]="password"
-              name="password"
-              placeholder="Enter password"
-            />
+          <div class="mb-4">
+            <label class="form-label small text-muted">Password</label>
+            <div class="input-group custom-input-group">
+              <span class="input-group-text">
+                <i class="bi bi-lock"></i>
+              </span>
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                class="form-control"
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Enter password"
+              />
+            </div>
           </div>
-        </div>
 
-        <button
-          class="btn btn-primary w-100 login-btn py-2 mt-2"
-          (click)="login()"
-          [disabled]="loading"
-        >
-          <span
-            *ngIf="loading"
-            class="spinner-border spinner-border-sm me-2"
-          ></span>
-          <span>{{ loading ? "Signing in..." : "Login" }}</span>
-          <i *ngIf="!loading" class="bi bi-arrow-right ms-2"></i>
-        </button>
+          <button
+            class="btn btn-primary w-100 login-btn py-2 mt-2"
+            (click)="login()"
+            [disabled]="loading"
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            <span>{{ loading ? "Signing in..." : "Login" }}</span>
+            <i *ngIf="!loading" class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </form>
 
         <div *ngIf="message" class="text-center text-danger mt-3 small">
           <i class="bi bi-exclamation-circle me-1"></i> {{ message }}

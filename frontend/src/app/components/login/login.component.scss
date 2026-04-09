@@ -90,6 +90,16 @@
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: all 0.2s ease;
+  .form-control:-webkit-autofill,
+  .form-control:-webkit-autofill:hover,
+  .form-control:-webkit-autofill:focus {
+    -webkit-text-fill-color: #e6edf3 !important;
+
+    /* This forces your dark transparent look */
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.04) inset !important;
+    border-radius: 12px;
+    transition: background-color 9999s ease-in-out 0s;
+  }
 
   &:focus-within {
     border-color: rgba(0, 198, 255, 0.5);
@@ -104,7 +114,7 @@
   }
 
   .form-control {
-    background: transparent !important;
+    background: transparent;
     border: none !important;
     box-shadow: none !important;
     padding: 12px 10px;
