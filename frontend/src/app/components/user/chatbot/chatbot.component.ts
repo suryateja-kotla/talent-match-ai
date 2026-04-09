@@ -60,10 +60,8 @@ export class ChatbotComponent implements OnInit {
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
-    // ✅ Step 1 — show filename
     this.messages.push({ text: file.name, sender: 'user' });
 
-    // ✅ Step 2 — show uploading
     this.messages.push({ text: '📤 Uploading resume...', sender: 'bot' });
     this.isLoading = true;
 

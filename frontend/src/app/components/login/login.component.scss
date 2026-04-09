@@ -50,6 +50,7 @@
 
 .text-highlight {
   background: linear-gradient(135deg, #00c6ff, #0072ff);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 700;
@@ -78,6 +79,7 @@
       rgba(0, 198, 255, 0.4),
       rgba(0, 114, 255, 0.4)
     );
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.2));

@@ -123,18 +123,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  
-  .attach-btn {
-    background: transparent;
-    border: none;
-    color: #6c757d;
-    cursor: pointer;
-    padding: 0 8px;
-    
-    &:hover {
-      color: #0d6efd;
-    }
-  }
+
+  padding: 8px 12px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+
+  transition: all 0.2s ease;
 }
 
 /* Focus */
