@@ -85,15 +85,15 @@ Return JSON:
 
         scored_results.append({
             "job_id": job.get("job_id"),
-            "title": job.get("title"),   # ✅ IMPORTANT
-            "score": score               # ✅ FIXED KEY
+            "title": job.get("title"),  
+            "score": score               
         })
 
     ranked = sorted(scored_results, key=lambda x: x["score"], reverse=True)
 
-    filtered = [j for j in ranked if j["score"] >= 60]   # relaxed threshold
+    filtered = [j for j in ranked if j["score"] >= 60]   
 
-    return json.dumps(filtered)   # ✅ MUST BE STRING
+    return json.dumps(filtered)
     
     
 

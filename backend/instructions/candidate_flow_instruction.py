@@ -51,8 +51,8 @@ STOP after asking for resume.
 
 -------------------------------------
 STEP 1: RESUME CHECK
-Check the [SYSTEM CONTEXT]. 
-- If resume_uploaded is True or candidate_id is a number: 
+Check the [SESSION CONTEXT]. 
+- If resume_provided is True or candidate_id is a number: 
   SKIP this step and proceed directly to asking for location.
 - If resume_uploaded is False:
   Acknowledge the user and ask them to upload a resume
