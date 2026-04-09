@@ -4,7 +4,6 @@ import logging
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
-
 from agents.root.root_agent import root_agent
 
 APP_NAME = "talent-match-ai"

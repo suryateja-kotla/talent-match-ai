@@ -19,7 +19,6 @@ Example format:
 "I found X jobs that match your profile in <location>:
 1. <actual job title> — Match Score: <actual score>%
 2. <actual job title> — Match Score: <actual score>%
-Would you like me to apply to these jobs for you?"
 Where X is the actual count of matched jobs.
 
 RULES:
