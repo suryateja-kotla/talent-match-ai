@@ -1,5 +1,5 @@
-<div class="chat-wrapper">
-  <div class="chat-messages" #scrollContainer>
+<div class="chat-wrapper d-flex flex-column h-100">
+  <div class="chat-messages flex-grow-1" #scrollContainer style="overflow-y: auto;min-height: 0;">
     <div
       *ngFor="let msg of messages"
       class="chat-message"
@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div class="chat-input-wrapper">
+  <div class="chat-input-wrapper mt-auto">
     <div class="chat-input d-flex align-items-center">
       <input
         [(ngModel)]="userInput"

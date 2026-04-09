@@ -3,10 +3,7 @@
 
   <div class="chat-messages" #scrollContainer>
     @for (msg of messages; track $index) {
-      <div
-        class="chat-message"
-        [ngClass]="msg.sender === 'user' ? 'user-msg' : 'bot-msg'"
-      >
+      <div class="chat-message" [ngClass]="msg.sender === 'user' ? 'user-msg' : 'bot-msg'">
         <div class="message-bubble">
           {{ msg.text }}
         </div>
@@ -15,12 +12,17 @@
 
     <div *ngIf="isLoading" class="chat-message bot-msg">
       <div class="message-bubble typing">
-        <span>🤖Thinking</span>
+        <span>🤖 Thinking</span>
         <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot"></span>
       </div>
     </div>
+  </div>
+
+  <div class="chat-upload" *ngIf="!resumeUploaded">
+    <label class="small text-muted mb-1 d-block">Upload Resume to begin</label>
+    <input type="file" (change)="onFileSelected($event)" class="form-control form-control-sm" />
   </div>
 
   <div class="chat-input-wrapper">
@@ -43,8 +45,7 @@
         placeholder="Type a message or attach resume..."
         (keydown)="handleKeyDown($event)"
       />
-
-      <button class="send-btn" (click)="sendMessage()">
+      <button (click)="sendMessage()" [disabled]="isLoading">
         <i class="bi bi-send"></i>
       </button>
     </div>

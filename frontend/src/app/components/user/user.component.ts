@@ -16,7 +16,7 @@ import { HrJobsComponent } from '../hr/hr-jobs/hr-jobs.component';
     ChatbotComponent,
     ApplicationsComponent,
     JobMatchesComponent,
-    HrJobsComponent,
+    HrJobsComponent
   ],
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
@@ -44,7 +44,14 @@ export class UserComponent {
     }
     // this.loadUser();
   }
+  // Inside UserComponent.ts
+currentCandidateId = Number(localStorage.getItem('candidate_id'));
 
+// When the chatbot or resume upload returns an ID:
+onResumeParsed(data: any) {
+  this.currentCandidateId = data.candidate_id; 
+  // This update will now automatically trigger the 'set candidateId' in the child!
+}
   // 🔐 Logout
   logout() {
     localStorage.removeItem('currentUser');

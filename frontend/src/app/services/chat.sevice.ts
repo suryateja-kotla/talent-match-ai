@@ -9,6 +9,16 @@ export interface ChatResponse {
 export interface JobsResponse {
   jobs: any[];
 }
+
+export interface Application {
+  id: number;
+  jobTitle: string;
+  company: string;
+  status: string;
+  appliedAt: string;
+  matchScore: number;
+}
+
 export interface ResumeResponse {
   success: boolean;
   candidate_id: number;
@@ -37,6 +47,15 @@ export class ChatService {
   getJobs(): Observable<JobsResponse> {
     return this.http.get<JobsResponse>(`${this.baseUrl}/api/jobs`);
   }
+
+
+  getApplications(candidateId?: number | null): Observable<any> {
+  let url = `${this.baseUrl}/api/applications`;
+  if (candidateId) {
+    url += `?candidate_id=${candidateId}`;
+  }
+  return this.http.get(url);
+}
 
    uploadResume(file: File, sessionId: string) {
     const formData = new FormData();

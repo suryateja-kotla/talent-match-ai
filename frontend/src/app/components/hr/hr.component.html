@@ -1,61 +1,33 @@
-<div
-  class="container-fluid d-flex flex-column hr-page vh-100-desktop p-3 overflow-hidden-desktop"
->
-  <div
-    class="d-flex justify-content-between align-items-center mb-3 flex-shrink-0"
-  >
-    <h4 class="fw-bold m-0">TalentMatch.ai</h4>
-
-    <div class="d-flex align-items-center gap-2 gap-md-3">
-      <button class="btn btn-light fw-bold d-none d-md-block">
-        HR Dashboard
-      </button>
-      <button
-        class="btn btn-outline-danger btn-sm btn-md-normal"
-        (click)="logout()"
-      >
-        <i class="bi bi-box-arrow-right"></i>
-        <span class="d-none d-sm-inline">Logout</span>
-      </button>
+<div class="container-fluid hr-page p-3">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-shrink-0">
+    <h4 class="fw-bold m-0 text-white">TalentMatch.ai</h4>
+    <div class="d-flex gap-2">
+      <button class="btn btn-light fw-bold d-none d-md-block">HR Dashboard</button>
+      <button class="btn btn-outline-danger btn-sm" (click)="logout()">-> Logout</button>
     </div>
   </div>
 
-  <div class="row flex-grow-1 g-3 dashboard-row" style="min-height: 0">
-    <div
-      class="col-12 col-lg-4 chat-column"
-      [class.mobile-visible]="showMobileChat"
-    >
-      <div class="card shadow-sm h-100 dark-card">
-        <div
-          class="chat-header d-flex justify-content-between align-items-center p-3"
-        >
+  <div class="row dashboard-row g-3">
+    <div class="col-12 col-lg-4 chat-column" [class.mobile-visible]="showMobileChat">
+      <div class="card dark-card shadow">
+        <div class="chat-header d-flex justify-content-between align-items-center">
           <span>Hiring Assistant</span>
-          <button
-            class="btn-close btn-close-white d-lg-none"
-            (click)="toggleChat()"
-          ></button>
+          <button class="btn-close btn-close-white d-lg-none" (click)="toggleChat()"></button>
         </div>
-
-        <div class="chat-container flex-grow-1 p-2">
-          <app-hr-chat class="h-100" (jobCreated)="hrJobs.refresh()">
-          </app-hr-chat>
+        <div class="flex-grow-1 p-2 overflow-hidden">
+          <app-hr-chat (jobCreated)="handleJobCreated()"></app-hr-chat>
         </div>
       </div>
     </div>
 
     <div class="col-12 col-lg-8 jobs-column">
-      <div class="card shadow-sm h-100 dark-card">
-        <div class="p-3 h-100 overflow-auto custom-scrollbar">
-          <app-hr-jobs #hrJobs></app-hr-jobs>
-        </div>
+      <div class="card dark-card shadow p-3">
+        <app-hr-jobs #jobsList></app-hr-jobs>
       </div>
     </div>
   </div>
 
   <button class="btn btn-primary chat-fab d-lg-none" (click)="toggleChat()">
-    <i
-      class="bi"
-      [ngClass]="showMobileChat ? 'bi-x-lg' : 'bi-chat-dots-fill'"
-    ></i>
+    <i class="bi" [ngClass]="showMobileChat ? 'bi-x-lg' : 'bi-chat-dots-fill'"></i>
   </button>
 </div>

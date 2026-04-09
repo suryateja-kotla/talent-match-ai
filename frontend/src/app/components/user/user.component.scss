@@ -103,3 +103,26 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+/* Keep your existing .chat-column, .chat-fab, and .dark-card styles */
+
+.flex-section-box {
+  flex: 1;           /* Forces a 50/50 split of the available height */
+  min-height: 0;     /* Allows the child to be smaller than content (crucial for scroll) */
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll-area-internal {
+  flex: 1;
+  overflow-y: auto;  /* Triggers the scrollbar inside the card */
+  overflow-x: hidden;
+
+  /* Custom Scrollbar to match your UI */
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 198, 255, 0.2);
+    border-radius: 10px;
+  }
+}

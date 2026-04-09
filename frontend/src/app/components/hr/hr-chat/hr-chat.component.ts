@@ -1,4 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { 
+  Component, 
+  ElementRef, 
+  OnInit, 
+  ViewChild, 
+  OnDestroy, 
+  AfterViewInit 
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../services/chat.sevice';
@@ -11,39 +18,50 @@ import { Output, EventEmitter } from '@angular/core';
   templateUrl: './hr-chat.component.html',
   styleUrls: ['./hr-chat.component.scss'],
 })
-export class HrChatComponent implements OnInit {
-  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+export class HrChatComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
   @Output() jobCreated = new EventEmitter<void>();
 
-  constructor(private chatService: ChatService) {}
+  private observer?: MutationObserver;
 
   sessionId = crypto.randomUUID();
   isLoading = false;
   userInput = '';
   messages: { from: 'user' | 'bot'; text: string }[] = [];
 
+  constructor(private chatService: ChatService) {}
+
   ngOnInit(): void {
-    const initialMessage = 'Hi, I am HR. I want to create a job.';
+    // We only push the message to the UI. 
+    // We NO LONGER call this.chatService.send here.
+    this.messages.push({ 
+      from: 'bot', 
+      text: 'Hi, I am HR assistant. How can I help you create a job today?' 
+    });
+    
+    // Ensure loading is false so the DB isn't hit and "Thinking" doesn't show
+    this.isLoading = false;
+  }
 
-    this.messages.push({ from: 'user', text: initialMessage });
-    this.isLoading = true;
+  ngAfterViewInit() {
+    this.setupScrollObserver();
+  }
 
-    this.chatService.send(initialMessage, 'hr', this.sessionId).subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        this.messages.push({ from: 'bot', text: res.reply });
-        if (res.reply?.toLowerCase().includes('created')) {
-          this.jobCreated.emit();
-        }
-        this.scrollToBottom();
-      },
-      error: () => {
-        this.isLoading = false;
-        this.messages.push({
-          from: 'bot',
-          text: 'Something went wrong.',
-        });
-      },
+  ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  private setupScrollObserver() {
+    const container = this.scrollContainer.nativeElement;
+    this.observer = new MutationObserver(() => {
+      this.scrollToBottom();
+    });
+
+    this.observer.observe(container, {
+      childList: true,
+      subtree: true
     });
   }
 
@@ -53,26 +71,28 @@ export class HrChatComponent implements OnInit {
     const input = this.userInput;
     this.userInput = '';
 
+    // Add user message to UI
     this.messages.push({ from: 'user', text: input });
+    
+    // Now we trigger the service call and the "Thinking" state
     this.isLoading = true;
-    this.scrollToBottom();
 
     this.chatService.send(input, 'hr', this.sessionId).subscribe({
       next: (res) => {
         this.isLoading = false;
         this.messages.push({ from: 'bot', text: res.reply });
-        this.scrollToBottom();
+        
+        if (res.reply?.toLowerCase().includes('created')) {
+          this.jobCreated.emit();
+        }
       },
       error: () => {
         this.isLoading = false;
-        this.messages.push({
-          from: 'bot',
-          text: 'Something went wrong.',
-        });
-        this.scrollToBottom();
+        this.messages.push({ from: 'bot', text: 'Something went wrong.' });
       },
     });
   }
+
   private scrollToBottom(): void {
     // setTimeout allows Angular's change detection to update the HTML first
     setTimeout(() => {
