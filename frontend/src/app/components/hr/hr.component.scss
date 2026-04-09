@@ -25,14 +25,13 @@
   height: 100%;
 }
 
-/* DESKTOP COLUMN FLEX */
+
 .chat-column, .jobs-column {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* MOBILE FLOATING CHAT LOGIC */
 @media (max-width: 991px) {
   .chat-column {
     position: fixed !important;
@@ -64,7 +63,7 @@
   }
 }
 
-/* FAB BUTTON */
+
 .chat-fab {
   position: fixed;
   bottom: 25px;
@@ -72,7 +71,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  z-index: 2001; /* Must be above the chat window */
+  z-index: 2001;
   box-shadow: 0 8px 25px rgba(0, 150, 255, 0.4);
   display: flex;
   align-items: center;

@@ -1,23 +1,32 @@
+<!-- HEADER -->
 <div class="header-section flex-shrink-0">
   <div class="d-flex justify-content-between align-items-center mb-1">
     <h5 class="fw-bold m-0 text-white">Job Postings</h5>
-    <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-primary"></div>
+    <div
+      *ngIf="isLoading"
+      class="spinner-border spinner-border-sm text-primary"
+    ></div>
   </div>
   <small class="text-muted d-block mb-3" *ngIf="!isLoading">
     {{ jobs.length }} active listings
   </small>
 </div>
 
+<!-- JOB LIST  -->
 <div class="scroll-container custom-scrollbar">
   <div class="job-grid">
-    <div class="job-card p-3" *ngFor="let job of jobs">
+    <div
+      class="job-card p-3"
+      *ngFor="let job of jobs"
+      (click)="openJobDetails(job)"
+    >
       <div class="d-flex justify-content-between align-items-start mb-2">
-         <h6 class="fw-bold m-0 text-white text-truncate" style="max-width: 80%;">
-           {{ job.title }}
-         </h6>
-         <span class="badge-status">active</span>
+        <h6 class="fw-bold m-0 text-white text-truncate" style="max-width: 80%">
+          {{ job.title }}
+        </h6>
+        <span class="badge-status">active</span>
       </div>
-      
+
       <div class="skills-wrapper">
         <div class="d-flex flex-wrap gap-1">
           <span class="badge-skill" *ngFor="let skill of job.skills">
@@ -25,14 +34,92 @@
           </span>
         </div>
       </div>
-      
+
       <div class="job-info">
         <div *ngIf="job.exp">
-    <i class="bi bi-clock-history"></i>
-    <span>{{ job.exp }}</span>
+          <i class="bi bi-clock-history"></i>
+          <span>{{ job.exp }}</span>
+        </div>
+        <div>
+          <i class="bi bi-geo-alt"></i>
+          {{ job.location }}
+        </div>
+        <div>
+          <i class="bi bi-people"></i>
+          {{ job.positions }} positions
+        </div>
+      </div>
+    </div>
   </div>
-        <div><i class="bi bi-geo-alt"></i>{{ job.location }}</div>
-        <div><i class="bi bi-people"></i>{{ job.positions }} positions</div>
+</div>
+
+<!-- job MODAL  -->
+<div
+  class="modal fade"
+  #detailModal
+  id="detailModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content custom-modal">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-white">
+          {{ selectedJob?.title }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="closeModal()"
+        ></button>
+      </div>
+
+      <div class="modal-body pt-2" *ngIf="selectedJob">
+        <div class="d-flex gap-3 mb-3">
+          <span class="text-info small">
+            <i class="bi bi-geo-alt me-1"></i>
+            {{ selectedJob.location }}
+          </span>
+
+          <span class="text-muted small">
+            <i class="bi bi-briefcase me-1"></i>
+            {{ selectedJob.exp }} Experience
+          </span>
+        </div>
+
+        <div class="mb-4">
+          <h6 class="text-uppercase small fw-bold text-highlight mb-2">
+            Requirements
+          </h6>
+
+          <div class="d-flex flex-wrap gap-2">
+            <span
+              class="badge-skill px-3 py-2"
+              *ngFor="let skill of selectedJob.skills"
+            >
+              {{ skill }}
+            </span>
+          </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="mb-4">
+          <h6 class="text-uppercase small fw-bold text-highlight mb-2">
+            Job Description
+          </h6>
+
+          <p class="text-secondary small" style="line-height: 1.6">
+            {{ selectedJob.description }}
+          </p>
+        </div>
+
+        <div
+          class="p-3 rounded d-flex justify-content-between align-items-center"
+        >
+          <span class="text-white-50 small">
+            {{ selectedJob.positions }} Positions Available
+          </span>
+        </div>
       </div>
     </div>
   </div>

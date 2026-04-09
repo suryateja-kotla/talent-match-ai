@@ -217,7 +217,7 @@ def list_jobs() -> list[dict]:
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT id, job_title, required_skills, experience_years,
-                       location, number_of_positions, is_active, created_at
+                       location, number_of_positions, is_active, created_at,job_description
                 FROM job_descriptions
                 WHERE is_active = TRUE
                 ORDER BY created_at DESC

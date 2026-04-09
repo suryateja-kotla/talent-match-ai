@@ -7,6 +7,10 @@
         class="chat-message"
         [ngClass]="msg.sender === 'user' ? 'user-msg' : 'bot-msg'"
       >
+      <div
+        class="chat-message"
+        [ngClass]="msg.sender === 'user' ? 'user-msg' : 'bot-msg'"
+      >
         <div class="message-bubble">
           {{ msg.text }}
         </div>
@@ -33,6 +37,11 @@
         accept=".pdf,.doc,.docx"
       />
 
+      <button
+        class="attach-btn"
+        (click)="fileInput.click()"
+        title="Upload Resume"
+      >
       <button
         class="attach-btn"
         (click)="fileInput.click()"

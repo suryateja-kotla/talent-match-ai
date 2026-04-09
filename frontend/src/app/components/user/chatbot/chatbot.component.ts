@@ -29,7 +29,7 @@ export class ChatbotComponent implements OnInit {
   constructor(private chatService: ChatService, private jobService: JobService) {}
 
   ngOnInit() {
-    // 1. Static Greeting - No API call here
+    // 1. Static Greeting 
     this.messages.push({
       text: "👋 Hi! I'm your job assistant. Please upload your resume or type a message to get started.",
       sender: 'bot',

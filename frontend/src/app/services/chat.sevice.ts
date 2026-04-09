@@ -41,6 +41,7 @@ export class ChatService {
       user_role: userRole,
       session_id: sessionId,
       candidate_id: candidateId, 
+      candidate_id: candidateId, 
     });
   }
 
@@ -60,7 +61,7 @@ export class ChatService {
    uploadResume(file: File, sessionId: string) {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('session_id', sessionId); // 🔥 ADD THIS
+    formData.append('session_id', sessionId); 
 
     return this.http.post<ResumeResponse>(
       'http://127.0.0.1:8000/resume/upload-and-parse',
