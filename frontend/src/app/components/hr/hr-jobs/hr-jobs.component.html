@@ -1,0 +1,39 @@
+<div class="header-section flex-shrink-0">
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <h5 class="fw-bold m-0 text-white">Job Postings</h5>
+    <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-primary"></div>
+  </div>
+  <small class="text-muted d-block mb-3" *ngIf="!isLoading">
+    {{ jobs.length }} active listings
+  </small>
+</div>
+
+<div class="scroll-container custom-scrollbar">
+  <div class="job-grid">
+    <div class="job-card p-3" *ngFor="let job of jobs">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+         <h6 class="fw-bold m-0 text-white text-truncate" style="max-width: 80%;">
+           {{ job.title }}
+         </h6>
+         <span class="badge-status">active</span>
+      </div>
+      
+      <div class="skills-wrapper">
+        <div class="d-flex flex-wrap gap-1">
+          <span class="badge-skill" *ngFor="let skill of job.skills">
+            {{ skill }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="job-info">
+        <div *ngIf="job.exp">
+    <i class="bi bi-clock-history"></i>
+    <span>{{ job.exp }}</span>
+  </div>
+        <div><i class="bi bi-geo-alt"></i>{{ job.location }}</div>
+        <div><i class="bi bi-people"></i>{{ job.positions }} positions</div>
+      </div>
+    </div>
+  </div>
+</div>

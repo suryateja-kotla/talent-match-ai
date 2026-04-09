@@ -1,6 +1,44 @@
-<h3>Job Matches</h3>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="fw-bold m-0">Available Positions</h4>
+  <span
+    class="badge bg-primary-subtle text-primary border border-primary-subtle"
+  >
+    {{ allJobPostings.length }} Live Roles
+  </span>
+</div>
 
-<div class="empty-state">
-  <p>Upload your resume to get started</p>
-  <span>We’ll match your skills with open positions</span>
+<div class="row g-3">
+  <div class="col-12 col-md-6 col-xl-4" *ngFor="let job of allJobPostings">
+    <div class="job-card p-3 border rounded-3 h-100 dark-card shadow-sm">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <h6 class="fw-bold mb-0 text-white">{{ job.title }}</h6>
+        <i class="bi bi-bookmark-plus text-muted cursor-pointer"></i>
+      </div>
+
+      <div class="job-tags d-flex flex-wrap gap-1 mb-3">
+        <span
+          class="badge bg-secondary-subtle text-secondary small"
+          *ngFor="let skill of job.skills"
+        >
+          {{ skill }}
+        </span>
+      </div>
+
+      <div class="job-details small text-muted-light mb-3">
+        <div class="d-flex align-items-center mb-1">
+          <i class="bi bi-geo-alt me-2"></i> {{ job.location }}
+        </div>
+        <div class="d-flex align-items-center">
+          <i class="bi bi-clock me-2"></i> {{ job.exp }}
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-sm w-100 mt-auto">View Details</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="allJobPostings.length === 0" class="text-center py-5">
+  <i class="bi bi-search fs-1 opacity-25"></i>
+  <p class="mt-2 text-muted">No jobs posted yet. Check back soon!</p>
 </div>

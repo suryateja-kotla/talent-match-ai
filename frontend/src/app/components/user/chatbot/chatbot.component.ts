@@ -1,13 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, Input, OnDestroy, AfterViewInit ,Output,EventEmitter} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../services/chat.sevice';
-
-type ChatStep =
-  | 'WAITING_FOR_RESUME'
-  | 'WAITING_FOR_LOCATION'
-  | 'PROCESSING'
-  | 'DONE';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-chatbot',
@@ -18,171 +13,114 @@ type ChatStep =
 })
 export class ChatbotComponent implements OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  @Input() userRole: string = 'user';
+  @Output() applicationSubmitted = new EventEmitter<void>();
 
-  step: ChatStep = 'WAITING_FOR_RESUME';
-  constructor(private chatService: ChatService) {}
+  private observer?: MutationObserver;
   candidateId: number | null = null;
   sessionId = crypto.randomUUID();
   isLoading = false;
   userInput = '';
+  resumeUploaded = false;
+  messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [];
+
+  constructor(private chatService: ChatService) {}
 
   ngOnInit() {
-    this.isLoading = true;
-
-    const initialMessage = 'hello';
-
-    this.chatService.send(initialMessage, 'user', this.sessionId).subscribe({
-      next: (res) => {
-        this.messages = [
-          {
-            text: res.reply,
-            sender: 'bot',
-          },
-        ];
-
-        this.isLoading = false;
-        this.scrollToBottom();
-      },
-      error: () => {
-        this.messages = [
-          {
-            text: '⚠️ Failed to connect to assistant.',
-            sender: 'bot',
-          },
-        ];
-
-        this.isLoading = false;
-      },
+    // 1. Static Greeting - No API call here
+    this.messages.push({
+      text: "👋 Hi! I'm your job assistant. Please upload your resume or type a message to get started.",
+      sender: 'bot',
     });
   }
-  // ✅ Added optional "agent" (non-breaking change)
-  messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [
-    { text: 'Hi 👋 Please upload your resume to get started.', sender: 'bot' },
-  ];
+
+  ngAfterViewInit() {
+    this.setupScrollObserver();
+  }
+
+  ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  private setupScrollObserver() {
+    const container = this.scrollContainer.nativeElement;
+    this.observer = new MutationObserver(() => {
+      this.scrollToBottom();
+    });
+    this.observer.observe(container, { childList: true, subtree: true });
+  }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (!file) return;
 
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+    // ✅ Step 1 — show filename
     this.messages.push({ text: file.name, sender: 'user' });
+
+    // ✅ Step 2 — show uploading
+    this.messages.push({ text: '📤 Uploading resume...', sender: 'bot' });
     this.isLoading = true;
 
-    // 🔥 CALL BACKEND
-    this.chatService.uploadResume(file).subscribe({
-      next: (res) => {
-        this.candidateId = res.candidate_id; // ✅ STORE
-
-        this.messages.push({
-          text: 'Resume uploaded & processed ✅',
-          sender: 'bot',
-        });
-
-        this.step = 'WAITING_FOR_LOCATION';
-
-        this.messages.push({
-          text: '📍 What is your preferred location? (max 3)',
-          sender: 'bot',
-        });
-
-        this.isLoading = false;
-        this.scrollToBottom();
-      },
-      error: () => {
-        this.messages.push({
-          text: '⚠️ Failed to upload resume.',
-          sender: 'bot',
-        });
-        this.isLoading = false;
-      },
-    });
+    this.chatService
+      .uploadResume(file, this.sessionId)
+      .pipe(
+        switchMap((res) => {
+          this.candidateId = res.candidate_id;
+          return this.chatService.send(
+            'resume uploaded.',
+            'user',
+            this.sessionId,
+            this.candidateId,
+          );
+        }),
+      )
+      .subscribe({
+        next: (res) => {
+          this.messages.push({ text: res.reply, sender: 'bot' });
+          this.resumeUploaded = true;
+          this.isLoading = false;
+          this.applicationSubmitted.emit();
+        },
+        error: () => {
+          this.messages.push({ text: '⚠️ Resume processing failed.', sender: 'bot' });
+          this.isLoading = false;
+        },
+      });
   }
+
   sendMessage() {
     if (!this.userInput.trim() || this.isLoading) return;
 
     const input = this.userInput;
-
+    this.userInput = ''; // Clear input immediately
     this.messages.push({ text: input, sender: 'user' });
-
     this.isLoading = true;
 
-    // 🔥 DIRECT API CALL (no step restriction)
-    this.chatService.send(input, 'candidate', this.sessionId).subscribe({
-      next: (res) => {
-        this.messages.push({
-          text: res.reply,
-          sender: 'bot',
-        });
-
-        this.isLoading = false;
-        this.scrollToBottom();
-      },
-      error: () => {
-        this.messages.push({
-          text: '⚠️ Error connecting to assistant.',
-          sender: 'bot',
-        });
-
-        this.isLoading = false;
-      },
-    });
-
-    this.userInput = '';
-    this.scrollToBottom();
+    this.chatService
+      .send(input, this.userRole, this.sessionId, this.candidateId)
+      .subscribe({
+        next: (res) => {
+          this.messages.push({ text: res.reply, sender: 'bot' });
+          this.isLoading = false;
+        },
+        error: () => {
+          this.messages.push({ text: '⚠️ Error connecting to assistant.', sender: 'bot' });
+          this.isLoading = false;
+        },
+      });
   }
 
-  handleLocation(location: string) {
-    this.messages.push({
-      text: `Searching jobs in ${location}...`,
-      sender: 'bot',
+  private scrollToBottom() {
+    const element = this.scrollContainer.nativeElement;
+    window.requestAnimationFrame(() => {
+      element.scrollTop = element.scrollHeight;
     });
-
-    this.step = 'PROCESSING';
-    this.isLoading = true;
-
-    // ✅ Improved prompt (better routing)
-    const prompt = `Find jobs in ${location}`;
-
-    this.chatService.send(prompt, 'candidate', this.sessionId).subscribe({
-      next: (res) => {
-        // ✅ Store agent separately (clean + future-proof)
-        this.messages.push({
-          text: res.reply,
-          sender: 'bot',
-        });
-
-        // ✅ (Optional fallback display – keeps your old behavior safe)
-        // this.messages.push({
-        //   text: `🤖 (${res.agent})\n${res.reply}`,
-        //   sender: 'bot'
-        // });
-
-        this.step = 'DONE';
-        this.isLoading = false;
-        this.scrollToBottom();
-      },
-      error: () => {
-        this.messages.push({
-          text: '⚠️ Error connecting to assistant.',
-          sender: 'bot',
-        });
-
-        this.isLoading = false;
-      },
-    });
-  }
-
-  getPlaceholder(): string {
-    if (this.step === 'WAITING_FOR_LOCATION') {
-      return 'Enter location (e.g. Bangalore)';
-    }
-    return 'Upload resume first...';
-  }
-
-  scrollToBottom() {
-    setTimeout(() => {
-      this.scrollContainer.nativeElement.scrollTop =
-        this.scrollContainer.nativeElement.scrollHeight;
-    }, 100);
   }
 
   handleKeyDown(event: KeyboardEvent) {

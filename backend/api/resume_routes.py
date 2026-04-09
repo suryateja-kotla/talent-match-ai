@@ -24,7 +24,7 @@ import logging
 import os
 import shutil
 
-from fastapi import APIRouter, File, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
 
 from runner import run_resume_parsing
@@ -43,7 +43,7 @@ ALLOWED_EXTENSIONS = {".pdf", ".docx", ".doc"}
 
 
 @router.post("/upload-and-parse")
-async def upload_and_parse(file: UploadFile = File(...)):
+async def upload_and_parse(file: UploadFile = File(...),session_id: str = Form(...)):
     """
     Upload a resume file and run the AI parsing pipeline.
 
@@ -81,7 +81,7 @@ async def upload_and_parse(file: UploadFile = File(...)):
     logger.info("Resume saved to %s — starting pipeline", dest_path)
 
     # ── run agent pipeline ────────────────────────────────────────────────────
-    result = await run_resume_parsing(dest_path)
+    result = await run_resume_parsing(dest_path, session_id)
 
     if not result["success"]:
         raise HTTPException(status_code=500, detail=result["message"])

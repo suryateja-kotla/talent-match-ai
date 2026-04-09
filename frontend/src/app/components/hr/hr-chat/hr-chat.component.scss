@@ -1,0 +1,117 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0; /* CRITICAL */
+}
+
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  min-height: 0; /* CRITICAL */
+  overflow: hidden; /* Stops the whole page from growing */
+}
+
+.chat-messages {
+  /* MAGIC FIX: The '0' at the end forces it to respect parent boundaries */
+  flex: 1 1 0; 
+  
+  overflow-y: auto; /* Triggers the scrollbar */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 6px;
+  max-height: 100%;
+  scroll-behavior: smooth;
+
+  /* Custom scrollbar styling for your dark theme */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.chat-message {
+  display: flex;
+  margin-bottom: 4px;
+}
+.user-msg {
+  justify-content: flex-end;
+}
+.user-msg .message-bubble {
+  max-width: 75%;
+  background: rgba(0, 150, 255, 0.15);
+  color: #38bdf8;
+  padding: 8px 12px;
+  border-radius: 12px 12px 4px 12px;
+}
+.bot-bubble {
+  white-space: pre-wrap;  // 
+  word-break: break-word;
+  font-family: inherit;
+}
+
+.bot-msg .message-bubble {
+  max-width: 75%;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e6edf3;
+  padding: 8px 12px;
+  border-radius: 12px 12px 12px 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: inherit;
+}
+
+.chat-input-wrapper {
+  flex-shrink: 0; 
+  margin-top: auto;
+  padding: 12px 0 8px 0;
+}
+
+.chat-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.chat-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none !important;
+  box-shadow: none !important;
+
+  color: #e6edf3;
+  padding-left: 8px;
+  font-size: 14px;
+}
+.chat-input:focus-within {
+  border-color: rgba(0, 198, 255, 0.6);
+  box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08); /* Slight highlight on focus */
+}
+
+.chat-input button {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,95 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.header-section {
+  padding-bottom: 10px;
+}
+
+.scroll-container {
+  flex: 1;
+  overflow-y: auto !important; /* Force vertical scroll */
+  overflow-x: hidden;
+  padding-right: 8px;
+  
+  /* Ensure the container is scrollable */
+  min-height: 0; 
+}
+
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: start;
+  align-content: start;
+  padding-bottom: 20px;
+}
+
+.job-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  
+  /* THIS FORCES SAME SIZE */
+  height: 200px; 
+  max-height: 200px;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 198, 255, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.skills-wrapper {
+  flex:1;
+  overflow: hidden; /* Clips skills if they are too many */
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+
+.job-info {
+  font-size: 12px;
+  color: #94a3b8;
+  padding-top: 5px;
+  border-top: none!important;
+  div { display: flex; align-items: center; margin-bottom: 4px; }
+  i { 
+      margin-right: 8px; 
+      color: rgba(0, 198, 255, 0.5); /* Matching your theme's blue */
+      font-size: 14px;
+      width: 16px; /* Keeps icons aligned vertically */
+      text-align: center;
+    }
+}
+
+.badge-skill {
+  background: rgba(0, 150, 255, 0.1);
+  color: #38bdf8;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.badge-status {
+  background: rgba(25, 135, 84, 0.2);
+  color: #4ade80;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 5px; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 198, 255, 0.3);
+  border-radius: 10px;
+}

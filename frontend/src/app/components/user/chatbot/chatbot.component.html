@@ -1,49 +1,53 @@
-<div class="card h-100 d-flex flex-column">
-  <!-- HEADER -->
-  <div class="card-header bg-primary text-white fw-bold">🤖 Job Assistant</div>
+<div class="chat-wrapper">
+  <div class="chat-header">Job Assistant</div>
 
-  <!-- MESSAGES -->
-  <div
-    class="flex-grow-1 overflow-auto p-2 d-flex flex-column justify-content-end"
-    #scrollContainer
-  >
+  <div class="chat-messages" #scrollContainer>
     @for (msg of messages; track $index) {
-      <div
-        class="p-2 mb-2 rounded"
-        [ngClass]="
-          msg.sender === 'user'
-            ? 'bg-primary text-white ms-auto'
-            : 'bg-light text-dark'
-        "
-        style="max-width: 75%"
-      >
-        {{ msg.text }}
+      <div class="chat-message" [ngClass]="msg.sender === 'user' ? 'user-msg' : 'bot-msg'">
+        <div class="message-bubble">
+          {{ msg.text }}
+        </div>
       </div>
     }
+
+    <div *ngIf="isLoading" class="chat-message bot-msg">
+      <div class="message-bubble typing">
+        <span>🤖 Thinking</span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
   </div>
 
-  <!-- FILE UPLOAD -->
-  <div class="border-top p-2 text-center">
-    <input
-      type="file"
-      (change)="onFileSelected($event)"
-      class="form-control form-control-sm"
-      [disabled]="step !== 'WAITING_FOR_RESUME'"
-    />
-
-    @if (step !== "WAITING_FOR_RESUME") {
-      <small class="text-success">✅ Resume uploaded</small>
-    }
+  <div class="chat-upload" *ngIf="!resumeUploaded">
+    <label class="small text-muted mb-1 d-block">Upload Resume to begin</label>
+    <input type="file" (change)="onFileSelected($event)" class="form-control form-control-sm" />
   </div>
 
-  <!-- INPUT -->
-  <div class="input-group border-top">
-    <input
-      [(ngModel)]="userInput"
-      [placeholder]="getPlaceholder()"
-      (keydown)="handleKeyDown($event)"
-      class="form-control"
-    />
-    <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+  <div class="chat-input-wrapper">
+    <div class="chat-input-box">
+      
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        style="display: none;"
+        accept=".pdf,.doc,.docx"
+      />
+
+      <button class="attach-btn" (click)="fileInput.click()" title="Upload Resume">
+        <i class="bi bi-paperclip fs-5"></i>
+      </button>
+
+      <input
+        [(ngModel)]="userInput"
+        placeholder="Type a message or attach resume..."
+        (keydown)="handleKeyDown($event)"
+      />
+      <button (click)="sendMessage()" [disabled]="isLoading">
+        <i class="bi bi-send"></i>
+      </button>
+    </div>
   </div>
 </div>

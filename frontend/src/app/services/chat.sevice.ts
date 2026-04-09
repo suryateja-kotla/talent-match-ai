@@ -10,17 +10,37 @@ export interface JobsResponse {
   jobs: any[];
 }
 
+export interface Application {
+  id: number;
+  jobTitle: string;
+  company: string;
+  status: string;
+  appliedAt: string;
+  matchScore: number;
+}
+
+export interface ResumeResponse {
+  success: boolean;
+  candidate_id: number;
+  message: string;
+  raw_response: string;
+}
 @Injectable({ providedIn: 'root' })
 export class ChatService {
   private baseUrl = 'http://127.0.0.1:8000';
 
   constructor(private http: HttpClient) {}
-
-  send(message: string, userRole: string, sessionId: string): Observable<ChatResponse> {
-    return this.http.post<ChatResponse>(`${this.baseUrl}/api/route/chat`, {
+  send(
+    message: string,
+    userRole: string,
+    sessionId: string,
+    candidateId?: number | null, // 🔥 ADD THIS
+  ) {
+    return this.http.post<ChatResponse>(this.baseUrl + '/api/route/chat', {
       message,
       user_role: userRole,
       session_id: sessionId,
+      candidate_id: candidateId, // 🔥 SEND TO BACKEND
     });
   }
 
@@ -28,9 +48,23 @@ export class ChatService {
     return this.http.get<JobsResponse>(`${this.baseUrl}/api/jobs`);
   }
 
-  uploadResume(file: File): Observable<any> {
+
+  getApplications(candidateId?: number | null): Observable<any> {
+  let url = `${this.baseUrl}/api/applications`;
+  if (candidateId) {
+    url += `?candidate_id=${candidateId}`;
+  }
+  return this.http.get(url);
+}
+
+   uploadResume(file: File, sessionId: string) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<any>(`${this.baseUrl}/resume/upload-and-parse`, formData);
+    formData.append('session_id', sessionId); // 🔥 ADD THIS
+
+    return this.http.post<ResumeResponse>(
+      'http://127.0.0.1:8000/resume/upload-and-parse',
+      formData,
+    );
   }
 }

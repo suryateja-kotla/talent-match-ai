@@ -1,63 +1,88 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
 .hr-page {
-  background: #f6f8fb;
-  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Chat box */
-.chat-box {
-  background: #f1f3f7;
-  border-radius: 10px;
-  font-size: 14px;
+.dashboard-row {
+  flex: 1;
+  min-height: 0;
 }
 
-/* Job card */
-.job-card {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #eaeaea;
-  transition: 0.3s;
+.dark-card {
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.job-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+/* DESKTOP COLUMN FLEX */
+.chat-column, .jobs-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-/* badges */
-.badge {
-  font-size: 12px;
-}
-/* Job Card */
-.job-card {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid #eaeaea;
-  transition: all 0.25s ease;
-  cursor: pointer;
+/* MOBILE FLOATING CHAT LOGIC */
+@media (max-width: 991px) {
+  .chat-column {
+    position: fixed !important;
+    bottom: 100px !important;
+    right: 20px !important;
+    left: 20px !important;
+    width: auto !important;
+    height: 70vh !important;
+    z-index: 2000 !important;
+    
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* Hidden State */
+    transform: translateY(150%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+
+    &.mobile-visible {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+  }
+
+  .jobs-column {
+    height: calc(100vh - 120px) !important;
+  }
 }
 
-.job-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+/* FAB BUTTON */
+.chat-fab {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  z-index: 2001; /* Must be above the chat window */
+  box-shadow: 0 8px 25px rgba(0, 150, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
 }
 
-/* Skill Pills */
-.skill-pill {
-  display: inline-block;
-  background: #eef2ff;
-  color: #3b5bdb;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  margin: 2px;
-}
-
-/* Job Info */
-.job-info {
-  font-size: 13px;
-  color: #6c757d;
-}
-
-.job-info div {
-  margin-bottom: 4px;
+.chat-header {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #e6edf3;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }

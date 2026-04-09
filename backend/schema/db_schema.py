@@ -130,9 +130,18 @@ def init_db():
         conn.close()
 
 # ── DB Operations (DML) ──────────────────────────────────────────────────────
+from decimal import Decimal
+
 def serialize(record: dict) -> dict:
+
+    for key, value in record.items():
+        if isinstance(value, Decimal):
+            record[key] = float(value)
+
     for key in ("created_at", "updated_at", "applied_at", "status_updated_at"):
-        if record.get(key): record[key] = str(record[key])
+        if record.get(key):
+            record[key] = str(record[key])
+
     return record
 
 def upsert_candidate(data: CandidateSchema) -> int:
@@ -218,7 +227,6 @@ def list_jobs() -> list[dict]:
     finally:
         conn.close()
 
-# schema/db_schema.py — replace insert_job entirely
 
 def insert_job(job_data: dict) -> int:
     sql = """
@@ -238,15 +246,12 @@ def insert_job(job_data: dict) -> int:
             %(number_of_positions)s
         ) RETURNING id;
     """
-    # ✅ Serialize skills list to JSON string for JSONB column
     job_data["required_skills"] = json.dumps(job_data.get("required_skills", []))
 
-    # ✅ Safe defaults
     job_data.setdefault("number_of_positions", 1)
     job_data.setdefault("job_description", "")
     job_data.setdefault("location", "")
 
-    # ✅ Convert "5 years" / "5 yrs" / 5 → integer
     raw_exp = job_data.get("experience_years", 0)
     if isinstance(raw_exp, str):
         digits = ''.join(filter(str.isdigit, raw_exp))
@@ -263,63 +268,43 @@ def insert_job(job_data: dict) -> int:
         return job_id
     finally:
         conn.close()
-    # ❌ DELETE everything after this line — dead code that never runs
-    sql = """
-        INSERT INTO job_descriptions (
-            job_title,
-            required_skills,
-            experience_years,
-            job_description,
-            location,
-            number_of_positions
-        ) VALUES (
-            %(job_title)s,
-            %(required_skills)s,
-            %(experience_years)s,
-            %(job_description)s,
-            %(location)s,
-            %(number_of_positions)s
-        ) RETURNING id;
-    """
-    job_data["required_skills"] = json.dumps(job_data.get("required_skills", []))
-    job_data.setdefault("number_of_positions", 1)
-    job_data.setdefault("experience_years", 0)
-    job_data.setdefault("job_description", "")
-    job_data.setdefault("location", "")
-
+        
+def list_jobs_by_location(location: str) -> list[dict]:
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute(sql, job_data)
-            job_id = cur.fetchone()[0]
-        conn.commit()
-        return job_id
+            cur.execute("""
+                SELECT id, job_title,
+                       experience_years,
+                       required_skills,
+                       job_description,
+                       location
+                FROM job_descriptions
+                WHERE is_active = TRUE
+                AND LOWER(location) LIKE LOWER(%s)
+                ORDER BY created_at DESC
+            """, (f"%{location}%",))
+
+            cols = [d[0] for d in cur.description]
+            return [serialize(dict(zip(cols, row))) for row in cur.fetchall()]
     finally:
         conn.close()
-    sql = """
-        INSERT INTO job_descriptions (
-            job_title, job_type, required_skills,
-            min_experience_years, max_experience_years,
-            job_description, qualifications
-        ) VALUES (
-            %(job_title)s, %(job_type)s, %(required_skills)s,
-            %(min_experience_years)s, %(max_experience_years)s,
-            %(job_description)s, %(qualifications)s
-        ) RETURNING id;
-    """
+    
 
-    job_data["required_skills"] = json.dumps(job_data.get("required_skills", []))
-
+def get_candidate_by_id(candidate_id: int) -> dict | None:
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute(sql, job_data)
-            job_id = cur.fetchone()[0]
-        conn.commit()
-        return job_id
+            cur.execute("SELECT * FROM candidates WHERE id = %s", (candidate_id,))
+            row = cur.fetchone()
+            if not row:
+                return None
+            cols = [d[0] for d in cur.description]
+            return serialize(dict(zip(cols, row)))
     finally:
         conn.close()
-
+        
+           
 def create_application(candidate_id: int, job_id: int, match_score: float):
     sql = """
         INSERT INTO applications (candidate_id, job_id, match_score)
