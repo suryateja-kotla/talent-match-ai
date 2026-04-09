@@ -1,5 +1,4 @@
 .login-page {
-  /* This ensures the global radial gradients from styles.scss are visible */
   background: transparent;
   min-height: 100vh;
   position: relative;
@@ -12,8 +11,6 @@
   align-items: center;
   position: relative;
 
-  /* This adds a specific blue glow behind the "Welcome" text 
-     to make the left side feel less empty */
   &::after {
     content: "";
     position: absolute;
@@ -28,7 +25,6 @@
   }
 }
 
-/* Let's make sure the form section also feels integrated */
 .login-form-section {
   position: relative;
 
@@ -60,8 +56,6 @@
   width: 100%;
   max-width: 440px;
   padding: 3rem !important;
-  /* The backdrop-filter: blur(10px) from styles.scss will now 
-     actually have something to "blur" behind it! */
 }
 
 /* CLEAN STATIC ICON */
@@ -84,7 +78,6 @@
   }
 }
 
-/* Custom Pill Inputs */
 .custom-input-group {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 12px;

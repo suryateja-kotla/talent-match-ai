@@ -12,7 +12,7 @@ export const routes: Routes = [
   {
     path: 'hr',
     canActivate: [authGuard, roleGuard],
-    data: { role: 'hr' },   // ✅ only HR
+    data: { role: 'hr' },   
     loadComponent: () =>
       import('./components/hr/hr.component').then(m => m.HrComponent)
   },
@@ -20,7 +20,7 @@ export const routes: Routes = [
   {
     path: 'user',
     canActivate: [authGuard, roleGuard],
-    data: { role: 'user' }, // ✅ only USER
+    data: { role: 'user' }, 
     loadComponent: () =>
       import('./components/user/user.component').then(m => m.UserComponent)
   }

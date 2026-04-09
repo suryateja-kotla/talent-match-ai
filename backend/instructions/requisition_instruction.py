@@ -32,14 +32,7 @@ STEP 3: GENERATE THE JOB DESCRIPTION using this EXACT structure:
   [Responsibility 4]
   [Responsibility 5]
 
-  Required Skills:
-  [List each skill on its own line]
-
-  Experience:
-  [Experience requirement]
-
-  Location:
-  [Location and work arrangement]
+  
 
   Each section must be on its own line. Never merge sections into one paragraph.
   If HR provided a partial JD, enhance it — do not discard their input.
@@ -60,14 +53,6 @@ STEP 4: Show the full preview in this EXACT format:
   Key Responsibilities:
   [one per line]
 
-  Required Skills:
-  [one per line]
-
-  Experience:
-  [experience]
-
-  Location:
-  [location]
 
   Review the above. You can suggest changes or type OK / Proceed to confirm.
 

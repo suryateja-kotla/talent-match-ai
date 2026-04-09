@@ -28,7 +28,7 @@ export class ChatbotComponent implements OnInit {
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
-    // 1. Static Greeting - No API call here
+    // 1. Static Greeting 
     this.messages.push({
       text: "👋 Hi! I'm your job assistant. Please upload your resume or type a message to get started.",
       sender: 'bot',
@@ -60,10 +60,10 @@ export class ChatbotComponent implements OnInit {
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
-    // ✅ Step 1 — show filename
+    //  Step 1 — show filename
     this.messages.push({ text: file.name, sender: 'user' });
 
-    // ✅ Step 2 — show uploading
+    //  Step 2 — show uploading
     this.messages.push({ text: '📤 Uploading resume...', sender: 'bot' });
     this.isLoading = true;
 
