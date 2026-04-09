@@ -2,11 +2,7 @@ import json
 import logging
 import os
 import sys
-
-# 1. ADD THIS FIRST: Make backend root importable when spawned as a child process
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-# 2. NOW import your local modules
 from config.settings import LOG_LEVEL
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
@@ -15,8 +11,6 @@ from schema.pydantic_models import CandidateSchema
 
 load_dotenv()
 
-# Logs go to stderr so stdout stays clean for the stdio MCP wire protocol
-# Logs go to stderr so stdout stays clean for the stdio MCP wire protocol
 logging.basicConfig(
     level=getattr(logging, LOG_LEVEL.upper(), logging.INFO), # Dynamically reads from settings.py
     format="%(asctime)s [MCP-SERVER] %(levelname)s: %(message)s",
@@ -35,11 +29,6 @@ try:
     logger.info("Database and schema initialized.")
 except Exception as e:
     logger.error(f"FATAL: Database failed to initialize: {e}")
-# ---------------------------------
-
-# ═════════════════════════════════════════════════════════════════════════════
-# MCP Tool Registry
-# ═════════════════════════════════════════════════════════════════════════════
 
 @mcp.tool()
 def save_candidate(candidate_json: str | dict) -> str:
@@ -94,7 +83,6 @@ def get_jobs_by_location(location: str) -> str:
     """
     Fetch jobs filtered by location.
     """
-
     try:
         rows = db_schema.list_jobs_by_location(location)
 
@@ -116,8 +104,6 @@ def get_jobs_by_location(location: str) -> str:
         logger.exception("get_jobs_by_location failed")
         return json.dumps([])
     
-# mcp_layer/mcp_server.py — replace save_job tool
-
 @mcp.tool()
 def get_candidate_by_id(candidate_id: int) -> str:
     try:
@@ -175,6 +161,7 @@ def save_job(job_json: str | dict) -> str:
             "job_id": None,
             "message": str(exc),
         })
+
 @mcp.tool()
 def map_candidate_to_job(candidate_id: int, job_id: int) -> str:
     """Map a candidate to a job with a calculated match score."""
@@ -209,7 +196,7 @@ def map_candidate_to_job(candidate_id: int, job_id: int) -> str:
             "success": False,
             "message": str(exc)
         })
-# ── Entry point ───────────────────────────────────────────────────────────────
+
 
 if __name__ == "__main__":
     logger.info("ResumeIQ MCP Server starting (stdio transport)…")

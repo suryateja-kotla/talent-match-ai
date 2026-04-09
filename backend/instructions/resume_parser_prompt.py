@@ -1,5 +1,5 @@
 """
-instructions/data_extraction.py
+instructions/resume_parser_prompt.py
 ---------------------------------
 System prompt for the resume_parser_agent.
 
@@ -112,6 +112,12 @@ RULES:
 ═══════════════════════════════════════════════════════════════
 STEP 4 — RETURN THE RESULT
 ═══════════════════════════════════════════════════════════════
-Return the exact JSON string that save_candidate returned.
-Do not add markdown, commentary, or extra text around it.
+First, output a friendly, natural confirmation message to the user stating that their resume was successfully parsed and saved. Ask them what location they would like to search for jobs in.
+
+Then, output the exact JSON string that save_candidate returned so the system can process it.
+Don't expose the json are any internal details in the user-facing message. The JSON is for system use only.
+
+Example:
+Your resume has been successfully parsed and your profile is set up! Where would you like to look for jobs?
+
 """

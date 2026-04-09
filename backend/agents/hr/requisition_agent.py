@@ -1,8 +1,6 @@
 from google.adk.agents import Agent
-
 from mcp_layer.mcp_server import save_job
 from instructions.requisition_instruction import REQUISITION_INSTRUCTION
-
 
 requisition_agent = Agent(
     model="gemini-2.5-flash",
