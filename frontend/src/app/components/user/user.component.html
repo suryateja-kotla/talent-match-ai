@@ -25,7 +25,7 @@
   <div class="row flex-grow-1 g-3 dashboard-row" style="min-height: 0">
   <div class="col-lg-4 d-none d-lg-flex flex-column chat-column" [class.mobile-active]="showMobileChat">
     <div class="card h-100 shadow-sm p-2 d-flex flex-column dark-card">
-      <app-chatbot class="flex-grow-1"></app-chatbot>
+      <app-chatbot class="flex-grow-1" (applicationSubmitted)="onApplicationUpdate()"></app-chatbot>
     </div>
   </div>
 
@@ -39,7 +39,7 @@
 
     <div class="card shadow-sm dark-card flex-section-box">
       <div class="p-3 h-100 scroll-area-internal">
-        <app-applications #appsList></app-applications>
+        <app-applications #appList [candidateId]="currentCandidateId"></app-applications>
       </div>
     </div>
     

@@ -320,3 +320,26 @@ def create_application(candidate_id: int, job_id: int, match_score: float):
         conn.commit()
     finally:
         conn.close()
+        
+
+def list_applications_by_candidate(candidate_id: int) -> list[dict]:
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT 
+                    a.id,
+                    a.match_score,
+                    a.applied_at,
+                    j.job_title,
+                    j.location
+                FROM applications a
+                JOIN job_descriptions j ON a.job_id = j.id
+                WHERE a.candidate_id = %s
+                ORDER BY a.applied_at DESC
+            """, (candidate_id,))
+
+            cols = [d[0] for d in cur.description]
+            return [serialize(dict(zip(cols, row))) for row in cur.fetchall()]
+    finally:
+        conn.close()

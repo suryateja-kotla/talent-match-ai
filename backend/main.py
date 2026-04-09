@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 # runner is the single source of truth — no Runner created here
 from runner import run_agent
 from config.settings import APP_HOST, APP_PORT, LOG_LEVEL
-from schema.db_schema import create_database_if_not_exists, init_db
+from schema.db_schema import create_database_if_not_exists, init_db, list_applications_by_candidate
 from api.resume_routes import router as resume_router
 from schema.db_schema import list_jobs
 
@@ -100,7 +100,17 @@ def get_jobs():
     except Exception:
         logger.exception("Failed to fetch jobs")
         raise HTTPException(status_code=500, detail="Failed to fetch jobs")
- 
+    
+    
+    
+@app.get("/api/applications/{candidate_id}")
+def get_applications(candidate_id: int):
+    try:
+        apps = list_applications_by_candidate(candidate_id)
+        return {"applications": apps}
+    except Exception:
+        logger.exception("Failed to fetch applications")
+        raise HTTPException(status_code=500, detail="Failed to fetch applications")
 # ─────────────────────────────────────────────────────────────
 # Health Check
 # ─────────────────────────────────────────────────────────────

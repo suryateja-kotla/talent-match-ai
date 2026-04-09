@@ -34,13 +34,13 @@ export class ChatService {
     message: string,
     userRole: string,
     sessionId: string,
-    candidateId?: number | null, // 🔥 ADD THIS
+    candidateId?: number | null,
   ) {
     return this.http.post<ChatResponse>(this.baseUrl + '/api/route/chat', {
       message,
       user_role: userRole,
       session_id: sessionId,
-      candidate_id: candidateId, // 🔥 SEND TO BACKEND
+      candidate_id: candidateId, 
     });
   }
 

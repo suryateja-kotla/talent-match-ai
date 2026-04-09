@@ -1,8 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild, Input, OnDestroy, AfterViewInit ,Output,EventEmitter} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ChatService } from '../../../services/chat.sevice';
 import { switchMap } from 'rxjs';
+import { ChatService } from '../../../services/chat.sevice';
+import { JobService } from '../../../services/job.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -25,7 +26,7 @@ export class ChatbotComponent implements OnInit {
   resumeUploaded = false;
   messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [];
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, private jobService: JobService) {}
 
   ngOnInit() {
     // 1. Static Greeting - No API call here
@@ -81,8 +82,10 @@ export class ChatbotComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.messages.push({ text: res.reply, sender: 'bot' });
+          localStorage.setItem('candidate_id', String(this.candidateId));
           this.resumeUploaded = true;
           this.isLoading = false;
+          this.jobService.triggerRefresh();
           this.applicationSubmitted.emit();
         },
         error: () => {

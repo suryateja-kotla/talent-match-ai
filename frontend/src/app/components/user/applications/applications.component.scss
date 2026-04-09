@@ -1,3 +1,90 @@
-:host {
-  display: block;
+.applications-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Header */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  h5 {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .count {
+    font-size: 12px;
+    color: #94a3b8;
+  }
+}
+
+/* Empty */
+.empty-state {
+  text-align: center;
+  color: #64748b;
+  padding: 20px 0;
+}
+
+/* Card */
+.app-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: rgba(0, 198, 255, 0.4);
+    box-shadow: 0 0 12px rgba(0, 198, 255, 0.1);
+  }
+}
+
+/* Top */
+.app-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.job-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.location {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* Match */
+.match-score {
+  background: rgba(0, 198, 255, 0.15);
+  color: #00c6ff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Bottom */
+.app-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.status.applied {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+.date {
+  opacity: 0.8;
 }

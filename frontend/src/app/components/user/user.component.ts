@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ChatbotComponent } from './chatbot/chatbot.component';
@@ -14,7 +14,7 @@ import { HrJobsComponent } from '../hr/hr-jobs/hr-jobs.component';
     CommonModule,
     ChatbotComponent,
     ApplicationsComponent,
-    HrJobsComponent
+    HrJobsComponent,
   ],
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
@@ -30,21 +30,29 @@ export class UserComponent {
     private authService: AuthService,
     private jobService: JobService,
   ) {}
+
+  @ViewChild('appsList') appsComponent!: any;
+
   ngOnInit() {
     const user = this.authService.getCurrentUser();
     if (user) {
       this.username = user.username;
     } else {
-
       this.router.navigate(['/']);
     }
   }
 
-currentCandidateId = Number(localStorage.getItem('candidate_id'));
-
-onResumeParsed(data: any) {
-  this.currentCandidateId = data.candidate_id; 
-}
+ currentCandidateId: number | null =
+  Number(localStorage.getItem('candidate_id')) || null;
+  onApplicationUpdate() {
+    this.currentCandidateId = null;
+    setTimeout(() => {
+      this.currentCandidateId = Number(localStorage.getItem('candidate_id'));
+    }, 0);
+  }
+  onResumeParsed(data: any) {
+    this.currentCandidateId = data.candidate_id;
+  }
   //  Logout
   logout() {
     localStorage.removeItem('currentUser');

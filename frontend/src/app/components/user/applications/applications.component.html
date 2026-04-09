@@ -1,4 +1,40 @@
-<h3>APPLICATIONS</h3>
+<div class="applications-section">
 
-<p>No applications yet</p>
-<span>Apply to jobs or upload your resume for auto-matching</span>
+  <!-- Section Header -->
+  <div class="section-header">
+    <h5>📄 Application History</h5>
+    <span class="count">{{ applications.length }} applications</span>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="applications.length === 0" class="empty-state">
+    🚫 No applications yet
+  </div>
+
+  <!-- Applications List -->
+  <div *ngFor="let app of applications" class="app-card">
+
+    <!-- Top -->
+    <div class="app-top">
+      <div>
+        <h6 class="job-title">{{ app.job_title }}</h6>
+        <div class="location">📍 {{ app.location }}</div>
+      </div>
+
+      <!-- Match Score -->
+      <div class="match-score">
+        {{ (app.match_score * 100) | number:'1.0-0' }}%
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="app-bottom">
+      <span class="status applied">● Applied</span>
+      <span class="date">
+        🕒 {{ app.applied_at | date:'medium' }}
+      </span>
+    </div>
+
+  </div>
+
+</div>
