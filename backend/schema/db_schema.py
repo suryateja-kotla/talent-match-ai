@@ -343,3 +343,28 @@ def list_applications_by_candidate(candidate_id: int) -> list[dict]:
             return [serialize(dict(zip(cols, row))) for row in cur.fetchall()]
     finally:
         conn.close()
+        
+
+def list_all_applications() -> list[dict]:
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT 
+                    a.id,
+                    a.match_score,
+                    a.applied_at,
+                    j.job_title,
+                    j.location,
+                    c.first_name,
+                    c.last_name
+                FROM applications a
+                JOIN job_descriptions j ON a.job_id = j.id
+                JOIN candidates c ON a.candidate_id = c.id
+                ORDER BY a.applied_at DESC
+            """)
+
+            cols = [d[0] for d in cur.description]
+            return [serialize(dict(zip(cols, row))) for row in cur.fetchall()]
+    finally:
+        conn.close()

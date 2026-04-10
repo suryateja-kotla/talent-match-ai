@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException
 
 from schema.chat_model import ChatRequest, ChatResponse
 from runner import run_agent
-from schema.db_schema import list_applications_by_candidate, list_jobs
+from schema.db_schema import list_all_applications, list_applications_by_candidate, list_jobs
 
 logger = logging.getLogger(__name__)
 
@@ -58,4 +58,14 @@ def get_applications(candidate_id: int):
         return {"applications": apps}
     except Exception:
         logger.exception("Failed to fetch applications")
+        raise HTTPException(status_code=500, detail="Failed to fetch applications")
+    
+    
+@router.get("/api/applications")
+def get_all_applications():
+    try:
+        apps = list_all_applications()
+        return {"applications": apps}
+    except Exception:
+        logger.exception("Failed to fetch all applications")
         raise HTTPException(status_code=500, detail="Failed to fetch applications")

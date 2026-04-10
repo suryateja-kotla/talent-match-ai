@@ -22,17 +22,11 @@ import { HrJobsComponent } from '../hr/hr-jobs/hr-jobs.component';
 export class UserComponent {
   username: string = '';
   showMobileChat: boolean = false;
-  jobs: any[] = [];
-  applications: any[] = [];
-
   constructor(
     private router: Router,
     private authService: AuthService,
     private jobService: JobService,
   ) {}
-
-  @ViewChild('appsList') appsComponent!: any;
-
   ngOnInit() {
     const user = this.authService.getCurrentUser();
     if (user) {
@@ -42,13 +36,10 @@ export class UserComponent {
     }
   }
 
- currentCandidateId: number | null =
-  Number(localStorage.getItem('candidate_id')) || null;
+  currentCandidateId: number | null =
+    Number(localStorage.getItem('candidate_id')) || null;
   onApplicationUpdate() {
-    this.currentCandidateId = null;
-    setTimeout(() => {
-      this.currentCandidateId = Number(localStorage.getItem('candidate_id'));
-    }, 0);
+    this.jobService.triggerRefresh();
   }
   onResumeParsed(data: any) {
     this.currentCandidateId = data.candidate_id;

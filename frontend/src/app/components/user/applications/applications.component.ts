@@ -1,9 +1,6 @@
 import {
   Component,
-  Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JobService } from '../../../services/job.service';
@@ -19,29 +16,21 @@ interface ApplicationResponse {
   templateUrl: './applications.component.html',
   styleUrls: ['./applications.component.scss'],
 })
-export class ApplicationsComponent implements OnChanges, OnInit {
-  @Input() candidateId: number | null = null;
-
+export class ApplicationsComponent implements  OnInit {
   applications: any[] = [];
 
   constructor(private jobService: JobService) {}
   ngOnInit() {
-  this.jobService.refreshApplications$.subscribe(() => {
     this.loadApplications();
-  });
-}
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['candidateId'] && this.candidateId !== null) {
+
+    this.jobService.refreshApplications$.subscribe(() => {
       this.loadApplications();
-    }
+    });
   }
 
   loadApplications() {
-    if (this.candidateId === null) return;
-    this.jobService
-      .getApplications(this.candidateId)
-      .subscribe((res: ApplicationResponse) => {
-        this.applications = res.applications;
-      });
+    this.jobService.getApplications().subscribe((res: ApplicationResponse) => {
+      this.applications = res.applications || [];
+    });
   }
 }

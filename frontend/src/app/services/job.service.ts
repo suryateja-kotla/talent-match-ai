@@ -12,9 +12,9 @@ export class JobService {
     return this.http.get(`${this.baseUrl}/jobs`);
   }
 
-  getApplications(candidateId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/applications/${candidateId}`);
-  }
+getApplications(): Observable<any> {
+  return this.http.get(`${this.baseUrl}/applications`);
+}
   private refreshApplications = new Subject<void>();
   refreshApplications$ = this.refreshApplications.asObservable();
 
