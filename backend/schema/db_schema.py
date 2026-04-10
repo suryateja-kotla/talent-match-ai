@@ -217,7 +217,7 @@ def list_jobs() -> list[dict]:
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT id, job_title, required_skills, experience_years,
-                       location, number_of_positions, is_active, created_at
+                       location, number_of_positions, is_active, created_at,job_description
                 FROM job_descriptions
                 WHERE is_active = TRUE
                 ORDER BY created_at DESC
@@ -318,5 +318,53 @@ def create_application(candidate_id: int, job_id: int, match_score: float):
         with conn.cursor() as cur:
             cur.execute(sql, (candidate_id, job_id, match_score))
         conn.commit()
+    finally:
+        conn.close()
+        
+
+def list_applications_by_candidate(candidate_id: int) -> list[dict]:
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT 
+                    a.id,
+                    a.match_score,
+                    a.applied_at,
+                    j.job_title,
+                    j.location
+                FROM applications a
+                JOIN job_descriptions j ON a.job_id = j.id
+                WHERE a.candidate_id = %s
+                ORDER BY a.applied_at DESC
+            """, (candidate_id,))
+
+            cols = [d[0] for d in cur.description]
+            return [serialize(dict(zip(cols, row))) for row in cur.fetchall()]
+    finally:
+        conn.close()
+        
+
+def list_all_applications() -> list[dict]:
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT 
+                    a.id,
+                    a.match_score,
+                    a.applied_at,
+                    j.job_title,
+                    j.location,
+                    c.first_name,
+                    c.last_name
+                FROM applications a
+                JOIN job_descriptions j ON a.job_id = j.id
+                JOIN candidates c ON a.candidate_id = c.id
+                ORDER BY a.applied_at DESC
+            """)
+
+            cols = [d[0] for d in cur.description]
+            return [serialize(dict(zip(cols, row))) for row in cur.fetchall()]
     finally:
         conn.close()

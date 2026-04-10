@@ -1,38 +1,26 @@
-/* =========================
-   GLOBAL DARK THEME
-========================= */
-
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   min-height: 0;
-  font-family: 'Inter', sans-serif;
-  background: radial-gradient(
+  font-family: "Inter", sans-serif;
+  background:
+    radial-gradient(
       circle at 20% 20%,
       rgba(0, 200, 255, 0.15),
       transparent 40%
     ),
-    radial-gradient(
-      circle at 80% 0%,
-      rgba(0, 120, 255, 0.12),
-      transparent 40%
-    ),
+    radial-gradient(circle at 80% 0%, rgba(0, 120, 255, 0.12), transparent 40%),
     #0b0f14;
   color: #e6edf3;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
-
-/* Smooth rendering */
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-/* =========================
-   CARD (Glass Style)
-========================= */
 
 .card {
   background: rgba(20, 25, 35, 0.75) !important;
@@ -44,21 +32,18 @@ html, body {
   color: #e6edf3;
 }
 
-/* =========================
-   TEXT + HEADINGS
-========================= */
-
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #f1f5f9;
 }
 
 .text-muted {
   color: #94a3b8 !important;
 }
-
-/* =========================
-   BUTTONS
-========================= */
 
 .btn-primary {
   background: linear-gradient(135deg, #00c6ff, #0072ff);
@@ -81,11 +66,8 @@ h1, h2, h3, h4, h5, h6 {
   color: #ff6b6b;
 }
 
-/* =========================
-   INPUTS
-========================= */
-
-input, .form-control {
+input,
+.form-control {
   background: rgba(255, 255, 255, 0.05) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   color: #e6edf3 !important;
@@ -95,18 +77,10 @@ input::placeholder {
   color: #64748b;
 }
 
-/* =========================
-   BADGES
-========================= */
-
 .badge {
   background: rgba(0, 150, 255, 0.15) !important;
   color: #38bdf8 !important;
 }
-
-/* =========================
-   SCROLLBAR (clean)
-========================= */
 
 ::-webkit-scrollbar {
   width: 6px;
@@ -117,18 +91,12 @@ input::placeholder {
   border-radius: 10px;
 }
 
-/* =========================
-   CHAT READY BASE
-========================= */
-
 .chat-wrapper {
   background: transparent;
 }
 
-/* =========================
-   TRANSITIONS (smooth feel)
-========================= */
-
 * {
-  transition: background 0.2s ease, border 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border 0.2s ease;
 }

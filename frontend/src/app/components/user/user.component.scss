@@ -4,7 +4,6 @@
   height: 100vh;
 }
 
-/* DESKTOP VS MOBILE LOCKS */
 @media (min-width: 992px) {
   .vh-100-desktop {
     height: 100vh;
@@ -29,29 +28,25 @@
   }
 }
 
-/* CHAT COLUMN OVERLAY LOGIC */
 .chat-column {
-  /* On desktop, it follows the grid */
   @media (min-width: 992px) {
     height: calc(100vh - 100px);
   }
 
-  /* On mobile, we turn it into a floating overlay */
   @media (max-width: 991px) {
     &.mobile-active {
-      display: flex !important; /* Override d-none */
+      display: flex !important;
       position: fixed;
       bottom: 100px;
       right: 20px;
-      left: 20px; /* Centered with padding */
+      left: 20px;
       width: auto;
       height: 70vh !important;
       z-index: 2000;
-      background: #0d1117 !important; /* Solid dark background */
+      background: #0d1117 !important;
       border-radius: 16px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9); /* Heavier shadow for depth */
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
 
-      // Remove the backdrop-filter if you want it 100% solid
       backdrop-filter: none !important;
       animation: slideUp 0.3s ease-out forwards;
     }
@@ -62,7 +57,6 @@
   }
 }
 
-/* FLOATING BUTTON (FAB) */
 .chat-fab {
   position: fixed;
   bottom: 25px;
@@ -103,21 +97,19 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-/* Keep your existing .chat-column, .chat-fab, and .dark-card styles */
 
 .flex-section-box {
-  flex: 1;           /* Forces a 50/50 split of the available height */
-  min-height: 0;     /* Allows the child to be smaller than content (crucial for scroll) */
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
 }
 
 .scroll-area-internal {
   flex: 1;
-  overflow-y: auto;  /* Triggers the scrollbar inside the card */
+  overflow-y: auto;
   overflow-x: hidden;
 
-  /* Custom Scrollbar to match your UI */
   &::-webkit-scrollbar {
     width: 5px;
   }

@@ -47,10 +47,18 @@ async def run_agent(message: str, session_id: str) -> str:
     context_block = f"\n[SESSION_CONTEXT: candidate_id={c_id}, resume_provided={is_uploaded}]"
     enhanced_prompt = f"{message}{context_block}"
     
-    user_message = types.Content(
-        role="user", 
-        parts=[types.Part.from_text(text=enhanced_prompt)]
-    )
+    combined_text = f"""
+    SESSION_CONTEXT:
+    candidate_id={c_id}
+    resume_provided={is_uploaded}
+    USER_MESSAGE:
+    {message}
+    """
+
+    new_message = types.Content(
+        role="user",
+        parts=[types.Part.from_text(text=combined_text)]
+        )
     runner = Runner(
         app_name=APP_NAME, 
         agent=root_agent, 
@@ -61,7 +69,7 @@ async def run_agent(message: str, session_id: str) -> str:
         async for event in runner.run_async(
             user_id=str(session_id), 
             session_id=str(session_id), 
-            new_message=user_message
+            new_message=new_message
         ):
             if hasattr(event, "author"):
                 print(f"AGENT: {event.author}")

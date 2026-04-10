@@ -30,7 +30,6 @@ export class HrComponent implements OnInit {
     this.showMobileChat = !this.showMobileChat;
   }
 
-  // This is called when the child chat component emits (jobCreated)
   handleJobCreated() {
     if (this.hrJobs) {
       this.hrJobs.refresh();

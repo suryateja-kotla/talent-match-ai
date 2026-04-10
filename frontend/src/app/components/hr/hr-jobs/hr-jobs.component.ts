@@ -1,6 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { ChatService } from '../../../services/chat.sevice'; // Adjust path if needed
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-hr-jobs',
@@ -10,10 +19,10 @@ import { ChatService } from '../../../services/chat.sevice'; // Adjust path if n
   styleUrl: './hr-jobs.component.scss',
 })
 export class HrJobsComponent implements OnInit {
-  // We keep this as an Input so we can still pass data manually if needed,
-  // but it will now also manage its own state.
   @Input() jobs: any[] = [];
   isLoading = false;
+  selectedJob: any = null;
+  @ViewChild('detailModal') modalElement!: ElementRef;
 
   constructor(
     private chatService: ChatService,
@@ -23,8 +32,37 @@ export class HrJobsComponent implements OnInit {
   ngOnInit(): void {
     this.fetchJobsFromDB();
   }
+  openJobDetails(job: any): void {
+    this.selectedJob = job;
+    this.cdr.detectChanges(); 
 
-  // Public method so the HR/User parent can trigger a reload
+    const element = this.modalElement.nativeElement;
+    document.body.appendChild(element);
+
+   
+    let modalInstance = bootstrap.Modal.getInstance(element);
+    if (!modalInstance) {
+      modalInstance = new bootstrap.Modal(element, {
+        backdrop: true, 
+        keyboard: true,
+      });
+    }
+
+    modalInstance.show();
+  }
+  closeModal(): void {
+    const element = this.modalElement.nativeElement;
+
+    const modalInstance = bootstrap.Modal.getInstance(element);
+    modalInstance?.hide();
+
+   
+    setTimeout(() => {
+      document.body.removeChild(element);
+    }, 300);
+  }
+
+  
   public refresh(): void {
     this.fetchJobsFromDB();
   }
@@ -33,6 +71,7 @@ export class HrJobsComponent implements OnInit {
     this.isLoading = true;
     this.chatService.getJobs().subscribe({
       next: (res: any) => {
+        console.log('FULL API RESPONSE:', res);
         let jobsArray = [];
         if (res.jobs && Array.isArray(res.jobs)) {
           jobsArray = res.jobs;
@@ -43,6 +82,7 @@ export class HrJobsComponent implements OnInit {
         }
 
         this.jobs = jobsArray.map((j: any) => {
+          console.log('EACH JOB:', j);
           let skills: string[] = [];
           const rs = j.required_skills || j.requiredSkills;
 
@@ -66,6 +106,7 @@ export class HrJobsComponent implements OnInit {
                 : 'N/A',
             skills: skills,
             positions: j.number_of_positions || j.numberOfPositions || 1,
+            description: j.job_description || 'No description available',
           };
         });
 

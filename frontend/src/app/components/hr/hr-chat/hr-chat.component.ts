@@ -1,10 +1,10 @@
-import { 
-  Component, 
-  ElementRef, 
-  OnInit, 
-  ViewChild, 
-  OnDestroy, 
-  AfterViewInit 
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  AfterViewInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -32,14 +32,11 @@ export class HrChatComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
-    // We only push the message to the UI. 
-    // We NO LONGER call this.chatService.send here.
-    this.messages.push({ 
-      from: 'bot', 
-      text: 'Hi, I am HR assistant. How can I help you create a job today?' 
+    this.messages.push({
+      from: 'bot',
+      text: 'Hi, I am HR assistant. How can I help you create a job today?',
     });
-    
-    // Ensure loading is false so the DB isn't hit and "Thinking" doesn't show
+
     this.isLoading = false;
   }
 
@@ -61,7 +58,7 @@ export class HrChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.observer.observe(container, {
       childList: true,
-      subtree: true
+      subtree: true,
     });
   }
 
@@ -73,15 +70,14 @@ export class HrChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Add user message to UI
     this.messages.push({ from: 'user', text: input });
-    
-    // Now we trigger the service call and the "Thinking" state
+
     this.isLoading = true;
 
     this.chatService.send(input, 'hr', this.sessionId).subscribe({
       next: (res) => {
         this.isLoading = false;
         this.messages.push({ from: 'bot', text: res.reply });
-        
+
         if (res.reply?.toLowerCase().includes('created')) {
           this.jobCreated.emit();
         }
@@ -102,6 +98,6 @@ export class HrChatComponent implements OnInit, AfterViewInit, OnDestroy {
       } catch (err) {
         console.error('Scroll error:', err);
       }
-    }, 50); // 50ms delay is usually perfect
+    }, 50);
   }
 }

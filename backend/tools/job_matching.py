@@ -93,8 +93,8 @@ Return JSON:
 
     filtered = [j for j in ranked if j["score"] >= 60]   
 
-    return json.dumps(filtered)
-    
+    # return json.dumps(filtered)
+    return filtered
     
 
 

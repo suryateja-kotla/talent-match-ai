@@ -1,12 +1,36 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { JobService } from '../../../services/job.service';
+
+interface ApplicationResponse {
+  applications: any[];
+}
 
 @Component({
   selector: 'app-applications',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './applications.component.html',
-  styleUrl: './applications.component.scss'
+  styleUrls: ['./applications.component.scss'],
 })
-export class ApplicationsComponent {
+export class ApplicationsComponent implements  OnInit {
+  applications: any[] = [];
 
+  constructor(private jobService: JobService) {}
+  ngOnInit() {
+    this.loadApplications();
+
+    this.jobService.refreshApplications$.subscribe(() => {
+      this.loadApplications();
+    });
+  }
+
+  loadApplications() {
+    this.jobService.getApplications().subscribe((res: ApplicationResponse) => {
+      this.applications = res.applications || [];
+    });
+  }
 }

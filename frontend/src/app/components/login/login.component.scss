@@ -1,5 +1,4 @@
 .login-page {
-  /* This ensures the global radial gradients from styles.scss are visible */
   background: transparent;
   min-height: 100vh;
   position: relative;
@@ -12,8 +11,6 @@
   align-items: center;
   position: relative;
 
-  /* This adds a specific blue glow behind the "Welcome" text 
-     to make the left side feel less empty */
   &::after {
     content: "";
     position: absolute;
@@ -28,7 +25,6 @@
   }
 }
 
-/* Let's make sure the form section also feels integrated */
 .login-form-section {
   position: relative;
 
@@ -50,6 +46,7 @@
 
 .text-highlight {
   background: linear-gradient(135deg, #00c6ff, #0072ff);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 700;
@@ -60,8 +57,6 @@
   width: 100%;
   max-width: 440px;
   padding: 3rem !important;
-  /* The backdrop-filter: blur(10px) from styles.scss will now 
-     actually have something to "blur" behind it! */
 }
 
 /* CLEAN STATIC ICON */
@@ -78,18 +73,28 @@
       rgba(0, 198, 255, 0.4),
       rgba(0, 114, 255, 0.4)
     );
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.2));
   }
 }
 
-/* Custom Pill Inputs */
 .custom-input-group {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: all 0.2s ease;
+  .form-control:-webkit-autofill,
+  .form-control:-webkit-autofill:hover,
+  .form-control:-webkit-autofill:focus {
+    -webkit-text-fill-color: #e6edf3 !important;
+
+    /* This forces your dark transparent look */
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.04) inset !important;
+    border-radius: 12px;
+    transition: background-color 9999s ease-in-out 0s;
+  }
 
   &:focus-within {
     border-color: rgba(0, 198, 255, 0.5);
@@ -104,7 +109,7 @@
   }
 
   .form-control {
-    background: transparent !important;
+    background: transparent;
     border: none !important;
     box-shadow: none !important;
     padding: 12px 10px;

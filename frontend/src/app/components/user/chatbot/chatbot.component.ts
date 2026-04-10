@@ -1,8 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild, Input, OnDestroy, AfterViewInit ,Output,EventEmitter} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  Input,
+  OnDestroy,
+  AfterViewInit,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ChatService } from '../../../services/chat.sevice';
 import { switchMap } from 'rxjs';
+import { ChatService } from '../../../services/chat.sevice';
+import { JobService } from '../../../services/job.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -25,10 +36,13 @@ export class ChatbotComponent implements OnInit {
   resumeUploaded = false;
   messages: { text: string; sender: 'user' | 'bot'; agent?: string }[] = [];
 
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private chatService: ChatService,
+    private jobService: JobService,
+  ) {}
 
   ngOnInit() {
-    // 1. Static Greeting - No API call here
+    // 1. Static Greeting
     this.messages.push({
       text: "👋 Hi! I'm your job assistant. Please upload your resume or type a message to get started.",
       sender: 'bot',
@@ -60,10 +74,8 @@ export class ChatbotComponent implements OnInit {
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
-    // ✅ Step 1 — show filename
     this.messages.push({ text: file.name, sender: 'user' });
 
-    // ✅ Step 2 — show uploading
     this.messages.push({ text: '📤 Uploading resume...', sender: 'bot' });
     this.isLoading = true;
 
@@ -83,12 +95,19 @@ export class ChatbotComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.messages.push({ text: res.reply, sender: 'bot' });
+          localStorage.setItem('candidate_id', String(this.candidateId));
           this.resumeUploaded = true;
           this.isLoading = false;
-          this.applicationSubmitted.emit();
+          setTimeout(() => {
+            this.applicationSubmitted.emit();
+          }, 500);
+          this.jobService.triggerRefresh();
         },
         error: () => {
-          this.messages.push({ text: '⚠️ Resume processing failed.', sender: 'bot' });
+          this.messages.push({
+            text: '⚠️ Resume processing failed.',
+            sender: 'bot',
+          });
           this.isLoading = false;
         },
       });
@@ -98,7 +117,7 @@ export class ChatbotComponent implements OnInit {
     if (!this.userInput.trim() || this.isLoading) return;
 
     const input = this.userInput;
-    this.userInput = ''; // Clear input immediately
+    this.userInput = '';
     this.messages.push({ text: input, sender: 'user' });
     this.isLoading = true;
 
@@ -108,9 +127,20 @@ export class ChatbotComponent implements OnInit {
         next: (res) => {
           this.messages.push({ text: res.reply, sender: 'bot' });
           this.isLoading = false;
+          if (res.reply.toLowerCase().includes('applied')) {
+            console.log('Application detected → refreshing UI');
+
+            setTimeout(() => {
+              this.applicationSubmitted.emit(); // parent event
+              this.jobService.triggerRefresh(); // direct refresh
+            }, 400);
+          }
         },
         error: () => {
-          this.messages.push({ text: '⚠️ Error connecting to assistant.', sender: 'bot' });
+          this.messages.push({
+            text: '⚠️ Error connecting to assistant.',
+            sender: 'bot',
+          });
           this.isLoading = false;
         },
       });

@@ -1,15 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class JobService {
-  private apiUrl = 'your-gcp-backend-url/api/jobs'; // Adjust to your GCP backend
+  private baseUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 
-  // Fetch all active jobs from Cloud SQL
-  getJobs(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getJobs(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/jobs`);
+  }
+
+getApplications(): Observable<any> {
+  return this.http.get(`${this.baseUrl}/applications`);
+}
+  private refreshApplications = new Subject<void>();
+  refreshApplications$ = this.refreshApplications.asObservable();
+
+  triggerRefresh() {
+    this.refreshApplications.next();
   }
 }
