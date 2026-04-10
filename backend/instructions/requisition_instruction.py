@@ -33,6 +33,7 @@ STEP 3: GENERATE THE JOB DESCRIPTION using this EXACT structure:
   [Responsibility 5]
 
   
+  
 
   Each section must be on its own line. Never merge sections into one paragraph.
   If HR provided a partial JD, enhance it — do not discard their input.

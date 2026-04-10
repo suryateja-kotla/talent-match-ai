@@ -1,214 +1,85 @@
-import asyncio
-from email import message
 import json
-import logging
-import os
 import re
-from dotenv import load_dotenv
-import config.settings
-
-# IMPORTANT: Import settings early to ensure Vertex AI environment
-# variables (GOOGLE_CLOUD_PROJECT, etc.) are injected into os.environ
-# BEFORE the google.genai SDK initializes within the ADK.
-
+import logging
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
-from google.genai import types as genai_types
-from agents.hr.hr_flow_agent import hr_flow_agent
-from agents.candidate.candidate_flow_agent import candidate_flow_agent
-from agents.candidate.resume_parser_agent import resume_parser_agent
-from mcp_layer.mcp_client import get_mcp_toolset
-
-logger = logging.getLogger(__name__)
-load_dotenv()
-
-logger.info(f"GCP Project: {os.environ.get('GOOGLE_CLOUD_PROJECT', 'NOT SET')}")
-logger.info(f"GCP Location: {os.environ.get('GOOGLE_CLOUD_LOCATION', 'NOT SET')}")
+from google.genai import types
+from agents.root.root_agent import root_agent
 
 APP_NAME = "talent-match-ai"
-
 session_service = InMemorySessionService()
-_session_registry: dict[str, str] = {}
+logger = logging.getLogger(__name__)
 
-
-
-async def _get_or_create_session(session_id: str):
-    if session_id in _session_registry:
-        adk_id = _session_registry[session_id]
-        session = await session_service.get_session(
-            app_name=APP_NAME,
-            user_id=session_id,
-            session_id=adk_id,
-        )
-        if session:
-            return session
-
-    session = await session_service.create_session(
-        app_name=APP_NAME,
-        user_id=session_id,
+async def get_or_create_session(session_id: str):
+    session_id = str(session_id)
+    existing = await session_service.get_session(
+        user_id=session_id, session_id=session_id, app_name=APP_NAME
     )
-    _session_registry[session_id] = session.id
-    return session
+    if existing:
+        return existing
+    return await session_service.create_session(
+        user_id=session_id, session_id=session_id, app_name=APP_NAME
+    )
 
+def process_reply(reply_text: str, session) -> str:
+    id_match = re.search(r'"candidate_id"\s*:\s*(\d+)', reply_text)
+    if id_match:
+        c_id = int(id_match.group(1))
+        session.state["candidate_id"] = c_id
+        session.state["resume_uploaded"] = True
+        logger.info(f"Syncing Session: candidate_id={c_id}")
 
-async def run_agent(message: str, session_id: str,candidate_id: int | None) -> str:
+    clean_text = re.sub(r'```json.*?```', '', reply_text, flags=re.DOTALL)
+    clean_text = re.sub(r'\{[^{}]*"candidate_id"[^{}]*\}', '', clean_text, flags=re.DOTALL)
+    clean_text = clean_text.strip()
+
+    if not clean_text and id_match:
+        return "I've successfully parsed your resume and saved your profile. Where would you like to look for jobs?"
+    
+    return clean_text or "I encountered an issue processing that. Could you try again?"
+
+async def run_agent(message: str, session_id: str) -> str:
+    session = await get_or_create_session(session_id)
+
+    c_id = session.state.get("candidate_id", "None")
+    is_uploaded = session.state.get("resume_uploaded", False)
+  
+    context_block = f"\n[SESSION_CONTEXT: candidate_id={c_id}, resume_provided={is_uploaded}]"
+    enhanced_prompt = f"{message}{context_block}"
+    
+    combined_text = f"""
+    SESSION_CONTEXT:
+    candidate_id={c_id}
+    resume_provided={is_uploaded}
+    USER_MESSAGE:
+    {message}
     """
-    Generic chat entry point. Routes general user queries through the
-    root orchestrator agent to the appropriate sub-agent.
-    """
-    try:
-        session = await _get_or_create_session(session_id)
-        if candidate_id:
-            session.state["candidate_id"] = candidate_id
-        enhanced_message = f"""
- {message}
-SESSION STATE:
-resume_uploaded: {session.state.get("resume_uploaded")}
-candidate_id: {session.state.get("candidate_id")}
 
-CRITICAL:
-Use candidate_id={session.state.get("candidate_id")} for ALL job matching.
-DO NOT ask user for it.
-"""
-        system_note = f"\n\n[SYSTEM CONTEXT: candidate_id={session.state.get('candidate_id')}]"
-
-        user_message = genai_types.Content(
-            role="user",
-            parts=[genai_types.Part(text=enhanced_message+system_note)],
+    new_message = types.Content(
+        role="user",
+        parts=[types.Part.from_text(text=combined_text)]
         )
-
-        logger.debug("Dispatching message to root_agent...")
-
-
-        role_match = re.match(r"\[(.*?)\]", message)
-        role = role_match.group(1).upper() if role_match else "USER"
-
-        if role == "USER":
-            selected_agent = candidate_flow_agent
-        elif role == "HR":
-            selected_agent = hr_flow_agent
-        else:
-            return " Invalid role. Only 'hr' or 'user' are allowed."
-
-        runner = Runner(
-            agent=selected_agent,
-            app_name=APP_NAME,
-            session_service=session_service,
-            )
-        reply_text = ""
-
-
+    runner = Runner(
+        app_name=APP_NAME, 
+        agent=root_agent, 
+        session_service=session_service)
+    
+    reply = ""
+    try:
         async for event in runner.run_async(
-            user_id=session_id,
-            session_id=session.id,
-            new_message=user_message,
-            ):
+            user_id=str(session_id), 
+            session_id=str(session_id), 
+            new_message=new_message
+        ):
             if hasattr(event, "author"):
                 print(f"AGENT: {event.author}")
 
-            if event.content and getattr(event.content, "parts", None):
+            if hasattr(event, "content") and event.content and event.content.parts:
                 for part in event.content.parts:
                     if hasattr(part, "text") and part.text:
-                        reply_text += part.text
-        return reply_text
-
+                        reply += part.text
     except Exception as e:
-        logger.exception("ERROR in run_agent pipeline.")
-        return f"ERROR: {str(e)}"
+        logger.error(f"Runner error: {e}")
+        return "Sorry, something went wrong. Please try again."
 
-
-
-
-async def run_resume_parsing(file_path: str, session_id: str) -> dict:
-    """
-    Executes the multi-agent resume parsing pipeline.
-    Flow: MCP Tools Injected → Root Agent → Resume Parser Agent → Database Upsert
-    """
-    logger.info("📄 Resume parsing started for: %s", file_path)
-
-    # 1. Start the MCP server process to access DB tools
-    async with get_mcp_toolset() as mcp_tools:
-
-        # 2. Dynamically inject MCP tools into the specialist agent
-        original_tools = list(resume_parser_agent.tools)
-        resume_parser_agent.tools = original_tools + [mcp_tools]
-
-        try:
-            # 3. Create an isolated system session
-            session = await _get_or_create_session(session_id)
-
-            # 4. Formulate the direct instruction
-            instruction = f"[user] Parse the resume located at: {file_path}"
-            message = genai_types.Content(
-                role="user",
-                parts=[genai_types.Part(
-                    text=f"Parse the resume located at: {file_path}"
-                )],
-            )
-            final_text = ""
-            parsing_runner = Runner(
-                agent=resume_parser_agent,
-                app_name=APP_NAME,
-                session_service=session_service,
-            )
-
-            # 5. Execute the runner
-            async for event in parsing_runner.run_async(
-                user_id=session_id,
-                session_id=session.id,
-                new_message=message,
-            ):
-                if event.content and getattr(event.content, "parts", None):
-                    for part in event.content.parts:
-                        if hasattr(part, "text") and part.text:
-                            final_text += part.text
-
-            result = _parse_final_response(final_text)
-
-            session = await _get_or_create_session(session_id)
-            session.state["resume_uploaded"] = True
-            session.state["candidate_id"] = result.get("candidate_id")
-
-            return result
-
-        except Exception as e:
-            logger.exception("❌ ERROR in run_resume_parsing.")
-            return {"success": False, "message": str(e), "raw_response": ""}
-        finally:
-            resume_parser_agent.tools = original_tools
-
-
-#  3. RESPONSE PARSER (JSON Extraction)
-
-
-def _parse_final_response(text: str) -> dict:
-    match = re.search(r"\{.*\}", text, re.DOTALL)
-    if match:
-        try:
-            data = json.loads(match.group())
-            return {
-                "success": data.get("success", True),
-                "candidate_id": data.get("candidate_id"),
-                "message": data.get("message", "Processed successfully."),
-                "raw_response": text,
-            }
-        except json.JSONDecodeError:
-            logger.warning("Malformed JSON in agent response.")
-    return {
-        "success": True,
-        "candidate_id": None,
-        "message": "Task complete, no structured ID returned.",
-        "raw_response": text,
-    }
-
-
-# OPTIONAL: Local Testing Module
-
-
-async def run_chat(message: str):
-    response = await run_agent(message, "test_user")
-    print(f"\nFINAL: {response}")
-
-if __name__ == "__main__":
-    # Test the orchestrator routing
-    asyncio.run(run_chat("post a job"))
+    return process_reply(reply, session)
